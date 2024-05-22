@@ -13,7 +13,13 @@ The resulting grid will start at the first pixel of T32TPS covering the weather 
 ~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/gridface_s2tiles.shp
 ```
 
-![Sentinel-2 aligned grid covering the bounding box of MeteoSuisse files (shown in backgroun)](img/grid_all.png)
+<p align="center">
+  <img src="img/grid_all.png" width="400" height="300">
+</p>
+<p align="center">
+    <em>Sentinel-2 aligned grid covering the bounding box of MeteoSuisse file (shown in background)</em>
+</p>
+
 
 Since this grid is a rectangle and contains multiple tiles outside of Switzerland, it is cropped such as to keep only the grid cells that fall over the MeteoSuisse file:
 ```
@@ -25,4 +31,10 @@ The final grid is saved at
 ~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/gridface_s2tiles_CH.shp
 ```
 
-![Sentinel-2 aligned grid cropped to MeteoSuisse file](img/grid_CH.png)
+<p align="center">
+  <img src="img/grid_CH.png" width="400" height="300">
+</p>
+<p align="center">
+    <em>Sentinel-2 aligned grid cropped to MeteoSuisse file</em>
+</p>
+
