@@ -32,7 +32,7 @@ The final grid is saved at
 ```
 
 <p align="center">
-  <img src="img/grid_CH.png" width="400" height="300">
+  <img src="img/grid_CH.png" width="500" height="300">
 </p>
 <p align="center">
     <em>Sentinel-2 aligned grid cropped to MeteoSuisse file</em>
