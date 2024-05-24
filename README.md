@@ -38,3 +38,32 @@ The final grid is saved at
     <em>Sentinel-2 aligned grid cropped to MeteoSuisse file</em>
 </p>
 
+
+## 2. Data Downloading
+
+The Sentinel-2 data is downloaded using the grid created above. Each grid tile is 1280m x 1280m, containing 128 x 128 pixels with a resolution of 10m.\
+For each grid tile, the data is queried using the [minicuber](https://github.com/EOA-team/minicuber/tree/main) code which takes care of reprojecting all data to a common, 10m resolution pixel size and aligned to the coordinates of the grid (EPSG:32632). Details on other processing steps are included in the minicuber documentation.
+
+To download the data:
+```
+python download_pipeline.py
+```
+
+- More about interrupting and restarting the download
+
+Multiple grid tiles can be queried together (up to 4x4) and are split back to single tiles upon data saving. The returned data cube includes the following bands and variables:
+```
+- "S2_AOT", "S2_B01", "S2_B02", "S2_B03", "S2_B04", "S2_B05", "S2_B06", "S2_B07", "S2_B08", "S2_B8A", "S2_B09", "S2_B11", "S2_B12", "S2_WVP", "s2_SCL", "S2_mask"
+- "product_uri", "mean_sensor_zenith", "mean_sensor_azimuth", "mean_solar_zenith", "mean_solar_azimuth"
+```
+
+The data is saved year by year in a `zarr` store (https://zarr.readthedocs.io/en/stable/index.html) with the following name system:
+```
+S2_minx_maxy_startyeastartmonthstartday_endyearendmonthendday.zarr
+```
+where (minx, maxy) will correspond to the upper left coordinate of the grid tile.
+
+- compression and chunking
+- 
+
+
