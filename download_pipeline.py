@@ -11,19 +11,23 @@ from shapely.ops import cascaded_union
 import matplotlib.pyplot as plt
 import contextily as cx
 import numpy as np
+import zarr
 
 
-
-def create_max_square(patch, grid, num_cells, patch_size):
+def create_max_square(patch, grid, num_cells, patch_size, epsg=4326):
     """
     Use patch as upper left corner, and create biggest possible square.
     Max side length possible is num_cells*patch size.
+    The returned mega-patch is a geopandas dataframe with a Polygon geometry. 
+    The exterior coordinates of the square are given
+    
 
     :param patch: Polygon (upper left corner polygon of square to create)
     :param grid: geodataframe with other polygons that can be used
     :param num_cells: max number of cells
     :param patch_size: side of a single patch
-    :return: max_square
+    :param epsg: coordinate system that the mega-patch should be returned in
+    :return: n_cells which is the max number of cells, max_square which is a gdf containing the geometries added
     """
 
     n_cells = 0
@@ -48,42 +52,143 @@ def create_max_square(patch, grid, num_cells, patch_size):
         
         if len(square_in_grid) < (n_cells+1)**2: # the square has side ncells+1
             #print('Max found side', n_cells**2)
-            return max_square
+            return n_cells, max_square 
         else:
             max_square = square_in_grid
             n_cells += 1
+            
+    return num_cells, max_square
+
+def extract_date(time):
+    """ 
+    Extract year, month and day as int from numpy datetime64[ns] object
+
+    :param time: numpy datetime64[ns] object
+    :return: year, month, day
+    """
+    year = time.astype('datetime64[Y]').astype(int) + 1970
+    month = (time.astype('datetime64[M]').astype(int) % 12) + 1
+    day = (time.astype('datetime64[D]').astype(int) -
+        time.astype('datetime64[M]').astype('datetime64[D]').astype(int)) + 1
+
+    # Format month and day with leading zeros
+    month_str = f"{month:02d}"
+    day_str = f"{day:02d}"
+
+    return year, month_str, day_str
+
+def save_cube(cube, n_cells, patch_size=128, resolution=10):
+    """
+    Take a xarrays, slice into patches of 128x128 pixels, compress and save to zarr store
     
-    return max_square
+    :param mc: xarray, containing a year of Sentinel-2 data
+    :param n_cells: n_cells^2 is the number of patches of 128x128 in the xarray
+    """
+
+    # Find upper left corner of cube
+    lat_max = cube.lat.max().values
+    lon_min = cube.lon.min().values
+
+    # Extract the start and end dates
+    time_min, time_max = cube.time.min().values, cube.time.max().values
+
+    year_start, month_start, day_start = extract_date(time_min)
+    year_end, month_end, day_end = extract_date(time_max)
+    
+    # Create compressor
+    compressor = zarr.Blosc(cname='zstd', clevel=3, shuffle=2)
+    
+    # Iterate over each patch
+    for i in range(n_cells):
+        for j in range(n_cells):
+            lat_start = lat_max - i * patch_size * resolution
+            lat_end = lat_start - (patch_size-1) * resolution
+            lon_start = lon_min + j * patch_size * resolution
+            lon_end = lon_start + (patch_size-1) * resolution
+            
+            # Slice the cube
+            patch_cube = cube.sel(lat=slice(lat_start, lat_end), lon=slice(lon_start, lon_end))
+            
+            # Define the output path for the Zarr store
+            output_path = f'path/to/save/S2_{int(lon_start)}_{int(lat_start)}_{year_start}{month_start}{day_start}_{year_end}{month_end}{day_end}.zarr'
+            print(output_path)
+            #S2_minx_maxy_startyeastartmonthstartday_endyearendmonthendday.zarr
+            
+            # Save the patch to Zarr with compression
+            #patch_cube.to_zarr(output_path, consolidated=True, mode='w', encoding={var: {'compressor': compressor} for var in patch.data_vars})
+
+    return
 
 
 
-grid_path = '~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/gridface_s2tiles_CH.shp'
-grid = gpd.read_file(grid_path)
+if __name__ == "__main__":
 
-patch_size = 1280 # meters
-num_cells = 8
+    grid_path = '~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/gridface_s2tiles_CH.shp'
+    grid = gpd.read_file(grid_path)
 
-grid['selected'] = [False]*len(grid)
-grid_copy = grid.copy()
-# Optional: could reload a saved grid_copy if there is
+    patch_size = 1280 # meters
+    num_cells = 4
 
-for i, row in grid.iterrows():
-    if not grid_copy.loc[i, 'selected']:
-        patch = row.geometry
+    grid['selected'] = [False]*len(grid)
+    grid_copy = grid.copy()
+    # Optional: could reload a saved grid_copy if there is
+
+    specs = {
+        "lon_lat": (None, None), # center pixel
+        "xy_shape": (None, None), # width, height of cutout around center pixel
+        "resolution": 10, # in meters.. will use this on a local UTM grid..
+        "time_interval": "2021-01-01/2021-03-31",
+        "final_epsg": 32632,
+        "providers": [
+            {
+                "name": "s2",
+                "kwargs": {
+                    "bands": ["AOT", "B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B8A", "B09", "B11", "B12", "WVP"], 
+                    "brdf_correction": True, 
+                    "cloud_mask": False, 
+                    "data_source": "planetary_computer"}
+            }
+            ]
+    }
+
+    for i, row in grid.iterrows():
+        if not grid_copy.loc[i, 'selected']:
+            print(f"----Downloading patch {i}/{len(grid)}----")
+            
+            # Add surrounding patches to create up to 8x8 mega-patch (use patch as upper left corner)
+            patch = row.geometry
+            n_cells, mega_patch = create_max_square(patch, grid_copy, num_cells, patch_size, epsg=4326)
+            print(patch.bounds, n_cells)
+
+            # Update specs 
+            specs["lon_lat"] = (patch.bounds[0], patch.bounds[-1]) # upper left corner
+            specs["xy_shape"] = (int(patch_size*(n_cells+1)/specs["resolution"]), int(patch_size*(n_cells+1)/specs["resolution"]))
+            
+            for year in range(2017, 2024): # Doesn't include 2024
+                #print(f"Getting {year} data")
+                specs["time_interval"] = f"{year}-01-01/{year}-12-31"
+                # Call minicuber
+                cube = emc.load_minicube(specs, compute = False, verbose=True)
+                #print(cube.nbytes)
+                
+                # Call a function to rechunk, slice data based on mega-patch, compress, save to zarr
+                save_cube(cube, n_cells)
+                break
         
-        # Add surrounding patches to create up to 8x8 mega-patch (use patch as upper left corner)
-        mega_patch = create_max_square(patch, grid_copy, num_cells, patch_size)
-    
-        # Mark the selected cells
-        grid_copy.loc[mega_patch.index, 'selected'] = True
+            # Mark the selected cells
+            grid_copy.loc[mega_patch.index, 'selected'] = True
 
-        # Optional: save grid_copy in_case need to restart loop
-      
+            # Optional: save grid_copy in_case need to restart loop
+         
+            
+        if i == 0:
+            break
+       
 
-# Check that all patches were treated
-any_false_selected = any(grid_copy['selected'] == False)
+    # Check that all patches were treated
+    any_false_selected = any(grid_copy['selected'] == False)
 
-if any_false_selected:
-    print("There are False values in the 'selected' column.")
-else:
-    print("All values in the 'selected' column are True.")
+    if any_false_selected:
+        print("There are False values in the 'selected' column.")
+    else:
+        print("All values in the 'selected' column are True.")
