@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
 import sys
+import logging
+
 base_dir = Path(os.path.dirname(os.path.realpath("__file__"))).parent
 sys.path.insert(0, str(base_dir))
 import earthnet_minicuber as emc
@@ -77,12 +79,15 @@ def extract_date(time):
 
     return year, month_str, day_str
 
-def save_cube(cube, n_cells, patch_size=128, resolution=10):
+def save_cube(cube, n_cells, output_prefix, patch_size=128, resolution=10):
     """
     Take a xarrays, slice into patches of 128x128 pixels, compress and save to zarr store
     
     :param mc: xarray, containing a year of Sentinel-2 data
     :param n_cells: n_cells^2 is the number of patches of 128x128 in the xarray
+    :param output_prefix: path to save the zarr store
+    :param patch_size: size of the patch in pixels
+    :param resolution: resolution of the data in meters
     """
 
     # Find upper left corner of cube
@@ -108,87 +113,128 @@ def save_cube(cube, n_cells, patch_size=128, resolution=10):
             
             # Slice the cube
             patch_cube = cube.sel(lat=slice(lat_start, lat_end), lon=slice(lon_start, lon_end))
+            patch_cube = patch_cube.chunk({'time': -1, 'lat': -1, 'lon': len(patch_cube.lon)/2})
             
             # Define the output path for the Zarr store
-            output_path = f'path/to/save/S2_{int(lon_start)}_{int(lat_start)}_{year_start}{month_start}{day_start}_{year_end}{month_end}{day_end}.zarr'
+            output_path = output_prefix + f'S2_{int(lon_start)}_{int(lat_start)}_{year_start}{month_start}{day_start}_{year_end}{month_end}{day_end}.zarr'
             print(output_path)
-            #S2_minx_maxy_startyeastartmonthstartday_endyearendmonthendday.zarr
-            
+
             # Save the patch to Zarr with compression
-            #patch_cube.to_zarr(output_path, consolidated=True, mode='w', encoding={var: {'compressor': compressor} for var in patch.data_vars})
+            patch_cube.to_zarr(output_path, consolidated=True, mode='w', encoding={var: {'compressor': compressor} for var in patch_cube.data_vars})
 
     return
+
+
+def setup_logging():
+    logging.basicConfig(filename='download_test.log', level=logging.INFO,
+                        format='%(asctime)s - %(levelname)s - %(message)s')
+    logger = logging.getLogger()
+
+    # Add a handler to redirect stdout and stderr to the logger
+    class StreamToLogger:
+        def __init__(self, logger, log_level):
+            self.logger = logger
+            self.log_level = log_level
+            self.linebuf = ''
+
+        def write(self, buf):
+            for line in buf.rstrip().splitlines():
+                self.logger.log(self.log_level, line.rstrip())
+
+    stdout_logger = StreamToLogger(logging.getLogger('STDOUT'), logging.INFO)
+    sys.stdout = stdout_logger
+
+    stderr_logger = StreamToLogger(logging.getLogger('STDERR'), logging.ERROR)
+    sys.stderr = stderr_logger
+
+    return logger
 
 
 
 if __name__ == "__main__":
 
-    grid_path = '~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/gridface_s2tiles_CH.shp'
-    grid = gpd.read_file(grid_path)
+    logger = setup_logging()
+    logger.info('STARTING DOWNLOAD SCRIPT')
 
-    patch_size = 1280 # meters
-    num_cells = 4
+    try:
 
-    grid['selected'] = [False]*len(grid)
-    grid_copy = grid.copy()
-    # Optional: could reload a saved grid_copy if there is
+        # Define path to grid 
+        grid_path = '~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/gridface_s2tiles_CH.shp'
+        grid = gpd.read_file(grid_path)
+        grid['selected'] = [False]*len(grid)
+        grid_copy = grid.copy()
+        # Optional: could reload a saved grid_copy if there is
 
-    specs = {
-        "lon_lat": (None, None), # center pixel
-        "xy_shape": (None, None), # width, height of cutout around center pixel
-        "resolution": 10, # in meters.. will use this on a local UTM grid..
-        "time_interval": "2021-01-01/2021-03-31",
-        "final_epsg": 32632,
-        "providers": [
-            {
-                "name": "s2",
-                "kwargs": {
-                    "bands": ["AOT", "B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B8A", "B09", "B11", "B12", "WVP"], 
-                    "brdf_correction": True, 
-                    "cloud_mask": False, 
-                    "data_source": "planetary_computer"}
-            }
-            ]
-    }
+        # Define download parameters
+        patch_size = 1280 # meters
+        num_cells = 4
+        output_prefix = '~/mnt/eo-nas1/eoa-share/projects/010_CropCovEO/cubes/'
+        
+        specs = {
+            "lon_lat": (None, None), # center pixel
+            "xy_shape": (None, None), # width, height of cutout around center pixel
+            "resolution": 10, # in meters.. will use this on a local UTM grid..
+            "time_interval": "2021-01-01/2021-03-31",
+            "final_epsg": 32632,
+            "providers": [
+                {
+                    "name": "s2",
+                    "kwargs": {
+                        "bands": ["AOT", "B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B8A", "B09", "B11", "B12", "WVP"], 
+                        "brdf_correction": True, 
+                        "cloud_mask": False, 
+                        "data_source": "planetary_computer"}
+                }
+                ]
+        }
 
-    for i, row in grid.iterrows():
-        if not grid_copy.loc[i, 'selected']:
-            print(f"----Downloading patch {i}/{len(grid)}----")
-            
-            # Add surrounding patches to create up to 8x8 mega-patch (use patch as upper left corner)
-            patch = row.geometry
-            n_cells, mega_patch = create_max_square(patch, grid_copy, num_cells, patch_size, epsg=4326)
-            print(patch.bounds, n_cells)
 
-            # Update specs 
-            specs["lon_lat"] = (patch.bounds[0], patch.bounds[-1]) # upper left corner
-            specs["xy_shape"] = (int(patch_size*(n_cells+1)/specs["resolution"]), int(patch_size*(n_cells+1)/specs["resolution"]))
-            
-            for year in range(2017, 2024): # Doesn't include 2024
-                #print(f"Getting {year} data")
-                specs["time_interval"] = f"{year}-01-01/{year}-12-31"
-                # Call minicuber
-                cube = emc.load_minicube(specs, compute = False, verbose=True)
-                #print(cube.nbytes)
+        # Start download
+
+        for i, row in grid.iterrows():
+            if not grid_copy.loc[i, 'selected']:
+                logger.info(f"----Downloading patch {i}/{len(grid)}----")
                 
-                # Call a function to rechunk, slice data based on mega-patch, compress, save to zarr
-                save_cube(cube, n_cells)
+                # Add surrounding patches to create up to 8x8 mega-patch (use patch as upper left corner)
+                patch = row.geometry
+                n_cells, mega_patch = create_max_square(patch, grid_copy, num_cells, patch_size, epsg=4326)
+
+                # Update specs 
+                specs["lon_lat"] = (patch.bounds[0], patch.bounds[-1]) # upper left corner
+                specs["xy_shape"] = (int(patch_size*(n_cells+1)/specs["resolution"]), int(patch_size*(n_cells+1)/specs["resolution"]))
+                
+                for year in range(2017, 2024): # Doesn't include 2024
+                    logger.info(f"Downloading year {year}")
+                    specs["time_interval"] = f"{year}-01-01/{year}-12-31"
+                    # Call minicuber
+                    cube = emc.load_minicube(specs, compute = False, verbose=True)
+                    
+                    # Call a function to rechunk, slice data based on mega-patch, compress, save to zarr
+                    save_cube(cube, n_cells, output_prefix=output_prefix)
+            
+                # Mark the selected cells
+                grid_copy.loc[mega_patch.index, 'selected'] = True
+
+                # Optional: save grid_copy in_case need to restart loop
+                with open(output_prefix + 'grid_copy.pkl', 'wb') as f:
+                    pickle.dump(grid_copy, f)
+            
+                
+            if i == 100:
                 break
         
-            # Mark the selected cells
-            grid_copy.loc[mega_patch.index, 'selected'] = True
 
-            # Optional: save grid_copy in_case need to restart loop
-         
-            
-        if i == 0:
-            break
-       
+        # Check that all patches were treated
+        any_false_selected = any(grid_copy['selected'] == False)
+        
+        if any_false_selected:
+                logger.warning("There are False values in the 'selected' column.")
+        else:
+            logger.info("All values in the 'selected' column are True.")
 
-    # Check that all patches were treated
-    any_false_selected = any(grid_copy['selected'] == False)
 
-    if any_false_selected:
-        print("There are False values in the 'selected' column.")
-    else:
-        print("All values in the 'selected' column are True.")
+
+    except Exception as e:
+        logger.error(f'Error occurred: {e}')
+    finally:
+        logger.info('Script finished')
