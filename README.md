@@ -61,9 +61,15 @@ The data is saved year by year in a `zarr` store (https://zarr.readthedocs.io/en
 ```
 S2_minx_maxy_startyeastartmonthstartday_endyearendmonthendday.zarr
 ```
-where (minx, maxy) will correspond to the upper left coordinate of the grid tile.
+where (minx, maxy) will correspond to the upper left coordinate of the grid tile. There are two chunks per zarr file, where the data has been split in hald along the longitude dimension.
 
-- compression and chunking
-- 
 
+## Data status
+
+The download history is tracked here:
+
+| Date | Jobs | Notes | 
+| --------- | ------------ | ------------ |
+| 31.05.2024| Run downloading | Package versions: blabla | 
+| 05.06.2024| Redownload 2017 | Package versions: blabla | 
 
