@@ -8,12 +8,16 @@ sys.path.insert(0, str(base_dir))
 import earthnet_minicuber as emc
 
 import geopandas as gpd
+import pandas as pd
 from shapely.geometry import Point, Polygon
 from shapely.ops import cascaded_union
 import matplotlib.pyplot as plt
 import contextily as cx
 import numpy as np
 import zarr
+import pickle
+import time
+import datetime
 
 
 def create_max_square(patch, grid, num_cells, patch_size, epsg=4326):
@@ -79,7 +83,7 @@ def extract_date(time):
 
     return year, month_str, day_str
 
-def save_cube(cube, n_cells, output_prefix, patch_size=128, resolution=10):
+def save_cube(cube, n_cells, output_prefix, patch_size=128, resolution=10, overwrite=False):
     """
     Take a xarrays, slice into patches of 128x128 pixels, compress and save to zarr store
     
@@ -113,17 +117,16 @@ def save_cube(cube, n_cells, output_prefix, patch_size=128, resolution=10):
             
             # Slice the cube
             patch_cube = cube.sel(lat=slice(lat_start, lat_end), lon=slice(lon_start, lon_end))
-            patch_cube = patch_cube.chunk({'time': -1, 'lat': -1, 'lon': len(patch_cube.lon)/2})
+            patch_cube = patch_cube.chunk({'time': -1, 'lat': -1, 'lon': -1}) # len(patch_cube.lon)/2
             
             # Define the output path for the Zarr store
             output_path = output_prefix + f'S2_{int(lon_start)}_{int(lat_start)}_{year_start}{month_start}{day_start}_{year_end}{month_end}{day_end}.zarr'
-            print(output_path)
 
             # Save the patch to Zarr with compression
-            patch_cube.to_zarr(output_path, consolidated=True, mode='w', encoding={var: {'compressor': compressor} for var in patch_cube.data_vars})
-
+            if overwrite or not os.path.exists(output_path):
+                patch_cube.to_zarr(output_path, consolidated=True, mode='w', encoding={var: {'compressor': compressor} for var in patch_cube.data_vars})
+                print('Saved patch', output_path) # save_end-save_start
     return
-
 
 def setup_logging():
     logging.basicConfig(filename='download_test.log', level=logging.INFO,
@@ -149,92 +152,119 @@ def setup_logging():
 
     return logger
 
+def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrite, specs):
+        """
+        Download data for all grid cells and save each to zarr year by year
 
-
-if __name__ == "__main__":
-
-    logger = setup_logging()
-    logger.info('STARTING DOWNLOAD SCRIPT')
-
-    try:
-
-        # Define path to grid 
-        grid_path = '~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/gridface_s2tiles_CH.shp'
-        grid = gpd.read_file(grid_path)
-        grid['selected'] = [False]*len(grid)
-        grid_copy = grid.copy()
-        # Optional: could reload a saved grid_copy if there is
-
-        # Define download parameters
-        patch_size = 1280 # meters
-        num_cells = 4
-        output_prefix = '~/mnt/eo-nas1/eoa-share/projects/010_CropCovEO/cubes/'
-        
-        specs = {
-            "lon_lat": (None, None), # center pixel
-            "xy_shape": (None, None), # width, height of cutout around center pixel
-            "resolution": 10, # in meters.. will use this on a local UTM grid..
-            "time_interval": "2021-01-01/2021-03-31",
-            "final_epsg": 32632,
-            "providers": [
-                {
-                    "name": "s2",
-                    "kwargs": {
-                        "bands": ["AOT", "B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B8A", "B09", "B11", "B12", "WVP"], 
-                        "brdf_correction": True, 
-                        "cloud_mask": False, 
-                        "data_source": "planetary_computer"}
-                }
-                ]
-        }
-
+        :param grid: original grid used for downloading
+        :param grid_copy: copy of grid that will be updated to track what geometries and yeas have been downloaded
+        :param num_cells: max number of cells to add to grid cell for download
+        :param patch_size: size of patch in meters
+        :param output_prefix: path to save zarr stores
+        :param overwrite: if True, will overwrite existing zarr stores
+        :param specs: dictionary with download specifications
+        :return grid_copy: updated grid_copy
+        """
 
         # Start download
-
         for i, row in grid.iterrows():
             if not grid_copy.loc[i, 'selected']:
-                logger.info(f"----Downloading patch {i}/{len(grid)}----")
+                #logger.info(f"----Downloading patch {i}/{len(grid)}----")
+                print(f"{datetime.datetime.now()}----Downloading patch {i}/{len(grid)}----")
                 
-                # Add surrounding patches to create up to 8x8 mega-patch (use patch as upper left corner)
+                # Add surrounding patches to create up to num_cells x num_cells mega-patch (use patch as upper left corner)
                 patch = row.geometry
                 n_cells, mega_patch = create_max_square(patch, grid_copy, num_cells, patch_size, epsg=4326)
+                print(f"Adding {(n_cells+1)**2 -1} patches to download")
 
                 # Update specs 
                 specs["lon_lat"] = (patch.bounds[0], patch.bounds[-1]) # upper left corner
                 specs["xy_shape"] = (int(patch_size*(n_cells+1)/specs["resolution"]), int(patch_size*(n_cells+1)/specs["resolution"]))
                 
                 for year in range(2017, 2024): # Doesn't include 2024
-                    logger.info(f"Downloading year {year}")
-                    specs["time_interval"] = f"{year}-01-01/{year}-12-31"
-                    # Call minicuber
-                    cube = emc.load_minicube(specs, compute = False, verbose=True)
-                    
-                    # Call a function to rechunk, slice data based on mega-patch, compress, save to zarr
-                    save_cube(cube, n_cells, output_prefix=output_prefix)
+
+                    # Check if year has already been downloaded
+                    if grid_copy.loc[mega_patch.index, 'years_done'].isnull().any() or \
+                        not any(year in sublist for sublist in grid_copy.loc[mega_patch.index, 'years_done']):
+            
+                        #logger.info(f"Downloading year {year}")
+                        print(f"{datetime.datetime.now()}: Downloading year {year}")
+                        specs["time_interval"] = f"{year}-01-01/{year}-12-31"
+                        # Call minicuber
+                        cube = emc.load_minicube(specs, compute = True, verbose=True)
+                        
+                        # Call a function to rechunk, slice data based on mega-patch, compress, save to zarr
+                        save_cube(cube, n_cells, output_prefix=output_prefix, overwrite=overwrite)
+
+                        # Save the years already queried
+                        grid_copy.loc[mega_patch.index, 'years_done'] = grid_copy.loc[mega_patch.index, 'years_done'].apply(\
+                            lambda x: [year] if x is None else x + [year])
+                        grid_copy.to_pickle(output_prefix + 'grid_copy.pkl')
             
                 # Mark the selected cells
                 grid_copy.loc[mega_patch.index, 'selected'] = True
+                grid_copy.to_pickle(output_prefix + 'grid_copy.pkl')
 
-                # Optional: save grid_copy in_case need to restart loop
-                with open(output_prefix + 'grid_copy.pkl', 'wb') as f:
-                    pickle.dump(grid_copy, f)
-            
-                
-            if i == 100:
-                break
+
+        return grid_copy
+
+
+if __name__ == "__main__":
+
+    #logger = setup_logging()
+    #logger.info('STARTING DOWNLOAD SCRIPT')
+
+
+    # Define download parameters
+    patch_size = 1280 # meters
+    num_cells = 5
+    output_prefix = os.path.expanduser('~/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/')
+    overwrite = False # If True, will overwrite existing files of same name
+
+
+    # Define path to grid 
+    grid_path = os.path.expanduser(output_prefix) + 'grid_copy.pkl'
+    grid = pd.read_pickle(grid_path)
+    #grid_path = '~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/gridface_s2tiles_CH.shp'
+    #grid = gpd.read_file(grid_path)
+    if 'selected' not in grid.columns:
+        grid['selected'] = [False]*len(grid)
+    if 'years_done' not in grid.columns:
+        grid['years_done'] = [None]*len(grid)
+    grid_copy = grid.copy()
+
+    
+    
+    specs = {
+        "lon_lat": (None, None), # center pixel
+        "xy_shape": (None, None), # width, height of cutout around center pixel
+        "resolution": 10, # in meters.. will use this on a local UTM grid..
+        "time_interval": "2021-01-01/2021-03-31",
+        "final_epsg": 32632,
+        "providers": [
+            {
+                "name": "s2",
+                "kwargs": {
+                    "bands": ["AOT", "B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B8A", "B09", "B11", "B12", "WVP"], 
+                    "brdf_correction": True, 
+                    "cloud_mask": False, 
+                    "data_source": "planetary_computer"}
+            }
+            ]
+    }
+
+    
+    grid_copy = run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrite, specs)
         
 
-        # Check that all patches were treated
-        any_false_selected = any(grid_copy['selected'] == False)
-        
-        if any_false_selected:
-                logger.warning("There are False values in the 'selected' column.")
-        else:
-            logger.info("All values in the 'selected' column are True.")
+    # Check that all patches were treated
+    any_false_selected = any(grid_copy['selected'] == False)
+    
+    if any_false_selected:
+        #logger.warning("There are False values in the 'selected' column.")
+        print("There are False values in the 'selected' column.")
+    else:
+        #logger.info("All values in the 'selected' column are True.")
+        print("All values in the 'selected' column are True.")
 
 
-
-    except Exception as e:
-        logger.error(f'Error occurred: {e}')
-    finally:
-        logger.info('Script finished')
