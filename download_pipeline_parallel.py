@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 import sys
-import logging
 
 base_dir = Path(os.path.dirname(os.path.realpath("__file__"))).parent
 sys.path.insert(0, str(base_dir))
@@ -18,6 +17,8 @@ import zarr
 import pickle
 import time
 import datetime
+import concurrent.futures
+
 
 
 def create_max_square(patch, grid, num_cells, patch_size, epsg=4326):
@@ -128,29 +129,30 @@ def save_cube(cube, n_cells, output_prefix, patch_size=128, resolution=10, overw
                 print('Saved patch', output_path) # save_end-save_start
     return
 
-def setup_logging():
-    logging.basicConfig(filename='download_test.log', level=logging.INFO,
-                        format='%(asctime)s - %(levelname)s - %(message)s')
-    logger = logging.getLogger()
+def download_year(year, specs, n_cells, output_prefix, overwrite, mega_patch):
+    """
+    Download data for a specific year and save to zarr
 
-    # Add a handler to redirect stdout and stderr to the logger
-    class StreamToLogger:
-        def __init__(self, logger, log_level):
-            self.logger = logger
-            self.log_level = log_level
-            self.linebuf = ''
+    :param year: Year to download data for
+    :param specs: Dictionary with download specifications
+    :param n_cells: Number of cells in the patch
+    :param output_prefix: Path to save zarr stores
+    :param overwrite: If True, will overwrite existing zarr stores
+    :param mega_patch: geometries to download
+    """
 
-        def write(self, buf):
-            for line in buf.rstrip().splitlines():
-                self.logger.log(self.log_level, line.rstrip())
+    if grid_copy.loc[mega_patch.index, 'years_done'].isnull().any() or \
+            not any(year in sublist for sublist in grid_copy.loc[mega_patch.index, 'years_done']):
+        
+        print(f"{datetime.datetime.now()}: Downloading year {year}")
+        specs["time_interval"] = f"{year}-01-01/{year}-12-31"
+        # Call minicuber
+        cube = emc.load_minicube(specs, compute=True, verbose=True)
+        
+        # Call a function to rechunk, slice data based on mega-patch, compress, save to zarr
+        save_cube(cube, n_cells, output_prefix=output_prefix, overwrite=overwrite)
 
-    stdout_logger = StreamToLogger(logging.getLogger('STDOUT'), logging.INFO)
-    sys.stdout = stdout_logger
-
-    stderr_logger = StreamToLogger(logging.getLogger('STDERR'), logging.ERROR)
-    sys.stderr = stderr_logger
-
-    return logger
+    return year
 
 def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrite, specs):
         """
@@ -169,7 +171,6 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
         # Start download
         for i, row in grid.iterrows():
             if not grid_copy.loc[i, 'selected']:
-                #logger.info(f"----Downloading patch {i}/{len(grid)}----")
                 print(f"{datetime.datetime.now()}----Downloading patch {i}/{len(grid)}----")
                 
                 # Add surrounding patches to create up to num_cells x num_cells mega-patch (use patch as upper left corner)
@@ -181,25 +182,19 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
                 specs["lon_lat"] = (patch.bounds[0], patch.bounds[-1]) # upper left corner
                 specs["xy_shape"] = (int(patch_size*(n_cells+1)/specs["resolution"]), int(patch_size*(n_cells+1)/specs["resolution"]))
                 
-                for year in range(2017, 2024): # Doesn't include 2024
+                with concurrent.futures.ThreadPoolExecutor() as executor:
+                    futures = [executor.submit(download_year, year, specs, n_cells, output_prefix, overwrite, mega_patch) for year in range(2017, 2024)]
 
-                    # Check if year has already been downloaded
-                    if grid_copy.loc[mega_patch.index, 'years_done'].isnull().any() or \
-                        not any(year in sublist for sublist in grid_copy.loc[mega_patch.index, 'years_done']):
-            
-                        #logger.info(f"Downloading year {year}")
-                        print(f"{datetime.datetime.now()}: Downloading year {year}")
-                        specs["time_interval"] = f"{year}-01-01/{year}-12-31"
-                        # Call minicuber
-                        cube = emc.load_minicube(specs, compute = True, verbose=True)
-                        
-                        # Call a function to rechunk, slice data based on mega-patch, compress, save to zarr
-                        save_cube(cube, n_cells, output_prefix=output_prefix, overwrite=overwrite)
+                    successful_years = []
+                    for future in concurrent.futures.as_completed(futures):
+                        year = future.result() 
+                        if year:
+                            successful_years.append(year)
 
-                        # Save the years already queried
-                        grid_copy.loc[mega_patch.index, 'years_done'] = grid_copy.loc[mega_patch.index, 'years_done'].apply(\
-                            lambda x: [year] if x is None else x + [year])
-                        grid_copy.to_pickle(output_prefix + 'grid_copy.pkl')
+                    # Save the years already queried
+                    grid_copy.loc[mega_patch.index, 'years_done'] = grid_copy.loc[mega_patch.index, 'years_done'].apply(\
+                        lambda x: successful_years if x is None else x + successful_years)
+                    grid_copy.to_pickle(output_prefix + 'grid_copy.pkl')
             
                 # Mark the selected cells
                 grid_copy.loc[mega_patch.index, 'selected'] = True
@@ -210,10 +205,6 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
 
 
 if __name__ == "__main__":
-
-    #logger = setup_logging()
-    #logger.info('STARTING DOWNLOAD SCRIPT')
-
 
     # Define download parameters
     patch_size = 1280 # meters
@@ -261,10 +252,8 @@ if __name__ == "__main__":
     any_false_selected = any(grid_copy['selected'] == False)
     
     if any_false_selected:
-        #logger.warning("There are False values in the 'selected' column.")
         print("There are False values in the 'selected' column.")
     else:
-        #logger.info("All values in the 'selected' column are True.")
         print("All values in the 'selected' column are True.")
 
 
