@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 import sys
 
-base_dir = Path(os.path.dirname(os.path.realpath("__file__"))).parent
+base_dir = Path(os.path.dirname(os.path.realpath("__file__"))).parent.parent
 sys.path.insert(0, str(base_dir))
 import earthnet_minicuber as emc
 
@@ -18,6 +18,7 @@ import pickle
 import time
 import datetime
 import concurrent.futures
+import threading
 
 
 
@@ -118,7 +119,7 @@ def save_cube(cube, n_cells, output_prefix, patch_size=128, resolution=10, overw
             
             # Slice the cube
             patch_cube = cube.sel(lat=slice(lat_start, lat_end), lon=slice(lon_start, lon_end))
-            patch_cube = patch_cube.chunk({'time': -1, 'lat': -1, 'lon': -1}) # len(patch_cube.lon)/2
+            patch_cube = patch_cube.chunk({'time': -1, 'lat': -1, 'lon': len(patch_cube.lon)/2}) 
             
             # Define the output path for the Zarr store
             output_path = output_prefix + f'S2_{int(lon_start)}_{int(lat_start)}_{year_start}{month_start}{day_start}_{year_end}{month_end}{day_end}.zarr'
@@ -140,19 +141,23 @@ def download_year(year, specs, n_cells, output_prefix, overwrite, mega_patch):
     :param overwrite: If True, will overwrite existing zarr stores
     :param mega_patch: geometries to download
     """
+    try:
+        if grid_copy.loc[mega_patch.index, 'years_done'].isnull().any() or \
+                not any(year in sublist for sublist in grid_copy.loc[mega_patch.index, 'years_done']):
+            
+            print(f"{datetime.datetime.now()}: Downloading year {year}")
+            specs["time_interval"] = f"{year}-01-01/{year}-12-31"
+            # Call minicuber
+            cube = emc.load_minicube(specs, compute=True, verbose=True)
+            
+            # Call a function to rechunk, slice data based on mega-patch, compress, save to zarr
+            save_cube(cube, n_cells, output_prefix=output_prefix, overwrite=overwrite)
+            return year, True
+ 
+    except Exception as e:
+        print(f"An error occurred while downloading data for year {year}: {e}")
+        return year, False
 
-    if grid_copy.loc[mega_patch.index, 'years_done'].isnull().any() or \
-            not any(year in sublist for sublist in grid_copy.loc[mega_patch.index, 'years_done']):
-        
-        print(f"{datetime.datetime.now()}: Downloading year {year}")
-        specs["time_interval"] = f"{year}-01-01/{year}-12-31"
-        # Call minicuber
-        cube = emc.load_minicube(specs, compute=True, verbose=True)
-        
-        # Call a function to rechunk, slice data based on mega-patch, compress, save to zarr
-        save_cube(cube, n_cells, output_prefix=output_prefix, overwrite=overwrite)
-
-    return year
 
 def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrite, specs):
         """
@@ -167,9 +172,11 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
         :param specs: dictionary with download specifications
         :return grid_copy: updated grid_copy
         """
+        lock = threading.Lock()
 
         # Start download
-        for i, row in grid.iterrows():
+        start_index = 0 #len(grid) // 4  # Start from the middle row
+        for i, row in grid.iloc[start_index:].iterrows(): #for i, row in grid.iterrows():
             if not grid_copy.loc[i, 'selected']:
                 print(f"{datetime.datetime.now()}----Downloading patch {i}/{len(grid)}----")
                 
@@ -182,6 +189,8 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
                 specs["lon_lat"] = (patch.bounds[0], patch.bounds[-1]) # upper left corner
                 specs["xy_shape"] = (int(patch_size*(n_cells+1)/specs["resolution"]), int(patch_size*(n_cells+1)/specs["resolution"]))
                 
+                """ 
+                # Run in parallel, only save at the end that all years were done
                 with concurrent.futures.ThreadPoolExecutor() as executor:
                     futures = [executor.submit(download_year, year, specs, n_cells, output_prefix, overwrite, mega_patch) for year in range(2017, 2024)]
 
@@ -190,15 +199,52 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
                         year = future.result() 
                         if year:
                             successful_years.append(year)
+                """ 
+                
+                """
+                # Update grid for every year done
+                successful_years = []
 
-                    # Save the years already queried
-                    grid_copy.loc[mega_patch.index, 'years_done'] = grid_copy.loc[mega_patch.index, 'years_done'].apply(\
-                        lambda x: successful_years if x is None else x + successful_years)
-                    grid_copy.to_pickle(output_prefix + 'grid_copy.pkl')
-            
-                # Mark the selected cells
-                grid_copy.loc[mega_patch.index, 'selected'] = True
-                grid_copy.to_pickle(output_prefix + 'grid_copy.pkl')
+                with concurrent.futures.ThreadPoolExecutor() as executor:
+                    futures = [executor.submit(download_year, year, specs, n_cells, output_prefix, overwrite, mega_patch) for year in range(2017, 2024)]
+
+                    for future in concurrent.futures.as_completed(futures):
+                        try:
+                            year = future.result()
+                            if year:
+                                successful_years.append(year)
+                                with lock:
+                                    # Update grid_copy immediately after a year is successfully downloaded
+                                    grid_copy.loc[mega_patch.index, 'years_done'] = grid_copy.loc[mega_patch.index, 'years_done'].apply(
+                                        lambda x: successful_years if x is None else list(set(x + [year])))
+                                    grid_copy.to_pickle(output_prefix + 'grid_copy.pkl')
+                        except Exception as e:
+                            print(f"An error occurred while downloading data for year {year}: {e}")
+                """
+                
+                # Force all years to complete, in case of error
+                years_to_download = list(range(2017, 2024))
+                successful_years = []
+
+                while years_to_download:
+                    with concurrent.futures.ThreadPoolExecutor() as executor:
+                        futures = [executor.submit(download_year, year, specs, n_cells, output_prefix, overwrite, mega_patch) for year in years_to_download]
+                        results = [future.result() for future in concurrent.futures.as_completed(futures)]
+                        
+                    years_to_download = [year for year, success in results if not success]
+                    successful_years.extend([year for year, success in results if success])
+
+                    with lock:
+                        # Update grid_copy immediately after a year is successfully downloaded
+                        grid_copy.loc[mega_patch.index, 'years_done'] = grid_copy.loc[mega_patch.index, 'years_done'].apply(
+                            lambda x: successful_years if x is None else list(set(x + successful_years)))
+                        grid_copy.to_pickle(output_prefix + 'grid_copy.pkl')
+
+                
+                    # Mark the selected cells
+                    if len(successful_years) == 7:
+                        grid_copy.loc[mega_patch.index, 'selected'] = True
+                        grid_copy.to_pickle(output_prefix + 'grid_copy.pkl')
 
 
         return grid_copy
@@ -208,16 +254,16 @@ if __name__ == "__main__":
 
     # Define download parameters
     patch_size = 1280 # meters
-    num_cells = 5
+    num_cells = 8
     output_prefix = os.path.expanduser('~/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/')
     overwrite = False # If True, will overwrite existing files of same name
 
 
     # Define path to grid 
-    grid_path = os.path.expanduser(output_prefix) + 'grid_copy.pkl'
-    grid = pd.read_pickle(grid_path)
-    #grid_path = '~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/gridface_s2tiles_CH.shp'
-    #grid = gpd.read_file(grid_path)
+    #grid_path = os.path.expanduser(output_prefix) + 'grid_copy.pkl'
+    #grid = pd.read_pickle(grid_path)
+    grid_path = '~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/gridface_s2tiles_CH.shp'
+    grid = gpd.read_file(grid_path)
     if 'selected' not in grid.columns:
         grid['selected'] = [False]*len(grid)
     if 'years_done' not in grid.columns:
@@ -227,10 +273,10 @@ if __name__ == "__main__":
     
     
     specs = {
-        "lon_lat": (None, None), # center pixel
+        "lon_lat": (None, None), # topleft
         "xy_shape": (None, None), # width, height of cutout around center pixel
         "resolution": 10, # in meters.. will use this on a local UTM grid..
-        "time_interval": "2021-01-01/2021-03-31",
+        "time_interval": "2021-01-01/2021-12-31",
         "final_epsg": 32632,
         "providers": [
             {
@@ -238,7 +284,8 @@ if __name__ == "__main__":
                 "kwargs": {
                     "bands": ["AOT", "B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B8A", "B09", "B11", "B12", "WVP"], 
                     "brdf_correction": True, 
-                    "cloud_mask": False, 
+                    "cloud_mask": True, 
+                    "correct_processing_baseline": True,
                     "data_source": "planetary_computer"}
             }
             ]

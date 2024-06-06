@@ -1,0 +1,1582 @@
+2024-06-06 11:58:01.603316----Downloading patch 14578/29156----
+Adding 63 patches to download
+2024-06-06 11:58:01.650448: Downloading year 2017
+2024-06-06 11:58:01.651567: Downloading year 20182024-06-06 11:58:01.652380: Downloading year 2019
+
+2024-06-06 11:58:01.653065: Downloading year 20202024-06-06 11:58:01.653610: Downloading year 2021
+2024-06-06 11:58:01.654322: Downloading year 2022
+
+2024-06-06 11:58:01.655047: Downloading year 2023
+Loading Sentinel2 for 2019-01-01/2019-01-31
+Loading Sentinel2 for 2022-01-01/2022-01-31
+Loading Sentinel2 for 2021-01-01/2021-01-31
+Loading Sentinel2 for 2020-01-01/2020-01-31
+Loading Sentinel2 for 2017-01-01/2017-01-31
+Loading Sentinel2 for 2023-01-01/2023-01-31
+Loading Sentinel2 for 2018-01-01/2018-01-31
+Downloading for 2017-01-01/2017-01-31...
+Loading Sentinel2 for 2017-02-01/2017-02-28
+Downloading for 2017-02-01/2017-02-28...
+Loading Sentinel2 for 2017-03-01/2017-03-31
+Downloading for 2023-01-01/2023-01-31...
+Loading Sentinel2 for 2023-02-01/2023-02-28
+Downloading for 2018-01-01/2018-01-31...
+Loading Sentinel2 for 2018-02-01/2018-02-28
+Downloading for 2019-01-01/2019-01-31...
+Loading Sentinel2 for 2019-02-01/2019-02-28
+Downloading for 2020-01-01/2020-01-31...
+Loading Sentinel2 for 2020-02-01/2020-02-29
+Downloading for 2021-01-01/2021-01-31...
+Loading Sentinel2 for 2021-02-01/2021-02-28
+Downloading for 2022-01-01/2022-01-31...
+Loading Sentinel2 for 2022-02-01/2022-02-28
+Downloading for 2017-03-01/2017-03-31...
+Loading Sentinel2 for 2017-04-01/2017-04-30
+Downloading for 2023-02-01/2023-02-28...
+Loading Sentinel2 for 2023-03-01/2023-03-31
+Downloading for 2021-02-01/2021-02-28...
+Loading Sentinel2 for 2021-03-01/2021-03-31
+Downloading for 2017-04-01/2017-04-30...
+Loading Sentinel2 for 2017-05-01/2017-05-31
+Downloading for 2018-02-01/2018-02-28...
+Loading Sentinel2 for 2018-03-01/2018-03-31
+Downloading for 2019-02-01/2019-02-28...
+Loading Sentinel2 for 2019-03-01/2019-03-31
+Downloading for 2022-02-01/2022-02-28...
+Loading Sentinel2 for 2022-03-01/2022-03-31
+Downloading for 2020-02-01/2020-02-29...
+Loading Sentinel2 for 2020-03-01/2020-03-31
+Downloading for 2017-05-01/2017-05-31...
+Loading Sentinel2 for 2017-06-01/2017-06-30
+Downloading for 2023-03-01/2023-03-31...
+Loading Sentinel2 for 2023-04-01/2023-04-30
+Downloading for 2018-03-01/2018-03-31...
+Loading Sentinel2 for 2018-04-01/2018-04-30
+Downloading for 2021-03-01/2021-03-31...
+Loading Sentinel2 for 2021-04-01/2021-04-30
+Downloading for 2017-06-01/2017-06-30...
+Loading Sentinel2 for 2017-07-01/2017-07-31
+Downloading for 2019-03-01/2019-03-31...
+Loading Sentinel2 for 2019-04-01/2019-04-30
+Downloading for 2022-03-01/2022-03-31...
+Loading Sentinel2 for 2022-04-01/2022-04-30
+Downloading for 2020-03-01/2020-03-31...
+Loading Sentinel2 for 2020-04-01/2020-04-30
+Downloading for 2023-04-01/2023-04-30...
+Loading Sentinel2 for 2023-05-01/2023-05-31
+Downloading for 2021-04-01/2021-04-30...
+Loading Sentinel2 for 2021-05-01/2021-05-31
+Downloading for 2018-04-01/2018-04-30...
+Loading Sentinel2 for 2018-05-01/2018-05-31
+Downloading for 2020-04-01/2020-04-30...
+Loading Sentinel2 for 2020-05-01/2020-05-31
+Downloading for 2022-04-01/2022-04-30...
+Loading Sentinel2 for 2022-05-01/2022-05-31
+Downloading for 2019-04-01/2019-04-30...
+Loading Sentinel2 for 2019-05-01/2019-05-31
+Downloading for 2017-07-01/2017-07-31...
+Loading Sentinel2 for 2017-08-01/2017-08-31
+Downloading for 2023-05-01/2023-05-31...
+Loading Sentinel2 for 2023-06-01/2023-06-30
+Downloading for 2021-05-01/2021-05-31...
+Downloading for 2018-05-01/2018-05-31...Loading Sentinel2 for 2021-06-01/2021-06-30
+Loading Sentinel2 for 2018-06-01/2018-06-30
+
+Downloading for 2019-05-01/2019-05-31...
+Loading Sentinel2 for 2019-06-01/2019-06-30
+Downloading for 2017-08-01/2017-08-31...
+Loading Sentinel2 for 2017-09-01/2017-09-30
+Downloading for 2020-05-01/2020-05-31...
+Loading Sentinel2 for 2020-06-01/2020-06-30
+Downloading for 2022-05-01/2022-05-31...
+Loading Sentinel2 for 2022-06-01/2022-06-30
+Downloading for 2023-06-01/2023-06-30...
+Loading Sentinel2 for 2023-07-01/2023-07-31
+Downloading for 2021-06-01/2021-06-30...
+Loading Sentinel2 for 2021-07-01/2021-07-31
+Downloading for 2018-06-01/2018-06-30...
+Loading Sentinel2 for 2018-07-01/2018-07-31
+Downloading for 2017-09-01/2017-09-30...
+Loading Sentinel2 for 2017-10-01/2017-10-31
+Downloading for 2019-06-01/2019-06-30...
+Loading Sentinel2 for 2019-07-01/2019-07-31
+Downloading for 2022-06-01/2022-06-30...
+Loading Sentinel2 for 2022-07-01/2022-07-31
+Downloading for 2020-06-01/2020-06-30...
+Loading Sentinel2 for 2020-07-01/2020-07-31
+Downloading for 2021-07-01/2021-07-31...
+Loading Sentinel2 for 2021-08-01/2021-08-31
+Downloading for 2023-07-01/2023-07-31...
+Loading Sentinel2 for 2023-08-01/2023-08-31
+Downloading for 2018-07-01/2018-07-31...
+Loading Sentinel2 for 2018-08-01/2018-08-31
+Downloading for 2017-10-01/2017-10-31...
+Loading Sentinel2 for 2017-11-01/2017-11-30
+Downloading for 2020-07-01/2020-07-31...
+Loading Sentinel2 for 2020-08-01/2020-08-31
+Downloading for 2019-07-01/2019-07-31...
+Loading Sentinel2 for 2019-08-01/2019-08-31
+Downloading for 2022-07-01/2022-07-31...
+Loading Sentinel2 for 2022-08-01/2022-08-31
+Downloading for 2021-08-01/2021-08-31...
+Loading Sentinel2 for 2021-09-01/2021-09-30
+Downloading for 2023-08-01/2023-08-31...
+Loading Sentinel2 for 2023-09-01/2023-09-30
+Downloading for 2018-08-01/2018-08-31...
+Loading Sentinel2 for 2018-09-01/2018-09-30
+Downloading for 2017-11-01/2017-11-30...
+Loading Sentinel2 for 2017-12-01/2017-12-31
+Downloading for 2019-08-01/2019-08-31...
+Loading Sentinel2 for 2019-09-01/2019-09-30
+Downloading for 2022-08-01/2022-08-31...
+Loading Sentinel2 for 2022-09-01/2022-09-30
+Downloading for 2020-08-01/2020-08-31...
+Loading Sentinel2 for 2020-09-01/2020-09-30
+Downloading for 2021-09-01/2021-09-30...
+Loading Sentinel2 for 2021-10-01/2021-10-31
+Downloading for 2023-09-01/2023-09-30...
+Loading Sentinel2 for 2023-10-01/2023-10-31
+Downloading for 2021-10-01/2021-10-31...
+Loading Sentinel2 for 2021-11-01/2021-11-30
+Downloading for 2018-09-01/2018-09-30...
+Loading Sentinel2 for 2018-10-01/2018-10-31
+Downloading for 2017-12-01/2017-12-31...
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5236140_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5236140_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5236140_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5236140_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5236140_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5236140_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5236140_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5236140_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5234860_20170107_20171231.zarr
+Downloading for 2019-09-01/2019-09-30...
+Loading Sentinel2 for 2019-10-01/2019-10-31
+Downloading for 2022-09-01/2022-09-30...
+Loading Sentinel2 for 2022-10-01/2022-10-31
+Downloading for 2020-09-01/2020-09-30...
+Loading Sentinel2 for 2020-10-01/2020-10-31
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5234860_20170107_20171231.zarr
+Downloading for 2023-10-01/2023-10-31...
+Loading Sentinel2 for 2023-11-01/2023-11-30
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5234860_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5234860_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5234860_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5234860_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5234860_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5234860_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5233580_20170107_20171231.zarr
+Downloading for 2021-11-01/2021-11-30...
+Loading Sentinel2 for 2021-12-01/2021-12-31
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5233580_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5233580_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5233580_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5233580_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5233580_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5233580_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5233580_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5232300_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5232300_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5232300_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5232300_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5232300_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5232300_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5232300_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5232300_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5231020_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5231020_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5231020_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5231020_20170107_20171231.zarr
+Downloading for 2018-10-01/2018-10-31...
+Loading Sentinel2 for 2018-11-01/2018-11-30
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5231020_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5231020_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5231020_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5231020_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5229740_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5229740_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5229740_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5229740_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5229740_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5229740_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5229740_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5229740_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5228460_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5228460_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5228460_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5228460_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5228460_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5228460_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5228460_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5228460_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5227180_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5227180_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5227180_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5227180_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5227180_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5227180_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5227180_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5227180_20170107_20171231.zarr
+Downloading for 2019-10-01/2019-10-31...
+Loading Sentinel2 for 2019-11-01/2019-11-30
+Downloading for 2020-10-01/2020-10-31...
+Loading Sentinel2 for 2020-11-01/2020-11-30
+Downloading for 2023-11-01/2023-11-30...
+Loading Sentinel2 for 2023-12-01/2023-12-31
+Downloading for 2022-10-01/2022-10-31...
+Loading Sentinel2 for 2022-11-01/2022-11-30
+Downloading for 2018-11-01/2018-11-30...
+Loading Sentinel2 for 2018-12-01/2018-12-31
+Downloading for 2021-12-01/2021-12-31...
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5236140_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5236140_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5236140_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5236140_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5236140_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5236140_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5236140_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5236140_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5234860_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5234860_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5234860_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5234860_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5234860_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5234860_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5234860_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5234860_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5233580_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5233580_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5233580_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5233580_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5233580_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5233580_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5233580_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5233580_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5232300_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5232300_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5232300_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5232300_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5232300_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5232300_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5232300_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5232300_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5231020_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5231020_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5231020_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5231020_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5231020_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5231020_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5231020_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5231020_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5229740_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5229740_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5229740_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5229740_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5229740_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5229740_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5229740_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5229740_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5228460_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5228460_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5228460_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5228460_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5228460_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5228460_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5228460_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5228460_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5227180_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5227180_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5227180_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5227180_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5227180_20210101_20211230.zarr
+Downloading for 2019-11-01/2019-11-30...
+Loading Sentinel2 for 2019-12-01/2019-12-31
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5227180_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5227180_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5227180_20210101_20211230.zarr
+Downloading for 2022-11-01/2022-11-30...
+Loading Sentinel2 for 2022-12-01/2022-12-31
+Downloading for 2020-11-01/2020-11-30...
+Loading Sentinel2 for 2020-12-01/2020-12-31
+Downloading for 2023-12-01/2023-12-31...
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5236140_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5236140_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5236140_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5236140_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5236140_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5236140_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5236140_20230101_20231230.zarr
+Downloading for 2018-12-01/2018-12-31...
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5236140_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5234860_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5234860_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5234860_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5236140_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5234860_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5236140_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5234860_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5236140_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5234860_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5236140_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5234860_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5236140_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5234860_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5236140_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5233580_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5236140_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5233580_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5236140_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5233580_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5234860_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5233580_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5234860_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5233580_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5234860_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5233580_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5234860_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5233580_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5234860_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5233580_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5234860_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5232300_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5234860_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5232300_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5234860_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5232300_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5233580_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5232300_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5233580_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5232300_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5233580_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5232300_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5233580_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5232300_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5233580_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5232300_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5233580_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5231020_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5233580_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5231020_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5233580_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5231020_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5232300_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5231020_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5232300_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5231020_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5232300_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5231020_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5232300_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5231020_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5232300_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5231020_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5232300_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5229740_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5232300_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5229740_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5232300_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5229740_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5231020_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5229740_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5231020_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5229740_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5231020_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5229740_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5231020_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5229740_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5231020_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5229740_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5231020_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5228460_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5231020_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5228460_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5231020_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5228460_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5229740_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5228460_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5229740_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5228460_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5229740_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5228460_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5229740_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5228460_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5229740_20180102_20181231.zarr
+Downloading for 2019-12-01/2019-12-31...
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5228460_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5229740_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5227180_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5229740_20180102_20181231.zarr
+Downloading for 2022-12-01/2022-12-31...
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5227180_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5236140_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5229740_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5227180_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5236140_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5228460_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5236140_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5227180_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5236140_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5228460_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5236140_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5227180_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5236140_20190102_20191231.zarr
+Downloading for 2020-12-01/2020-12-31...
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5228460_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5236140_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5236140_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5227180_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5228460_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5236140_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5236140_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5227180_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5236140_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5228460_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5236140_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5236140_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5227180_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5236140_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5228460_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5236140_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5236140_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5236140_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5228460_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5236140_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5234860_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5236140_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5228460_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5236140_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5234860_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5236140_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5227180_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5234860_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5234860_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5236140_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5227180_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5234860_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5234860_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5236140_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5227180_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5234860_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5234860_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5236140_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5227180_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5234860_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5234860_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5227180_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5234860_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5234860_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5234860_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5227180_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5234860_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5234860_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5234860_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5227180_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5234860_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5234860_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5233580_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5227180_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5234860_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5234860_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5233580_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5234860_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5233580_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5233580_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5234860_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5233580_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5233580_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5234860_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5233580_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5233580_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5234860_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5233580_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5233580_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5233580_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5233580_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5233580_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5233580_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5233580_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5233580_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5233580_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5233580_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5232300_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5233580_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5233580_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5232300_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5233580_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5232300_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5232300_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5233580_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5232300_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5232300_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5233580_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5232300_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5232300_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5233580_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5232300_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5232300_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5232300_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5232300_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5232300_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5232300_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5232300_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5232300_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5232300_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5232300_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5231020_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5232300_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5232300_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5231020_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5232300_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5231020_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5231020_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5232300_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5231020_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5231020_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5232300_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5231020_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5231020_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5232300_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5231020_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5231020_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5231020_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5231020_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5231020_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5231020_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5231020_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5231020_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5231020_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5231020_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5229740_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5231020_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5231020_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5229740_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5231020_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5229740_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5229740_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5231020_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5229740_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5229740_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5231020_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5229740_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5229740_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5231020_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5229740_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5229740_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5229740_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5229740_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5229740_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5229740_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5229740_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5229740_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5229740_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5229740_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5228460_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5229740_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5229740_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5228460_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5229740_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5228460_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5228460_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5229740_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5228460_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5228460_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5229740_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5228460_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5228460_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5229740_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5228460_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5228460_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5228460_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5228460_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5228460_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5228460_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5228460_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5228460_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5228460_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5228460_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5227180_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5228460_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5228460_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5227180_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5228460_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5227180_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5227180_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5228460_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5227180_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5227180_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5228460_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5227180_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5227180_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5228460_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5227180_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5227180_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5227180_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5227180_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5227180_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5227180_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5227180_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5227180_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5227180_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5227180_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5227180_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5227180_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5227180_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5227180_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5227180_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5227180_20200102_20201230.zarr
+2024-06-06 12:32:13.667155----Downloading patch 14587/29156----
+Adding 63 patches to download
+2024-06-06 12:32:13.705256: Downloading year 2017
+2024-06-06 12:32:13.706059: Downloading year 20182024-06-06 12:32:13.706513: Downloading year 2019
+
+2024-06-06 12:32:13.707057: Downloading year 2020
+2024-06-06 12:32:13.708556: Downloading year 2021
+2024-06-06 12:32:13.709513: Downloading year 2022
+2024-06-06 12:32:13.710513: Downloading year 2023
+Loading Sentinel2 for 2018-01-01/2018-01-31
+Loading Sentinel2 for 2019-01-01/2019-01-31
+Loading Sentinel2 for 2017-01-01/2017-01-31
+Loading Sentinel2 for 2020-01-01/2020-01-31
+Loading Sentinel2 for 2023-01-01/2023-01-31
+Loading Sentinel2 for 2022-01-01/2022-01-31
+Loading Sentinel2 for 2021-01-01/2021-01-31
+Downloading for 2017-01-01/2017-01-31...
+Loading Sentinel2 for 2017-02-01/2017-02-28
+Downloading for 2017-02-01/2017-02-28...
+Loading Sentinel2 for 2017-03-01/2017-03-31
+Downloading for 2023-01-01/2023-01-31...
+Loading Sentinel2 for 2023-02-01/2023-02-28
+Downloading for 2018-01-01/2018-01-31...
+Loading Sentinel2 for 2018-02-01/2018-02-28
+Downloading for 2020-01-01/2020-01-31...
+Loading Sentinel2 for 2020-02-01/2020-02-29
+Downloading for 2022-01-01/2022-01-31...
+Loading Sentinel2 for 2022-02-01/2022-02-28
+Downloading for 2019-01-01/2019-01-31...
+Loading Sentinel2 for 2019-02-01/2019-02-28
+Downloading for 2017-03-01/2017-03-31...
+Loading Sentinel2 for 2017-04-01/2017-04-30
+Downloading for 2021-01-01/2021-01-31...
+Loading Sentinel2 for 2021-02-01/2021-02-28
+Downloading for 2023-02-01/2023-02-28...
+Loading Sentinel2 for 2023-03-01/2023-03-31
+Downloading for 2017-04-01/2017-04-30...
+Loading Sentinel2 for 2017-05-01/2017-05-31
+Downloading for 2018-02-01/2018-02-28...
+Loading Sentinel2 for 2018-03-01/2018-03-31
+Downloading for 2017-05-01/2017-05-31...
+Loading Sentinel2 for 2017-06-01/2017-06-30
+Downloading for 2021-02-01/2021-02-28...
+Loading Sentinel2 for 2021-03-01/2021-03-31
+Downloading for 2022-02-01/2022-02-28...
+Loading Sentinel2 for 2022-03-01/2022-03-31
+Downloading for 2020-02-01/2020-02-29...
+Loading Sentinel2 for 2020-03-01/2020-03-31
+Downloading for 2019-02-01/2019-02-28...
+Loading Sentinel2 for 2019-03-01/2019-03-31
+Downloading for 2023-03-01/2023-03-31...
+Loading Sentinel2 for 2023-04-01/2023-04-30
+Downloading for 2017-06-01/2017-06-30...
+Loading Sentinel2 for 2017-07-01/2017-07-31
+Downloading for 2018-03-01/2018-03-31...
+Loading Sentinel2 for 2018-04-01/2018-04-30
+Downloading for 2021-03-01/2021-03-31...
+Loading Sentinel2 for 2021-04-01/2021-04-30
+Downloading for 2022-03-01/2022-03-31...
+Loading Sentinel2 for 2022-04-01/2022-04-30
+Downloading for 2020-03-01/2020-03-31...
+Loading Sentinel2 for 2020-04-01/2020-04-30
+Downloading for 2023-04-01/2023-04-30...
+Loading Sentinel2 for 2023-05-01/2023-05-31
+Downloading for 2019-03-01/2019-03-31...
+Loading Sentinel2 for 2019-04-01/2019-04-30
+Downloading for 2017-07-01/2017-07-31...
+Loading Sentinel2 for 2017-08-01/2017-08-31
+Downloading for 2018-04-01/2018-04-30...
+Loading Sentinel2 for 2018-05-01/2018-05-31
+An error occurred while downloading data for year 2017: Unexpected shape (1186, 1186), expected exactly 1 band.
+An error occurred while downloading data for year 2018: Unexpected shape (1186, 1186), expected exactly 1 band.
+An error occurred while downloading data for year 2019: Unexpected shape (1186, 1186), expected exactly 1 band.
+Downloading for 2021-04-01/2021-04-30...
+Loading Sentinel2 for 2021-05-01/2021-05-31
+Downloading for 2022-04-01/2022-04-30...
+Loading Sentinel2 for 2022-05-01/2022-05-31
+An error occurred while downloading data for year 2020: 'n1:Level-2A_Tile_ID'
+An error occurred while downloading data for year 2023: 'n1:Level-2A_Tile_ID'
+Downloading for 2021-05-01/2021-05-31...
+Loading Sentinel2 for 2021-06-01/2021-06-30
+Downloading for 2022-05-01/2022-05-31...
+Loading Sentinel2 for 2022-06-01/2022-06-30
+Downloading for 2021-06-01/2021-06-30...
+Loading Sentinel2 for 2021-07-01/2021-07-31
+Downloading for 2022-06-01/2022-06-30...
+Loading Sentinel2 for 2022-07-01/2022-07-31
+Downloading for 2021-07-01/2021-07-31...
+Loading Sentinel2 for 2021-08-01/2021-08-31
+Downloading for 2022-07-01/2022-07-31...
+Loading Sentinel2 for 2022-08-01/2022-08-31
+Downloading for 2021-08-01/2021-08-31...
+Loading Sentinel2 for 2021-09-01/2021-09-30
+Downloading for 2022-08-01/2022-08-31...
+Loading Sentinel2 for 2022-09-01/2022-09-30
+Downloading for 2022-09-01/2022-09-30...
+Loading Sentinel2 for 2022-10-01/2022-10-31
+Downloading for 2021-09-01/2021-09-30...
+Loading Sentinel2 for 2021-10-01/2021-10-31
+Downloading for 2021-10-01/2021-10-31...
+Loading Sentinel2 for 2021-11-01/2021-11-30
+Downloading for 2022-10-01/2022-10-31...
+Loading Sentinel2 for 2022-11-01/2022-11-30
+Downloading for 2021-11-01/2021-11-30...
+Loading Sentinel2 for 2021-12-01/2021-12-31
+Downloading for 2022-11-01/2022-11-30...
+Loading Sentinel2 for 2022-12-01/2022-12-31
+Downloading for 2021-12-01/2021-12-31...
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5224620_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5224620_20210101_20211230.zarr
+Downloading for 2022-12-01/2022-12-31...
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5224620_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5224620_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5224620_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5224620_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5224620_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5224620_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5224620_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5224620_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5224620_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5224620_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5223340_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5224620_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5223340_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5224620_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5223340_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5224620_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5223340_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5224620_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5223340_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5223340_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5223340_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5223340_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5223340_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5223340_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5223340_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5223340_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5222060_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5223340_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5222060_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5223340_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5222060_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5223340_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5222060_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5223340_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5222060_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5222060_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5222060_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5222060_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5222060_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5222060_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5222060_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5222060_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5220780_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5222060_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5220780_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5222060_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5220780_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5222060_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5220780_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5222060_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5220780_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5220780_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5220780_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5220780_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5220780_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5220780_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5220780_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5220780_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5219500_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5220780_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5219500_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5220780_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5219500_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5220780_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5219500_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5220780_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5219500_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5219500_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5219500_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5219500_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5219500_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5219500_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5219500_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5219500_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5218220_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5219500_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5218220_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5219500_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5218220_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5219500_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5218220_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5219500_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5218220_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5218220_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5218220_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5218220_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5218220_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5218220_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5218220_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5218220_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5216940_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5218220_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5216940_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5218220_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5216940_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5218220_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5216940_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5218220_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5216940_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5216940_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5216940_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5216940_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5216940_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5216940_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5216940_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5216940_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5215660_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5216940_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5215660_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5216940_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5215660_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5216940_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5215660_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5216940_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5215660_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5215660_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5215660_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5215660_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5215660_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5215660_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5215660_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5215660_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5215660_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5215660_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5215660_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5215660_20220101_20221230.zarr
+2024-06-06 12:53:53.392094: Downloading year 2017
+2024-06-06 12:53:53.393087: Downloading year 2018
+2024-06-06 12:53:53.393942: Downloading year 2019
+2024-06-06 12:53:53.394884: Downloading year 20202024-06-06 12:53:53.395749: Downloading year 2023
+
+Loading Sentinel2 for 2023-01-01/2023-01-31
+Loading Sentinel2 for 2020-01-01/2020-01-31
+Loading Sentinel2 for 2018-01-01/2018-01-31
+Loading Sentinel2 for 2017-01-01/2017-01-31
+Loading Sentinel2 for 2019-01-01/2019-01-31
+Downloading for 2017-01-01/2017-01-31...
+Loading Sentinel2 for 2017-02-01/2017-02-28
+Downloading for 2017-02-01/2017-02-28...
+Loading Sentinel2 for 2017-03-01/2017-03-31
+Downloading for 2023-01-01/2023-01-31...
+Loading Sentinel2 for 2023-02-01/2023-02-28
+Downloading for 2018-01-01/2018-01-31...
+Loading Sentinel2 for 2018-02-01/2018-02-28
+Downloading for 2019-01-01/2019-01-31...
+Loading Sentinel2 for 2019-02-01/2019-02-28
+Downloading for 2020-01-01/2020-01-31...
+Loading Sentinel2 for 2020-02-01/2020-02-29
+Downloading for 2017-03-01/2017-03-31...
+Loading Sentinel2 for 2017-04-01/2017-04-30
+Downloading for 2023-02-01/2023-02-28...
+Loading Sentinel2 for 2023-03-01/2023-03-31
+Downloading for 2017-04-01/2017-04-30...
+Loading Sentinel2 for 2017-05-01/2017-05-31
+Downloading for 2018-02-01/2018-02-28...
+Loading Sentinel2 for 2018-03-01/2018-03-31
+Downloading for 2019-02-01/2019-02-28...
+Loading Sentinel2 for 2019-03-01/2019-03-31
+Downloading for 2017-05-01/2017-05-31...
+Loading Sentinel2 for 2017-06-01/2017-06-30
+Downloading for 2020-02-01/2020-02-29...
+Loading Sentinel2 for 2020-03-01/2020-03-31
+Downloading for 2023-03-01/2023-03-31...
+Loading Sentinel2 for 2023-04-01/2023-04-30
+Downloading for 2017-06-01/2017-06-30...
+Loading Sentinel2 for 2017-07-01/2017-07-31
+Downloading for 2018-03-01/2018-03-31...
+Loading Sentinel2 for 2018-04-01/2018-04-30
+Downloading for 2019-03-01/2019-03-31...
+Loading Sentinel2 for 2019-04-01/2019-04-30
+Downloading for 2020-03-01/2020-03-31...
+Loading Sentinel2 for 2020-04-01/2020-04-30
+Downloading for 2023-04-01/2023-04-30...
+Loading Sentinel2 for 2023-05-01/2023-05-31
+Downloading for 2017-07-01/2017-07-31...
+Loading Sentinel2 for 2017-08-01/2017-08-31
+Downloading for 2018-04-01/2018-04-30...
+Loading Sentinel2 for 2018-05-01/2018-05-31
+Downloading for 2019-04-01/2019-04-30...
+Loading Sentinel2 for 2019-05-01/2019-05-31
+Downloading for 2017-08-01/2017-08-31...
+Loading Sentinel2 for 2017-09-01/2017-09-30
+Downloading for 2020-04-01/2020-04-30...
+Loading Sentinel2 for 2020-05-01/2020-05-31
+Downloading for 2023-05-01/2023-05-31...
+Loading Sentinel2 for 2023-06-01/2023-06-30
+Downloading for 2018-05-01/2018-05-31...
+Loading Sentinel2 for 2018-06-01/2018-06-30
+Downloading for 2019-05-01/2019-05-31...
+Loading Sentinel2 for 2019-06-01/2019-06-30
+Downloading for 2017-09-01/2017-09-30...
+Loading Sentinel2 for 2017-10-01/2017-10-31
+Downloading for 2023-06-01/2023-06-30...
+Loading Sentinel2 for 2023-07-01/2023-07-31
+Downloading for 2020-05-01/2020-05-31...
+Loading Sentinel2 for 2020-06-01/2020-06-30
+Downloading for 2018-06-01/2018-06-30...
+Loading Sentinel2 for 2018-07-01/2018-07-31
+Downloading for 2019-06-01/2019-06-30...
+Loading Sentinel2 for 2019-07-01/2019-07-31
+Downloading for 2017-10-01/2017-10-31...
+Loading Sentinel2 for 2017-11-01/2017-11-30
+Downloading for 2023-07-01/2023-07-31...
+Loading Sentinel2 for 2023-08-01/2023-08-31
+Downloading for 2020-06-01/2020-06-30...
+Loading Sentinel2 for 2020-07-01/2020-07-31
+Downloading for 2019-07-01/2019-07-31...
+Loading Sentinel2 for 2019-08-01/2019-08-31
+Downloading for 2018-07-01/2018-07-31...
+Loading Sentinel2 for 2018-08-01/2018-08-31
+Downloading for 2017-11-01/2017-11-30...
+Loading Sentinel2 for 2017-12-01/2017-12-31
+Downloading for 2023-08-01/2023-08-31...
+Loading Sentinel2 for 2023-09-01/2023-09-30
+Downloading for 2020-07-01/2020-07-31...
+Loading Sentinel2 for 2020-08-01/2020-08-31
+Downloading for 2019-08-01/2019-08-31...
+Loading Sentinel2 for 2019-09-01/2019-09-30
+Downloading for 2018-08-01/2018-08-31...
+Loading Sentinel2 for 2018-09-01/2018-09-30
+Downloading for 2017-12-01/2017-12-31...
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5224620_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5224620_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5224620_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5224620_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5224620_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5224620_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5224620_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5224620_20170107_20171231.zarr
+Downloading for 2023-09-01/2023-09-30...
+Loading Sentinel2 for 2023-10-01/2023-10-31
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5223340_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5223340_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5223340_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5223340_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5223340_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5223340_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5223340_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5223340_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5222060_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5222060_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5222060_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5222060_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5222060_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5222060_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5222060_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5222060_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5220780_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5220780_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5220780_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5220780_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5220780_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5220780_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5220780_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5220780_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5219500_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5219500_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5219500_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5219500_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5219500_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5219500_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5219500_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5219500_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5218220_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5218220_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5218220_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5218220_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5218220_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5218220_20170107_20171231.zarr
+Downloading for 2020-08-01/2020-08-31...
+Loading Sentinel2 for 2020-09-01/2020-09-30
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5218220_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5218220_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5216940_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5216940_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5216940_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5216940_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5216940_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5216940_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5216940_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5216940_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5215660_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5215660_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5215660_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5215660_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5215660_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5215660_20170107_20171231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5215660_20170107_20171231.zarr
+Downloading for 2019-09-01/2019-09-30...
+Loading Sentinel2 for 2019-10-01/2019-10-31
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5215660_20170107_20171231.zarr
+Downloading for 2018-09-01/2018-09-30...
+Loading Sentinel2 for 2018-10-01/2018-10-31
+Downloading for 2023-10-01/2023-10-31...
+Loading Sentinel2 for 2023-11-01/2023-11-30
+Downloading for 2020-09-01/2020-09-30...
+Loading Sentinel2 for 2020-10-01/2020-10-31
+Downloading for 2019-10-01/2019-10-31...
+Loading Sentinel2 for 2019-11-01/2019-11-30
+Downloading for 2018-10-01/2018-10-31...
+Loading Sentinel2 for 2018-11-01/2018-11-30
+Downloading for 2023-11-01/2023-11-30...
+Loading Sentinel2 for 2023-12-01/2023-12-31
+Downloading for 2020-10-01/2020-10-31...
+Loading Sentinel2 for 2020-11-01/2020-11-30
+Downloading for 2018-11-01/2018-11-30...
+Loading Sentinel2 for 2018-12-01/2018-12-31
+Downloading for 2019-11-01/2019-11-30...
+Loading Sentinel2 for 2019-12-01/2019-12-31
+Downloading for 2020-11-01/2020-11-30...
+Loading Sentinel2 for 2020-12-01/2020-12-31
+Downloading for 2023-12-01/2023-12-31...
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5224620_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5224620_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5224620_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5224620_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5224620_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5224620_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5224620_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5224620_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5223340_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5223340_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5223340_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5223340_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5223340_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5223340_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5223340_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5223340_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5222060_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5222060_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5222060_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5222060_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5222060_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5222060_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5222060_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5222060_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5220780_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5220780_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5220780_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5220780_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5220780_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5220780_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5220780_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5220780_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5219500_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5219500_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5219500_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5219500_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5219500_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5219500_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5219500_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5219500_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5218220_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5218220_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5218220_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5218220_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5218220_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5218220_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5218220_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5218220_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5216940_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5216940_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5216940_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5216940_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5216940_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5216940_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5216940_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5216940_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5215660_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5215660_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5215660_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5215660_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5215660_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5215660_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5215660_20230101_20231230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5215660_20230101_20231230.zarr
+Downloading for 2018-12-01/2018-12-31...
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5224620_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5224620_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5224620_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5224620_20180102_20181231.zarr
+Downloading for 2020-12-01/2020-12-31...
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5224620_20180102_20181231.zarr
+Downloading for 2019-12-01/2019-12-31...
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5224620_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5224620_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5224620_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5224620_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5224620_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5224620_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5223340_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5224620_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5223340_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5224620_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5224620_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5223340_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5224620_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5224620_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5223340_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5224620_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5224620_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5223340_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5224620_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5224620_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5223340_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5224620_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5224620_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5223340_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5224620_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5224620_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5223340_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5223340_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5223340_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5222060_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5223340_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5223340_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5222060_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5223340_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5223340_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5222060_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5223340_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5223340_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5222060_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5223340_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5223340_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5222060_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5223340_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5223340_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5222060_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5223340_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5223340_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5222060_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5223340_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5223340_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5222060_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5222060_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5222060_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5220780_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5222060_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5222060_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5220780_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5222060_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5222060_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5220780_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5222060_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5222060_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5220780_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5222060_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5222060_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5220780_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5222060_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5222060_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5220780_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5222060_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5222060_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5220780_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5222060_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5222060_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5220780_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5220780_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5220780_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5219500_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5220780_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5220780_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5219500_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5220780_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5220780_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5219500_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5220780_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5220780_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5219500_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5220780_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5220780_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5219500_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5220780_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5220780_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5219500_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5220780_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5220780_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5219500_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5220780_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5220780_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5219500_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5219500_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5219500_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5218220_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5219500_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5219500_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5218220_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5219500_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5219500_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5218220_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5219500_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5219500_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5218220_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5219500_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5219500_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5218220_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5219500_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5219500_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5218220_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5219500_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5219500_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5218220_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5219500_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5219500_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5218220_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5218220_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5218220_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5216940_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5218220_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5218220_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5216940_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5218220_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5218220_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5216940_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5218220_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5218220_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5216940_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5218220_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5218220_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5216940_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5218220_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5218220_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5216940_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5218220_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5218220_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5216940_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5218220_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5218220_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5216940_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5216940_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5216940_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5215660_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5216940_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5216940_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5215660_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5216940_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5216940_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5215660_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5216940_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5216940_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5215660_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5216940_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5216940_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5215660_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5216940_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5216940_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5215660_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5216940_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5216940_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5215660_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5216940_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5216940_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5215660_20180102_20181231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5215660_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5215660_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5215660_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5215660_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5215660_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5215660_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5215660_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5215660_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5215660_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5215660_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5215660_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5215660_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5215660_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5215660_20190102_20191231.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5215660_20200102_20201230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5215660_20190102_20191231.zarr
+2024-06-06 13:19:37.016680----Downloading patch 14596/29156----
+Adding 63 patches to download
+2024-06-06 13:19:37.047254: Downloading year 20172024-06-06 13:19:37.047647: Downloading year 20182024-06-06 13:19:37.047992: Downloading year 2019
+2024-06-06 13:19:37.048415: Downloading year 20202024-06-06 13:19:37.048743: Downloading year 2021
+2024-06-06 13:19:37.049080: Downloading year 20222024-06-06 13:19:37.049452: Downloading year 2023
+
+
+
+
+Loading Sentinel2 for 2022-01-01/2022-01-31
+Loading Sentinel2 for 2017-01-01/2017-01-31
+Loading Sentinel2 for 2018-01-01/2018-01-31
+Loading Sentinel2 for 2020-01-01/2020-01-31
+Loading Sentinel2 for 2023-01-01/2023-01-31
+Loading Sentinel2 for 2021-01-01/2021-01-31Loading Sentinel2 for 2019-01-01/2019-01-31
+
+Downloading for 2017-01-01/2017-01-31...
+Loading Sentinel2 for 2017-02-01/2017-02-28
+Downloading for 2017-02-01/2017-02-28...
+Loading Sentinel2 for 2017-03-01/2017-03-31
+Downloading for 2023-01-01/2023-01-31...
+Loading Sentinel2 for 2023-02-01/2023-02-28
+Downloading for 2018-01-01/2018-01-31...
+Loading Sentinel2 for 2018-02-01/2018-02-28
+Downloading for 2017-03-01/2017-03-31...
+Loading Sentinel2 for 2017-04-01/2017-04-30
+Downloading for 2020-01-01/2020-01-31...
+Loading Sentinel2 for 2020-02-01/2020-02-29
+Downloading for 2019-01-01/2019-01-31...
+Loading Sentinel2 for 2019-02-01/2019-02-28
+Downloading for 2022-01-01/2022-01-31...
+Loading Sentinel2 for 2022-02-01/2022-02-28
+Downloading for 2021-01-01/2021-01-31...
+Loading Sentinel2 for 2021-02-01/2021-02-28
+Downloading for 2023-02-01/2023-02-28...
+Loading Sentinel2 for 2023-03-01/2023-03-31
+Downloading for 2017-04-01/2017-04-30...
+Loading Sentinel2 for 2017-05-01/2017-05-31
+Downloading for 2018-02-01/2018-02-28...
+Loading Sentinel2 for 2018-03-01/2018-03-31
+Downloading for 2017-05-01/2017-05-31...
+Loading Sentinel2 for 2017-06-01/2017-06-30
+Downloading for 2021-02-01/2021-02-28...
+Loading Sentinel2 for 2021-03-01/2021-03-31
+Downloading for 2022-02-01/2022-02-28...
+Loading Sentinel2 for 2022-03-01/2022-03-31
+Downloading for 2019-02-01/2019-02-28...
+Loading Sentinel2 for 2019-03-01/2019-03-31
+Downloading for 2020-02-01/2020-02-29...
+Loading Sentinel2 for 2020-03-01/2020-03-31
+Downloading for 2023-03-01/2023-03-31...
+Loading Sentinel2 for 2023-04-01/2023-04-30
+Downloading for 2017-06-01/2017-06-30...
+Loading Sentinel2 for 2017-07-01/2017-07-31
+Downloading for 2018-03-01/2018-03-31...
+Loading Sentinel2 for 2018-04-01/2018-04-30
+Downloading for 2021-03-01/2021-03-31...
+Loading Sentinel2 for 2021-04-01/2021-04-30
+An error occurred while downloading data for year 2019: 'n1:Level-2A_Tile_ID'
+An error occurred while downloading data for year 2023: 'n1:Level-2A_Tile_ID'
+An error occurred while downloading data for year 2020: 'n1:Level-2A_Tile_ID'
+An error occurred while downloading data for year 2018: 'n1:Level-2A_Tile_ID'
+An error occurred while downloading data for year 2017: 'n1:Level-2A_Tile_ID'
+Downloading for 2022-03-01/2022-03-31...
+Loading Sentinel2 for 2022-04-01/2022-04-30
+Downloading for 2021-04-01/2021-04-30...
+Loading Sentinel2 for 2021-05-01/2021-05-31
+Downloading for 2022-04-01/2022-04-30...
+Loading Sentinel2 for 2022-05-01/2022-05-31
+Downloading for 2021-05-01/2021-05-31...
+Loading Sentinel2 for 2021-06-01/2021-06-30
+Downloading for 2022-05-01/2022-05-31...
+Loading Sentinel2 for 2022-06-01/2022-06-30
+Downloading for 2021-06-01/2021-06-30...
+Loading Sentinel2 for 2021-07-01/2021-07-31
+Downloading for 2022-06-01/2022-06-30...
+Loading Sentinel2 for 2022-07-01/2022-07-31
+Downloading for 2021-07-01/2021-07-31...
+Loading Sentinel2 for 2021-08-01/2021-08-31
+Downloading for 2022-07-01/2022-07-31...
+Loading Sentinel2 for 2022-08-01/2022-08-31
+Downloading for 2021-08-01/2021-08-31...
+Loading Sentinel2 for 2021-09-01/2021-09-30
+Downloading for 2022-08-01/2022-08-31...
+Loading Sentinel2 for 2022-09-01/2022-09-30
+Downloading for 2021-09-01/2021-09-30...
+Loading Sentinel2 for 2021-10-01/2021-10-31
+Downloading for 2021-10-01/2021-10-31...
+Loading Sentinel2 for 2021-11-01/2021-11-30
+Downloading for 2022-09-01/2022-09-30...
+Loading Sentinel2 for 2022-10-01/2022-10-31
+Downloading for 2021-11-01/2021-11-30...
+Loading Sentinel2 for 2021-12-01/2021-12-31
+Downloading for 2022-10-01/2022-10-31...
+Loading Sentinel2 for 2022-11-01/2022-11-30
+Downloading for 2022-11-01/2022-11-30...
+Loading Sentinel2 for 2022-12-01/2022-12-31
+Downloading for 2021-12-01/2021-12-31...
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5213100_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5213100_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5213100_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5213100_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5213100_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5213100_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5213100_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5213100_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5211820_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5211820_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5211820_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5211820_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5211820_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5211820_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5211820_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5211820_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5210540_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5210540_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5210540_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5210540_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5210540_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5210540_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5210540_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5210540_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5209260_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5209260_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5209260_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5209260_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5209260_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5209260_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5209260_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5209260_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5207980_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5207980_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5207980_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5207980_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5207980_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5207980_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5207980_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5207980_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5206700_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5206700_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5206700_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5206700_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5206700_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5206700_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5206700_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5206700_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5205420_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5205420_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5205420_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5205420_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5205420_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5205420_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5205420_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5205420_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5204140_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5204140_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5204140_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5204140_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5204140_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5204140_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5204140_20210101_20211230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5204140_20210101_20211230.zarr
+Downloading for 2022-12-01/2022-12-31...
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5213100_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5213100_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5213100_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5213100_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5213100_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5213100_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5213100_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5213100_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5211820_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5211820_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5211820_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5211820_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5211820_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5211820_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5211820_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5211820_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5210540_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5210540_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5210540_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5210540_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5210540_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5210540_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5210540_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5210540_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5209260_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5209260_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5209260_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5209260_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5209260_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5209260_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5209260_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5209260_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5207980_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5207980_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5207980_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5207980_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5207980_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5207980_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5207980_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5207980_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5206700_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5206700_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5206700_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5206700_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5206700_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5206700_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5206700_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5206700_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5205420_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5205420_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5205420_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5205420_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5205420_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5205420_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5205420_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5205420_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_440540_5204140_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_441820_5204140_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_443100_5204140_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_444380_5204140_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_445660_5204140_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_446940_5204140_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_448220_5204140_20220101_20221230.zarr
+Saved patch /home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_449500_5204140_20220101_20221230.zarr
+2024-06-06 13:37:26.660773: Downloading year 2019
+2024-06-06 13:37:26.661824: Downloading year 2023
+2024-06-06 13:37:26.662842: Downloading year 2020
+2024-06-06 13:37:26.663829: Downloading year 2018
+2024-06-06 13:37:26.665426: Downloading year 2017
+Loading Sentinel2 for 2019-01-01/2019-01-31
+Loading Sentinel2 for 2023-01-01/2023-01-31
+Loading Sentinel2 for 2020-01-01/2020-01-31
+Loading Sentinel2 for 2017-01-01/2017-01-31
+Loading Sentinel2 for 2018-01-01/2018-01-31
+Downloading for 2017-01-01/2017-01-31...
+Loading Sentinel2 for 2017-02-01/2017-02-28
+Downloading for 2017-02-01/2017-02-28...
+Loading Sentinel2 for 2017-03-01/2017-03-31
+Downloading for 2023-01-01/2023-01-31...
+Loading Sentinel2 for 2023-02-01/2023-02-28
+Downloading for 2018-01-01/2018-01-31...
+Loading Sentinel2 for 2018-02-01/2018-02-28
+Downloading for 2020-01-01/2020-01-31...
+Loading Sentinel2 for 2020-02-01/2020-02-29
+Downloading for 2019-01-01/2019-01-31...
+Loading Sentinel2 for 2019-02-01/2019-02-28
+Downloading for 2017-03-01/2017-03-31...
+Loading Sentinel2 for 2017-04-01/2017-04-30
+Downloading for 2017-04-01/2017-04-30...
+Loading Sentinel2 for 2017-05-01/2017-05-31
+Downloading for 2023-02-01/2023-02-28...
+Loading Sentinel2 for 2023-03-01/2023-03-31
+Downloading for 2017-05-01/2017-05-31...
+Loading Sentinel2 for 2017-06-01/2017-06-30
+Downloading for 2018-02-01/2018-02-28...
+Loading Sentinel2 for 2018-03-01/2018-03-31
+Downloading for 2019-02-01/2019-02-28...
+Loading Sentinel2 for 2019-03-01/2019-03-31
+Downloading for 2020-02-01/2020-02-29...
+Loading Sentinel2 for 2020-03-01/2020-03-31
+Downloading for 2017-06-01/2017-06-30...
+Loading Sentinel2 for 2017-07-01/2017-07-31
+Downloading for 2018-03-01/2018-03-31...
+Loading Sentinel2 for 2018-04-01/2018-04-30
+Downloading for 2023-03-01/2023-03-31...
+Loading Sentinel2 for 2023-04-01/2023-04-30
+Downloading for 2019-03-01/2019-03-31...
+Loading Sentinel2 for 2019-04-01/2019-04-30
+Downloading for 2020-03-01/2020-03-31...
+Loading Sentinel2 for 2020-04-01/2020-04-30
+Downloading for 2017-07-01/2017-07-31...
+Loading Sentinel2 for 2017-08-01/2017-08-31
