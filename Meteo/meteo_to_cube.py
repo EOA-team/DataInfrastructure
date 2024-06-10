@@ -87,6 +87,7 @@ def slice_and_save(ds, grid, datavar, output_prefix, compressor, overwrite):
   """
 
   for i, row in grid.iterrows(): 
+        print(f'Processing grid patch {i}/{len(grid)}')
         patch = row.geometry
         minx, miny, maxx, maxy = patch.bounds
         lon_lat_grid = [np.arange(minx, maxx, 10), np.arange(miny, maxy, 10)] # make sure that last upper left corner is produced
@@ -120,6 +121,8 @@ def slice_and_save(ds, grid, datavar, output_prefix, compressor, overwrite):
 
 
 if __name__ == "__main__":
+
+  print('STARTING METEO FILES PROCESSING')
     
   #####################
   # DEFINE PATHS AND VARIABLES
@@ -138,14 +141,14 @@ if __name__ == "__main__":
 
   #####################
   # PROCESS FILES
-  
-  for data_file in data_files:
+
+  for i, data_file in enumerate(data_files):
+    print(f'-------Processing file {i}/{len(data_files)}-----------')
 
     datavar, _, datestart, _ = data_file.split("_") #varRes_gridtype_date.nc
 
     # Only process daily data
     if datavar.endswith('D'):
-      print(data_file)
       ds = xr.open_dataset(os.path.join(data_path, data_file), decode_times=False) 
 
       # Fix time coordinate: get year and create monthly or daily or yearly timeseries
