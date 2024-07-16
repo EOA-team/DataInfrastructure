@@ -19,6 +19,7 @@ import time
 import datetime
 import concurrent.futures
 import threading
+import gc
 
 
 def extract_minx_maxy(file):
@@ -180,7 +181,7 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
         lock = threading.Lock()
 
         # Start download
-        start_index = 0 #len(grid) // 4  # Start from the middle row
+        start_index = 24000 #len(grid) // 4  # Start from the middle row
         for i, row in grid.iloc[start_index:].iterrows(): #for i, row in grid.iterrows():
             if not grid_copy.loc[i, 'selected']:
                 print(f"{datetime.datetime.now()}----Downloading patch {i}/{len(grid)}----")
@@ -217,6 +218,11 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
                     if len(successful_years) == 7:
                         grid_copy.loc[mega_patch.index, 'selected'] = True
                         grid_copy.to_pickle(output_prefix + 'grid_copy4.pkl')
+
+                # Clean up variables after each iteration
+                del mega_patch, years_to_download, successful_years
+                gc.collect()  # Explicitly call garbage collector to free up memory
+
 
 
         return grid_copy

@@ -152,7 +152,7 @@ def download_year(year, specs, n_cells, output_prefix, overwrite, mega_patch):
             
             # Call a function to rechunk, slice data based on mega-patch, compress, save to zarr
             save_cube(cube, n_cells, output_prefix=output_prefix, overwrite=overwrite)
-            return year, True
+        return year, True
  
     except Exception as e:
         print(f"An error occurred while downloading data for year {year}: {e}")
@@ -254,16 +254,16 @@ if __name__ == "__main__":
 
     # Define download parameters
     patch_size = 1280 # meters
-    num_cells = 8
+    num_cells = 10
     output_prefix = os.path.expanduser('~/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/')
     overwrite = False # If True, will overwrite existing files of same name
 
 
     # Define path to grid 
-    #grid_path = os.path.expanduser(output_prefix) + 'grid_copy.pkl'
-    #grid = pd.read_pickle(grid_path)
-    grid_path = '~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/gridface_s2tiles_CH.shp'
-    grid = gpd.read_file(grid_path)
+    grid_path = os.path.expanduser(output_prefix) + 'grid_copy.pkl'
+    grid = pd.read_pickle(grid_path)
+    #grid_path = '~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/gridface_s2tiles_CH.shp'
+    #grid = gpd.read_file(grid_path)
     if 'selected' not in grid.columns:
         grid['selected'] = [False]*len(grid)
     if 'years_done' not in grid.columns:
