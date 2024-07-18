@@ -113,7 +113,7 @@ def slice_and_save(ds, grid, datavar, output_prefix, compressor, overwrite):
           if overwrite or not os.path.exists(output_path):
               regrid.to_zarr(output_path, consolidated=True, mode='w', encoding={var: {'compressor': compressor} for var in regrid.data_vars})
               print('Saved patch', output_path) # save_end-save_start
-        break
+
      
   return
 
@@ -160,4 +160,3 @@ if __name__ == "__main__":
       # Regrid and save the data
       slice_and_save(ds, grid, datavar, output_prefix, compressor, overwrite)
             
-      break
