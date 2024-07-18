@@ -70,6 +70,6 @@ The download history is tracked here:
 
 | Date | Jobs | Notes | 
 | --------- | ------------ | ------------ |
-| 31.05.2024| Run downloading | Package versions: blabla | 
-| 05.06.2024| Redownload 2017 | Package versions: blabla | 
+| 31.05.2024| Run downloading | Package versions: sen2nbar==2023.8.1  minicuber ([commit version](https://github.com/EOA-team/minicuber/tree/14eb81ee93f91c0076e21debf23e4a82e6d7cc9e))| 
+| 18.07.2024| Completed download | | 
 
