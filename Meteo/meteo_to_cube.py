@@ -12,6 +12,7 @@ import warnings
 warnings.filterwarnings("ignore")
 import time
 import zarr
+from datetime import date
 
 
 
@@ -74,47 +75,52 @@ def regrid_product_cube(product_cube, lon_lat_grid):
 
 
 
-def slice_and_save(ds, grid, datavar, output_prefix, compressor, overwrite):
+def slice_and_save(ds, grid, datavar, datestart, output_prefix, compressor, overwrite):
   """
   Regrid the weather data to the grid and save the datacubes to zarr
 
   :param ds: xarray dataset
   :param grid: geopandas dataframe
   :param datavar: variable name
+  :param datestart: year of data
   :param output_prefix: path to save the zarr files
   :param compressor: zarr compressor
   :param overwrite: boolean to overwrite existing files
   """
 
+  done_patches = [f for f in processed_files if f'MeteoSwiss_{datavar}' in f and f'_{int(datestart[:4])}0101_{int(datestart[:4])}1231.zarr' in f]
+
   for i, row in grid.iterrows(): 
-        print(f'Processing grid patch {i}/{len(grid)}')
-        patch = row.geometry
-        minx, miny, maxx, maxy = patch.bounds
-        lon_lat_grid = [np.arange(minx, maxx, 10), np.arange(miny, maxy, 10)] # make sure that last upper left corner is produced
 
-        regrid = regrid_product_cube(ds, lon_lat_grid) 
-        if not np.isnan(regrid[datavar]).all():
+        if i >= len(done_patches): # Check which files already processed
 
-          # Drop addition variables
-          regrid = regrid.drop_vars(["swiss_lv95_coordinates"], errors="ignore")
+          print(f'Processing grid patch {i}/{len(grid)}')
+          patch = row.geometry
+          minx, miny, maxx, maxy = patch.bounds
+          lon_lat_grid = [np.arange(minx, maxx, 10), np.arange(miny, maxy, 10)] # make sure that last upper left corner is produced
 
-          # Update metadata
-          attrs = regrid.attrs
-          attrs['history'] += f". Reprojected and regrid datacube to EPSG 32632 by Sélène Ledain on {time.time()}"
-          regrid.attrs = attrs
-          
-          # Chunk
-          regrid = regrid.chunk({'time': -1, 'lat': -1, 'lon': len(regrid.lon)/2}) 
+          regrid = regrid_product_cube(ds, lon_lat_grid) 
+          if not np.isnan(regrid[datavar]).all():
 
-          # Save the data to zarr meteo_var_minx_maxy_datestart_datend.zarr
-          output_path = output_prefix + f'MeteoSwiss_{datavar}_{int(minx)}_{int(maxy)}_{int(datestart[:4])}0101_{int(datestart[:4])}1231.zarr'
+            # Drop addition variables
+            regrid = regrid.drop_vars(["swiss_lv95_coordinates"], errors="ignore")
 
-          # Save the patch to Zarr with compression
-          if overwrite or not os.path.exists(output_path):
-              regrid.to_zarr(output_path, consolidated=True, mode='w', encoding={var: {'compressor': compressor} for var in regrid.data_vars})
-              print('Saved patch', output_path) # save_end-save_start
+            # Update metadata
+            attrs = regrid.attrs
+            attrs['history'] += f". Reprojected and regrid datacube to EPSG 32632 by Sélène Ledain on {date.today()}"
+            regrid.attrs = attrs
+            
+            # Chunk
+            regrid = regrid.chunk({'time': -1, 'lat': -1, 'lon': len(regrid.lon)/2}) 
 
-     
+            # Save the data to zarr meteo_var_minx_maxy_datestart_datend.zarr
+            output_path = output_prefix + f'MeteoSwiss_{datavar}_{int(minx)}_{int(maxy)}_{int(datestart[:4])}0101_{int(datestart[:4])}1231.zarr'
+
+            # Save the patch to Zarr with compression
+            if overwrite or not os.path.exists(output_path):
+                regrid.to_zarr(output_path, consolidated=True, mode='w', encoding={var: {'compressor': compressor} for var in regrid.data_vars})
+                print('Saved patch', output_path) # save_end-save_start
+
   return
 
 
@@ -142,21 +148,28 @@ if __name__ == "__main__":
   #####################
   # PROCESS FILES
 
-  for i, data_file in enumerate(data_files):
-    print(f'-------Processing file {i}/{len(data_files)}-----------')
+  processed_files = [f for f in os.listdir(output_prefix)]
 
+  for i, data_file in enumerate(data_files):
+    
     datavar, _, datestart, _ = data_file.split("_") #varRes_gridtype_date.nc
 
-    # Only process daily data
-    if datavar.endswith('D'):
-      ds = xr.open_dataset(os.path.join(data_path, data_file), decode_times=False) 
+    if datavar.endswith('D'): # Only process daily data
+      
+      # Check if file has been processed
+      done = [f for f in processed_files if f'MeteoSwiss_{datavar}' in f and f'_{int(datestart[:4])}0101_{int(datestart[:4])}1231.zarr' in f]
 
-      # Fix time coordinate: get year and create monthly or daily or yearly timeseries
-      ds = fix_time_coord(ds, datestart)
+      if len(done) != len(grid):
+        print(f'-------Processing file {i}/{len(data_files)}-----------')
 
-      # Reproject file to EPSG 32632
-      ds = reproj(ds, 2056, 32632)
+        ds = xr.open_dataset(os.path.join(data_path, data_file), decode_times=False) 
 
-      # Regrid and save the data
-      slice_and_save(ds, grid, datavar, output_prefix, compressor, overwrite)
-            
+        # Fix time coordinate: get year and create monthly or daily or yearly timeseries
+        ds = fix_time_coord(ds, datestart)
+
+        # Reproject file to EPSG 32632
+        ds = reproj(ds, 2056, 32632)
+
+        # Regrid and save the data
+        slice_and_save(ds, grid, datavar, datestart, output_prefix, compressor, overwrite)
+              
