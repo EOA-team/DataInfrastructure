@@ -66,6 +66,26 @@ where (minx, maxy) will correspond to the upper left coordinate of the grid tile
 ## 3. MeteoSuisse
 
 ## 4. SwissImage (Swisstopo)
+### Downloading raw data
+
+To download the dataset provided by Swisstopo (TIF files) run
+```
+python SwissImage/si_download.py --urls_path path/to/urls.csv --downloads_path path/to/output/folder
+```
+
+The URLS for download are provide in `ch.swisstopo.swissimage-dop10-DOp5jXFT.csv` (0.1m resolution) and `ch.swisstopo.swissimage-dop10-vWuyN4vG.csv` (2m resolution).
+The data is stored in `~/mnt/eo-nas1/data/swisstopo/SwissImage_10cm` and `~/mnt/eo-nas1/data/swisstopo/SwissImage_2m` respectively.
+
+The TIF files store RGB values, for a 1km x 1km area. The data is in EPSG:2056 and the filenames follow the structure
+swissimage-dop10_<YEAR>_<MINX>_<MINY>_<RESOLUTION>_2056.tif
+MINX and MINY correspond to the coordinates of the bottom left corner of the file, in kms (EPSG:2056). The resolution is provided at 10cm (0.1m) but also 2m,
+with cubic resampling doen by Swisstopo.
+
+For more information on the products please visit [here](https://www.swisstopo.admin.ch/en/orthoimage-swissimage-10)
+
+### Fomratting to custon grid
+
+The data was then reprojected to EPSG:32632 and resampled to be aligned to the Sentinel-2 grid:
 
 ## Data status
 
