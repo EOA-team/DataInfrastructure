@@ -39,14 +39,14 @@ The final grid is saved at
 </p>
 
 
-## 2. Data Downloading
+## 2. Sentinel-2 
 
 The Sentinel-2 data is downloaded using the grid created above. Each grid tile is 1280m x 1280m, containing 128 x 128 pixels with a resolution of 10m.\
 For each grid tile, the data is queried using the [minicuber](https://github.com/EOA-team/minicuber/tree/main) code which takes care of reprojecting all data to a common, 10m resolution pixel size and aligned to the coordinates of the grid (EPSG:32632). Details on other processing steps are included in the minicuber documentation.
 
 To download the data:
 ```
-python download_pipeline.py
+python S2/download_pipeline.py
 ```
 
 - More about interrupting and restarting the download
@@ -63,6 +63,9 @@ S2_minx_maxy_startyeastartmonthstartday_endyearendmonthendday.zarr
 ```
 where (minx, maxy) will correspond to the upper left coordinate of the grid tile. There are two chunks per zarr file, where the data has been split in hald along the longitude dimension.
 
+## 3. MeteoSuisse
+
+## 4. SwissImage (Swisstopo)
 
 ## Data status
 
@@ -70,6 +73,10 @@ The download history is tracked here:
 
 | Date | Jobs | Notes | 
 | --------- | ------------ | ------------ |
-| 31.05.2024| Run downloading | Package versions: sen2nbar==2023.8.1  minicuber ([commit version](https://github.com/EOA-team/minicuber/tree/14eb81ee93f91c0076e21debf23e4a82e6d7cc9e))| 
-| 18.07.2024| Completed download | | 
+| 31.05.2024| Run S2 downloading | Package versions: sen2nbar==2023.8.1  minicuber ([commit version](https://github.com/EOA-team/minicuber/tree/14eb81ee93f91c0076e21debf23e4a82e6d7cc9e))| 
+| 18.07.2024| Completed S2 download | | 
+| 26.07.2024| Downloaded SwissImage 2m | | 
+| 29.07.2024| Downloaded SwissImage 0.1m | | 
+
+
 
