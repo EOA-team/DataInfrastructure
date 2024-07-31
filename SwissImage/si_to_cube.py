@@ -20,6 +20,7 @@ import warnings
 warnings.filterwarnings("ignore")
 import zarr
 import datetime
+import math
 
 
 
@@ -78,6 +79,8 @@ def match_si_to_patch(minx, miny, maxx, maxy, data_path, res, all_files):
         matching = [os.path.join(data_path,f) for f in all_files if file_pattern in f]
         if len(matching) > 1:
           raise Exception('There are multiple years of data available for a same location: adapt code to select year')
+        if len(matching) == 0:
+          continue
         else:
           files.append(matching[0])
         
@@ -96,6 +99,7 @@ def open_rasters(files):
 
     for i, f in enumerate(files):
         raster = rioxarray.open_rasterio(f)
+        raster = raster.rio.write_nodata(255)
         rasters.append(raster)
         
         year_data = xr.DataArray(
@@ -106,8 +110,8 @@ def open_rasters(files):
         year_dataarrays.append(year_data.expand_dims('band', axis=0))  # Ensure the same dimension
 
     # Combine rasters by coordinates
-    combined = xr.combine_by_coords(rasters)
-    combined_year = xr.combine_by_coords(year_dataarrays)
+    combined = xr.combine_by_coords(rasters).fillna(255)
+    combined_year = xr.combine_by_coords(year_dataarrays).fillna(255)
     combined = combined.to_dataset("band").rename({1:"R", 2:"G", 3:"B"})
     combined['year'] = combined_year[0]
     combined = combined.drop_vars(['spatial_ref', 'band'])
@@ -129,12 +133,50 @@ def round_to_higher_even(number):
     else:
         return rounded + 1
 
+def round_to_higher_dec(number):
+    return math.ceil(number / 0.1) * 0.1
+
+def round_to_lower_dec(number):
+    return math.floor(number / 0.1) * 0.1
+
 def round_to_lower_even(number):
     rounded = round(number)
     if rounded % 2 == 0:
         return rounded
     else:
         return rounded - 1
+
+def resample_to_s2(da, res):
+    """
+    Resample so that coords fall every even value if res is 2m, or 0.1 if res is 0.1m
+
+    :param da: xr DataArray
+    :param res: 0.1 or 2
+    :return da_resamp: resampled xr DataArray
+    """
+    if res == 2:
+      start_x = round_to_lower_even(da['x'].values[0]) 
+      end_x = round_to_higher_even(da['x'].values[-1])
+      start_y = round_to_higher_even(da['y'].values[0])
+      end_y = round_to_lower_even(da['y'].values[-1])
+      new_x = np.arange(start_x, end_x+2, 2) # TO DO: then lengths should be fixed --> Actually should align to custom grid here!
+      new_y = np.arange(start_y, end_y-2, -2)
+    if res == 0.1:
+      start_x = round_to_lower_dec(da['x'].values[0]) 
+      end_x = round_to_higher_dec(da['x'].values[-1])
+      start_y = round_to_higher_dec(da['y'].values[0])
+      end_y = round_to_lower_dec(da['y'].values[-1])
+      new_x = np.arange(start_x, end_x+0.1, 0.1)
+      new_y = np.arange(start_y, end_y-0.1, -0.1)
+
+    da_resamp = da.interp(x=new_x, y=new_y, method='cubic', kwargs={'fill_value': 'extrapolate'}).round().astype(int) #
+    """ 
+    da_masked = da.where(da != 255, np.nan).rio.write_nodata(np.nan)
+    da_resamp = da_masked.interp(x=new_x, y=new_y, method='cubic').round() #kwargs={'fill_value': 'extrapolate'}
+    da_resamp = da_resamp.where(~np.isnan(da_resamp), 255).rio.write_nodata(255) #replace NaNs back to the no-data value if needed
+    da_resamp = da_resamp.astype(int) 
+    """
+    return da_resamp
 
 def save_cube(ds, res, output_prefix, overwrite):
     """
@@ -171,9 +213,10 @@ def run_processing(grid, grid_copy, output_prefix, data_path, res, metadata, ove
     lock = threading.Lock()
 
     # Start download
-    start_index = 1000
+    start_index = 0
     for i, row in grid.iloc[start_index:].iterrows(): #for i, row in grid.iterrows():
-        if not grid_copy.loc[i, 'selected']:
+        
+        if row.id == 8563: #not grid_copy.loc[i, 'selected']:
             print(f"{datetime.datetime.now()}----Processing patch {i}/{len(grid)}----")
             
             # Find the SI images that would intersect with the grid cell
@@ -184,40 +227,32 @@ def run_processing(grid, grid_copy, output_prefix, data_path, res, metadata, ove
             yrs = [int(f.split('/')[-1].split('_')[1]) for f in files]
             
             # Open and prepare SwissImage data
-            da = open_rasters(files)
+            if len(files):
+              da = open_rasters(files)
+            else:
+              continue
 
             # Shift coords to topleft of pixel
             da = coords_to_topleft(da, res)
-
             # Reproject to EPSG 32632
             da_reproj = da.rio.reproject("EPSG:32632", shape=(da.sizes['x'],da.sizes['y']), resampling=Resampling.cubic)
-            # TO DO Resample to S2 grid
-            start_x = round_to_lower_even(da_reproj['x'].values[0]) 
-            end_x = round_to_higher_even(da_reproj['x'].values[-1])
-            start_y = round_to_higher_even(da_reproj['y'].values[0])
-            end_y = round_to_lower_even(da_reproj['y'].values[-1])
-            new_x = np.arange(start_x, end_x+2, 2) # TO DO: then lengths should be fixed --> Actually should align to custom grid here!
-            new_y = np.arange(start_y, end_y-2, -2)
-            # TO DO: gets converted to float64 here
-            da_resamp = da_reproj.interp(x = new_x, y = new_y, method = "cubic", kwargs={'fill_value':'extrapolate'})
-          
+            # Resample to S2 grid
+            da_resamp = resample_to_s2(da_reproj, res)
+            #print('resamp', da_resamp)
+        
             # Crop to cube bounds
             da_resamp = da_resamp.rio.clip_box(*row.geometry.bounds)
             # Convert to dataset
             ds = da_resamp.to_dataset("band") 
             ds["year"] = ds['year'].round().astype(int) # TO DO: check is this always correct?
-            print(np.unique(yrs), np.unique(ds.year.values))
+            #print(np.unique(yrs), np.unique(ds.year.values))
             # Update metadata
             ds.attrs = metadata
             # Save data
             #save_cube(ds, res, output_prefix, overwrite)
+            #ds[['R', 'G', 'B']].rio.to_raster(f'pipeline_test_{i}.tif')
+        
 
-            
-
-
-            
-        if i==1005:
-          break
 
 
     return grid_copy
