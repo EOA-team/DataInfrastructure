@@ -1,5 +1,13 @@
 # Swiss Earth Observation Data Infrastructure (Swiss-EODI)
 
+## :ledger: Index
+
+- [Grid creation](#Grid-creation)
+- [Sentinel-2](#Sentinel-2)
+- [MeteoSuisse](#MeteoSuisse)
+- [SwissImage](#SwissImage)
+- [Data status](#Data-status)
+
 ## 1. Grid creation
 
 The data is saved on the EPSG:32632 grid. The pixels align to those of the Sentinel-2 satellite data in the UTM zone 32. The extent of the grid is defined by the bounding box of the MeteoSuisse data, which extends slightly beyond the administrative borders of Switzerland. 
@@ -97,6 +105,26 @@ The download history is tracked here:
 | 18.07.2024| Completed S2 download | | 
 | 26.07.2024| Downloaded SwissImage 2m | | 
 | 29.07.2024| Downloaded SwissImage 0.1m | | 
+
+
+### Overview of data storage structure
+```
+ 📁 \\eo-nas1\data
+  ├── satellite
+  │   └── sentinel2
+  │       └── raw
+  │           └── CH
+  │   
+  ├── swisstopo
+  │   ├── raw
+  │   │   ├── SwissImage_10cm
+  │   │   └── SwissImage_2m
+  │   └── cubes
+  │       ├── SwissImage_10cm
+  │       └── SwissImage_2m
+  │
+  └── meteo
+```
 
 
 
