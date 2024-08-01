@@ -21,6 +21,8 @@ warnings.filterwarnings("ignore")
 import zarr
 import datetime
 import math
+import time
+from affine import Affine
 
 
 
@@ -30,9 +32,8 @@ def extract_minx_maxy(file):
     """
     parts = file.split('_')
     minx = int(parts[1])
-    maxy = int(parts[2])
-    yr = int(parts[3][:4])
-    return minx, maxy, yr
+    maxy = int(parts[2].split('.zarr')[0])
+    return minx, maxy
 
 def check_processed_files(output_prefix, grid):
     """ 
@@ -42,8 +43,9 @@ def check_processed_files(output_prefix, grid):
     df_zarr = pd.DataFrame(data_files, columns=['file'])
     
     if len(df_zarr):
-        df_zarr[['minx', 'maxy', 'yr']] = df_zarr['file'].apply(lambda x: pd.Series(extract_minx_maxy(x)))
-        grid['selected'] = grid['yr'].apply(lambda x: True if x else False)
+        df_zarr[['minx', 'maxy']] = df_zarr['file'].apply(lambda x: pd.Series(extract_minx_maxy(x)))
+        grid = grid.merge(df_zarr, how='left', right_on=['minx', 'maxy'], left_on=['left', 'top'])
+        grid['selected'] = ~grid['file'].isna()
     else:
         grid['selected'] = [False]*len(grid)
 
@@ -76,7 +78,7 @@ def match_si_to_patch(minx, miny, maxx, maxy, data_path, res, all_files):
       for y in y_thousandths:
         # Find file in data_path
         file_pattern = f"_{x}-{y}_{res}_2056.tif"
-        matching = [os.path.join(data_path,f) for f in all_files if file_pattern in f]
+        matching = [os.path.join(data_path,f) for f in all_files if file_pattern in f and f.endswith('tif')]
         if len(matching) > 1:
           raise Exception('There are multiple years of data available for a same location: adapt code to select year')
         if len(matching) == 0:
@@ -93,30 +95,19 @@ def open_rasters(files):
     :param files: list of paths of SwissImage TIFs to open
     :returns combined: xr.Dataset of all rasters RGB and year variables
     """
-    years = [int(f.split('/')[-1].split('_')[1]) for f in files]
     rasters = []
-    year_dataarrays = []
 
     for i, f in enumerate(files):
         raster = rioxarray.open_rasterio(f)
         raster = raster.rio.write_nodata(255)
         rasters.append(raster)
         
-        year_data = xr.DataArray(
-            np.full_like(raster[0], years[i], dtype=np.int16),  # Match the shape of the raster
-            dims=raster[0].dims,
-            coords=raster[0].coords
-        )
-        year_dataarrays.append(year_data.expand_dims('band', axis=0))  # Ensure the same dimension
-
     # Combine rasters by coordinates
-    combined = xr.combine_by_coords(rasters).fillna(255)
-    combined_year = xr.combine_by_coords(year_dataarrays).fillna(255)
-    combined = combined.to_dataset("band").rename({1:"R", 2:"G", 3:"B"})
-    combined['year'] = combined_year[0]
-    combined = combined.drop_vars(['spatial_ref', 'band'])
+    combined = xr.combine_by_coords(rasters, combine_attrs='override').fillna(255).rio.write_nodata(255)
+    #combined = combined.to_dataset("band").rename({1:"R", 2:"G", 3:"B"})
+    #combined = combined.drop_vars(['spatial_ref'])
 
-    return combined.to_array("band").rio.write_crs(2056)
+    return combined#.to_array("band").rio.write_crs(2056)
 
 def coords_to_topleft(ds, res):
   # Adjust coords to topleft corner of pixel
@@ -155,12 +146,12 @@ def resample_to_s2(da, res):
     :return da_resamp: resampled xr DataArray
     """
     if res == 2:
-      start_x = round_to_lower_even(da['x'].values[0]) 
-      end_x = round_to_higher_even(da['x'].values[-1])
-      start_y = round_to_higher_even(da['y'].values[0])
-      end_y = round_to_lower_even(da['y'].values[-1])
-      new_x = np.arange(start_x, end_x+2, 2) # TO DO: then lengths should be fixed --> Actually should align to custom grid here!
-      new_y = np.arange(start_y, end_y-2, -2)
+        start_x = round_to_lower_even(da['x'].values[0]) 
+        end_x = round_to_higher_even(da['x'].values[-1])
+        start_y = round_to_higher_even(da['y'].values[0])
+        end_y = round_to_lower_even(da['y'].values[-1])
+        new_x = np.arange(start_x, end_x+2, 2) # TO DO: then lengths should be fixed --> Actually should align to custom grid here!
+        new_y = np.arange(start_y, end_y-2, -2)
     if res == 0.1:
       start_x = round_to_lower_dec(da['x'].values[0]) 
       end_x = round_to_higher_dec(da['x'].values[-1])
@@ -168,15 +159,35 @@ def resample_to_s2(da, res):
       end_y = round_to_lower_dec(da['y'].values[-1])
       new_x = np.arange(start_x, end_x+0.1, 0.1)
       new_y = np.arange(start_y, end_y-0.1, -0.1)
-
-    da_resamp = da.interp(x=new_x, y=new_y, method='cubic', kwargs={'fill_value': 'extrapolate'}).round().astype(int) #
-    """ 
+    
+    da_resamp = da.interp(x=new_x, y=new_y, method='cubic', kwargs={'fill_value': 'extrapolate'})
+    da_resamp = da_resamp.round().astype(int).clip(min=0, max=255)
+    """
     da_masked = da.where(da != 255, np.nan).rio.write_nodata(np.nan)
     da_resamp = da_masked.interp(x=new_x, y=new_y, method='cubic').round() #kwargs={'fill_value': 'extrapolate'}
     da_resamp = da_resamp.where(~np.isnan(da_resamp), 255).rio.write_nodata(255) #replace NaNs back to the no-data value if needed
     da_resamp = da_resamp.astype(int) 
     """
     return da_resamp
+
+def reshape_data(row, da, res):
+    """
+    Reshape data to same as geometry, and fill missing values with 255
+    """
+    geometry_bounds = row.geometry.bounds
+    template = xr.DataArray(
+        np.full((int(1280/res), int(1280/res)), 255),  # Fill with no data value initially
+        dims=["y", "x"],
+        coords={
+            "y": np.arange(geometry_bounds[3], geometry_bounds[1], -res),  # y from top to bottom
+            "x": np.arange(geometry_bounds[0], geometry_bounds[2], res),   # x from left to right
+        },
+        name="template"
+    ).rio.write_crs(32632)
+    da_clipped_reprojected = da.rio.reproject_match(template, resampling=Resampling.cubic)#, **reproject_kwargs={'dst_crs':'EPSG:32632'})
+    da_filled = da_clipped_reprojected.fillna(255)
+
+    return da_filled
 
 def save_cube(ds, res, output_prefix, overwrite):
     """
@@ -215,45 +226,55 @@ def run_processing(grid, grid_copy, output_prefix, data_path, res, metadata, ove
     # Start download
     start_index = 0
     for i, row in grid.iloc[start_index:].iterrows(): #for i, row in grid.iterrows():
-        
-        if row.id == 8563: #not grid_copy.loc[i, 'selected']:
+        all_files = [f for f in os.listdir(data_path)]
+        if not grid_copy.loc[i, 'selected']:
             print(f"{datetime.datetime.now()}----Processing patch {i}/{len(grid)}----")
             
             # Find the SI images that would intersect with the grid cell
             patch_2056 = gpd.GeoDataFrame([row], crs=32632).to_crs(2056).geometry
             minx, miny, maxx, maxy = patch_2056.total_bounds
-            all_files = [f for f in os.listdir(data_path)]
             files = match_si_to_patch(minx, miny, maxx, maxy, data_path, res, all_files)
-            yrs = [int(f.split('/')[-1].split('_')[1]) for f in files]
             
             # Open and prepare SwissImage data
             if len(files):
-              da = open_rasters(files)
+                da = open_rasters(files)
             else:
-              continue
+                continue
 
-            # Shift coords to topleft of pixel
+            # Shift coords to topleft of pixel     
             da = coords_to_topleft(da, res)
+
             # Reproject to EPSG 32632
             da_reproj = da.rio.reproject("EPSG:32632", shape=(da.sizes['x'],da.sizes['y']), resampling=Resampling.cubic)
-            # Resample to S2 grid
-            da_resamp = resample_to_s2(da_reproj, res)
-            #print('resamp', da_resamp)
-        
-            # Crop to cube bounds
-            da_resamp = da_resamp.rio.clip_box(*row.geometry.bounds)
+
+            # Check if data fills in the patch. If not, will need to reshape before resampling and clipping
+            minx, miny, maxx, maxy = row.geometry.bounds
+            if da_reproj.x.min().item() > minx or da_reproj.x.max().item() < maxx or da_reproj.y.min().item() > miny or da_reproj.y.max().item() < maxy:
+                print('Doesnt fill shape')
+                da_reshape = reshape_data(row, da_reproj, res)
+                da_resamp = resample_to_s2(da_reshape, res)
+                da_resamp = da_resamp.rio.clip_box(*row.geometry.bounds)
+            else:
+                # Directlly resample and clip
+                print('Fills shape')
+                da_resamp = resample_to_s2(da_reproj, res)
+                da_resamp = da_resamp.rio.clip_box(*row.geometry.bounds)
+
             # Convert to dataset
-            ds = da_resamp.to_dataset("band") 
-            ds["year"] = ds['year'].round().astype(int) # TO DO: check is this always correct?
-            #print(np.unique(yrs), np.unique(ds.year.values))
+            ds = da_resamp.to_dataset("band").rename({1:"R", 2:"G", 3:"B"}).drop_vars('spatial_ref').rio.write_crs(32632)
             # Update metadata
+            source_files = [f.split('/')[-1] for f in files]
+            metadata.update({'source_files': ', '.join(source_files)})
             ds.attrs = metadata
             # Save data
-            #save_cube(ds, res, output_prefix, overwrite)
-            #ds[['R', 'G', 'B']].rio.to_raster(f'pipeline_test_{i}.tif')
-        
-
-
+            save_cube(ds, res, output_prefix, overwrite)
+            """
+            transform = Affine(res, 0.0, row.geometry.bounds[0], 0.0, -res, row.geometry.bounds[3])
+            ds.rio.write_transform(transform, inplace=True)
+            print(ds.spatial_ref.GeoTransform)
+            print(ds.rio.transform())
+            ds[['R', 'G', 'B']].rio.to_raster(f'pipeline_test_{i}.tif')
+            """
 
     return grid_copy
 
@@ -280,11 +301,11 @@ if __name__ == "__main__":
               "source": "Swisstopo SwissImage",
               "grid": f"EPSG:32632. Coordinates are upper left corners of pixels",
               "missing data fill value": 255,
-              "processing": "Rreprojected from EPSG:2056 to EPSG:32632. REsampled to closest even coordinates. Cubic resmapling used ad every step.",
+              "processing": "Rreprojected from EPSG:2056. Resampled to closest even coordinates. Cubic resmapling used az every step.",
             }
 
     grid_copy = run_processing(grid, grid_copy, output_prefix, data_path, res, metadata, overwrite)
-    """ 
+    """
     any_false_selected = any(grid_copy['selected'] == False)
     if any_false_selected:
         print("There are False values in the 'selected' column.")
