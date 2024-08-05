@@ -2,12 +2,13 @@
 
 ## :ledger: Index
 
-- [Grid creation](#Grid-creation)
+- [Grid creation](#grid-creation) 
 - [Sentinel-2](#Sentinel-2)
 - [MeteoSuisse](#MeteoSuisse)
 - [SwissImage](#SwissImage)
 - [Data status](#Data-status)
 
+<a name="grid-creation"></a>
 ## 1. Grid creation
 
 The data is saved on the EPSG:32632 grid. The pixels align to those of the Sentinel-2 satellite data in the UTM zone 32. The extent of the grid is defined by the bounding box of the MeteoSuisse data, which extends slightly beyond the administrative borders of Switzerland. 
