@@ -1,5 +1,14 @@
 # Swiss Earth Observation Data Infrastructure (Swiss-EODI)
 
+## :ledger: Index
+
+- [Grid creation](#grid-creation) 
+- [Sentinel-2](#Sentinel-2)
+- [MeteoSuisse](#MeteoSuisse)
+- [SwissImage](#SwissImage)
+- [Data status](#Data-status)
+
+<a name="grid-creation"></a>
 ## 1. Grid creation
 
 The data is saved on the EPSG:32632 grid. The pixels align to those of the Sentinel-2 satellite data in the UTM zone 32. The extent of the grid is defined by the bounding box of the MeteoSuisse data, which extends slightly beyond the administrative borders of Switzerland. 
@@ -38,7 +47,7 @@ The final grid is saved at
     <em>Sentinel-2 aligned grid cropped to MeteoSuisse file</em>
 </p>
 
-
+<a name="Sentinel-2"></a>
 ## 2. Sentinel-2 
 
 The Sentinel-2 data is downloaded using the grid created above. Each grid tile is 1280m x 1280m, containing 128 x 128 pixels with a resolution of 10m.\
@@ -63,8 +72,10 @@ S2_minx_maxy_startyeastartmonthstartday_endyearendmonthendday.zarr
 ```
 where (minx, maxy) will correspond to the upper left coordinate of the grid tile. There are two chunks per zarr file, where the data has been split in hald along the longitude dimension.
 
+<a name="MeteoSuisse"></a>
 ## 3. MeteoSuisse
 
+<a name="SwissImage"></a>
 ## 4. SwissImage (Swisstopo)
 ### Downloading raw data
 
@@ -87,6 +98,7 @@ For more information on the products please visit [here](https://www.swisstopo.a
 
 The data was then reprojected to EPSG:32632 and resampled to be aligned to the Sentinel-2 grid:
 
+<a name="Data-status"></a>
 ## Data status
 
 The download history is tracked here:
@@ -97,6 +109,26 @@ The download history is tracked here:
 | 18.07.2024| Completed S2 download | | 
 | 26.07.2024| Downloaded SwissImage 2m | | 
 | 29.07.2024| Downloaded SwissImage 0.1m | | 
+
+
+### Overview of data storage structure
+```
+ 📁 \\eo-nas1\data
+  ├── satellite
+  │   └── sentinel2
+  │       └── raw
+  │           └── CH
+  │   
+  ├── swisstopo
+  │   ├── raw
+  │   │   ├── SwissImage_10cm
+  │   │   └── SwissImage_2m
+  │   └── cubes
+  │       ├── SwissImage_10cm
+  │       └── SwissImage_2m
+  │
+  └── meteo
+```
 
 
 
