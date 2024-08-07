@@ -75,6 +75,18 @@ where (minx, maxy) will correspond to the upper left coordinate of the grid tile
 <a name="MeteoSuisse"></a>
 ## 3. MeteoSuisse
 
+The original data are netCDF files stored at
+```
+O:/Data-Raw/27_Natural_Resources-RE/99_Meteo_Public/MeteoSwiss_netCDF/__griddedData/lv95updated/```
+```
+
+The daily variables were processed by reprojecting the data to EPSG:32632 and regridding the 1km data to 10m resolution (nearest-neighbor interpolation) aligned to Sentinel-2 pixels.\
+The files are named `<datavar>/MeteoSwiss_<datavar>D_<minx>_<maxx>_<year>0101_<year>1231.zarr`
+
+The data variables are Rhires (daily precipitation [mm]), Srel (daily relative sunshine duraiton [%]), Tabs (daily mean air temprature [°C]), Tmin (daily min air temperature [°C]), Tmax (daily max temperature [°C]). For more information about the raw data please consult: https://www.meteoswiss.admin.ch/dam/jcr:215c313a-dc13-4b67-bca0-dbd966597f9a/ProdDoc_Cover-dfie.pdf.
+
+
+
 <a name="SwissImage"></a>
 ## 4. SwissImage (Swisstopo)
 ### Downloading raw data
@@ -128,7 +140,9 @@ The download history is tracked here:
   │       └── SwissImage_2m
   │
   └── meteo
+      ├── Rhires
+      ├── Srel
+      ├── Tabs
+      ├── Tmax
+      └── Tmin
 ```
-
-
-
