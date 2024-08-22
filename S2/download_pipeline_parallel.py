@@ -8,7 +8,7 @@ import earthnet_minicuber as emc
 
 import geopandas as gpd
 import pandas as pd
-from shapely.geometry import Point, Polygon
+from shapely.geometry import Point, Polygon, box
 from shapely.ops import cascaded_union
 import matplotlib.pyplot as plt
 import contextily as cx
@@ -20,6 +20,7 @@ import datetime
 import concurrent.futures
 import threading
 import gc
+import rioxarray
 
 
 def extract_minx_maxy(file):
@@ -181,8 +182,7 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
         lock = threading.Lock()
 
         # Start download
-        start_index = 0
-        for i, row in grid.iloc[start_index:].iterrows(): #for i, row in grid.iterrows():
+        for i, row in grid.iterrows(): #for i, row in grid.iterrows():
             if not grid_copy.loc[i, 'selected']:
                 print(f"{datetime.datetime.now()}----Downloading patch {i}/{len(grid)}----")
                 
@@ -196,7 +196,7 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
                 specs["xy_shape"] = (int(patch_size*(n_cells)/specs["resolution"]), int(patch_size*(n_cells)/specs["resolution"]))
                 
                 # Force all years to complete, in case of error
-                years_to_download = list(range(2017, 2024))
+                years_to_download = [2016] #list(range(2017, 2024))
                 successful_years = []
 
                 while years_to_download:
@@ -211,13 +211,13 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
                         # Update grid_copy immediately after a year is successfully downloaded
                         grid_copy.loc[mega_patch.index, 'years_done'] = grid_copy.loc[mega_patch.index, 'years_done'].apply(
                             lambda x: successful_years if x is None else list(set(x + successful_years)))
-                        grid_copy.to_pickle(output_prefix + 'grid_copy4.pkl')
+                        grid_copy.to_pickle(output_prefix + 'grid_2016.pkl')
 
                 
                     # Mark the selected cells
-                    if len(successful_years) == 7:
+                    if len(successful_years) == 1: #7:
                         grid_copy.loc[mega_patch.index, 'selected'] = True
-                        grid_copy.to_pickle(output_prefix + 'grid_copy4.pkl')
+                        grid_copy.to_pickle(output_prefix + 'grid_2016.pkl')
 
                 # Clean up variables after each iteration
                 del mega_patch, years_to_download, successful_years
@@ -255,15 +255,37 @@ if __name__ == "__main__":
         grid = grid.merge(grouped_df, how='left', right_on=['minx', 'maxy'], left_on=['left', 'top'])
         mask = grid['years_done'].isna()
         grid.loc[mask, 'years_done'] = grid.loc[mask, 'years_done'].apply(lambda x: [None])
-        grid['selected'] = grid['years_done'].apply(lambda x: False if len(x) < 7 else True)
+        grid['selected'] = grid['years_done'].apply(lambda x: False if len(x) < 8 else True)
     else:
         grid['selected'] = [False]*len(grid)
         grid['years_done'] = [None]*len(grid)
 
     grid_copy = grid.copy()
 
-    
-    
+    # Further set download to AOI
+    mask_path = os.path.expanduser('~/mnt/eo-nas1/eoa-share/projects/015_malve/data/world_cover_10m_4classes_reclassified.tif')
+    mask = rioxarray.open_rasterio(mask_path)
+    mask = mask.rio.reproject("EPSG:32632")
+
+    raster_minx = mask.x.values[0]-50
+    raster_maxx = mask.x.values[-1]+50
+    raster_maxy = mask.y.values[0]+50
+    raster_miny = mask.y.values[-1]-50
+
+    grid_copy = grid_copy[
+    (grid_copy['left'] <= raster_maxx) &  # Left edge of the box is left of or inside the raster's right edge
+    (grid_copy['right'] >= raster_minx) &  # Right edge of the box is right of or inside the raster's left edge
+    (grid_copy['bottom'] <= raster_maxy) &  # Bottom edge of the box is below or inside the raster's top edge
+    (grid_copy['top'] >= raster_miny)    # Top edge of the box is above or inside the raster's bottom edge
+    ] 
+
+    grid = grid[
+    (grid['left'] <= raster_maxx) &  # Left edge of the box is left of or inside the raster's right edge
+    (grid['right'] >= raster_minx) &  # Right edge of the box is right of or inside the raster's left edge
+    (grid['bottom'] <= raster_maxy) &  # Bottom edge of the box is below or inside the raster's top edge
+    (grid['top'] >= raster_miny)    # Top edge of the box is above or inside the raster's bottom edge
+    ]   
+
     specs = {
         "lon_lat": (None, None), # topleft
         "xy_shape": (None, None), # width, height of cutout around center pixel
