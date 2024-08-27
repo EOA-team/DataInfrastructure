@@ -19,6 +19,8 @@ import pandas as pd
 from collections import defaultdict
 import rioxarray
 from PIL import Image
+from scipy.ndimage import affine_transform
+
 
 def extract_ids(product_uri):
   """
@@ -55,13 +57,15 @@ def open_cubes_conflicting(cubes):
   
   # Combine datasets with matching (timestamp, tile_id, granule_id)
   combined_datasets = []
-  for (timestamp, tile_id, granule_id), datasets in grouped_datasets.items():
+  for i, ((timestamp, tile_id, granule_id), datasets) in enumerate(grouped_datasets.items()):
       if len(datasets) > 1:
+          #datasets[5][['s2_B04', 's2_B03', 's2_B02']].rename({'lat':'y', 'lon':'x'}).rio.to_raster(f'ds5_{tile_id}_{granule_id}.tif')
           combined_ds = xr.combine_by_coords(datasets, combine_attrs='override')
+          #combined_ds[['s2_B04', 's2_B03', 's2_B02']].rename({'lat':'y', 'lon':'x'}).rio.to_raster(f'{tile_id}_{granule_id}.tif')
           combined_ds[['mean_sensor_azimuth', 'mean_sensor_zenith','mean_solar_azimuth', 'mean_solar_zenith', 'product_uri']] = \
             datasets[0][['mean_sensor_azimuth', 'mean_sensor_zenith','mean_solar_azimuth', 'mean_solar_zenith', 'product_uri']]
       else:
-          combined_ds = datasets[0]
+        combined_ds = datasets[0]
       
       combined_datasets.append(combined_ds)
   
@@ -84,7 +88,6 @@ def load_cubes(f, target_folder):
   # Get info on file coordinates
   minx, maxy = int(f.split('/')[-1].split('_')[1]), int(f.split('/')[-1].split('_')[2])
   base_dir = f.split('/')[:-1]
-  
   # Calculate contiguous cubes
   xs = np.arange(minx-1280, minx+1280*2, 1280)
   ys = np.arange(maxy-1280, maxy+1280*2, 1280)
@@ -92,9 +95,8 @@ def load_cubes(f, target_folder):
   # Find files that have these coords (all years)
   file_patterns = [os.path.join(target_folder, f'S2_{x}_{y}_*.zarr') for x in xs for y in ys]
   cubes = [file for pattern in file_patterns for file in glob.glob(pattern)]
-  cubes_print = [f for f in cubes if '2020' in f]
-  
   #cubes = ['/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5113260_20170103_20171231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5113260_20210102_20211230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5113260_20230102_20231230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5113260_20180103_20181231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5113260_20220102_20221230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5113260_20190103_20191231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5113260_20200103_20201230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5114540_20170103_20171231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5114540_20210102_20211230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5114540_20230102_20231230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5114540_20180103_20181231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5114540_20220102_20221230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5114540_20190103_20191231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5114540_20200103_20201230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5115820_20170103_20171231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5115820_20210102_20211230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5115820_20230102_20231230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5115820_20190103_20191231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5115820_20180103_20181231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5115820_20220102_20221230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5115820_20200103_20201230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5113260_20170103_20171231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5113260_20210102_20211230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5113260_20230102_20231230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5113260_20180103_20181231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5113260_20220102_20221230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5113260_20190103_20191231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5113260_20200103_20201230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5114540_20170103_20171231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5114540_20210102_20211230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5114540_20230102_20231230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5114540_20180103_20181231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5114540_20220102_20221230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5114540_20190103_20191231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5114540_20200103_20201230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5115820_20170103_20171231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5115820_20210102_20211230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5115820_20220102_20221230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5115820_20230102_20231230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5115820_20180103_20181231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5115820_20190103_20191231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5115820_20200103_20201230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5113260_20170103_20171231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5113260_20210102_20211230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5113260_20230102_20231230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5113260_20180103_20181231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5113260_20220102_20221230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5113260_20190103_20191231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5113260_20200103_20201230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5114540_20170103_20171231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5114540_20210102_20211230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5114540_20230102_20231230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5114540_20180103_20181231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5114540_20220102_20221230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5114540_20190103_20191231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5114540_20200103_20201230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5115820_20170103_20171231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5115820_20210102_20211230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5115820_20220102_20221230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5115820_20230102_20231230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5115820_20190103_20191231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5115820_20180103_20181231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5115820_20200103_20201230.zarr']
+  
   try:
     # No conflicting timestamps
     ds = xr.open_mfdataset(cubes, combine='by_coords').compute()
@@ -156,6 +158,16 @@ def clean_dataset(ds, cloud_thresh=0.1, shadow_thresh=0.1, snow_thresh=0.1, cirr
   return ds
 
 
+def apply_shifts(image, shifts, output_shape):
+    # Function to apply affine transformation based on shifts
+    matrix = np.array([[1, 0, shifts[0]], [0, 1, shifts[1]], [0, 0, 1]])
+    transformed_image = np.zeros(output_shape, dtype=image.dtype)
+    for band in range(image.shape[2]):
+        transformed_image[:, :, band] = affine_transform(image[:, :, band], matrix, order=1, mode='nearest', output_shape=output_shape[:2])
+    
+    return transformed_image
+
+
 def coreg(ds, ref):
   """
   Apply coregistration usign AROSICs package
@@ -171,13 +183,10 @@ def coreg(ds, ref):
 
   # Select band for coreg
   ref = ref['R']
-  # Reorder the variables so that s2_B04 is the first variable
-  variables = ['s2_B04'] + [var for var in ds_tgt.data_vars if var != 's2_B04']
-  ds_tgt = ds_tgt[variables]
 
   # Convert ref and target to GeoArray with some geo information
-  pixel_width_ref = abs(ref.x[1] - ref.x[0]).item()
-  pixel_height_ref = abs(ref.y[1] - ref.y[0]).item()
+  pixel_width_ref = 0.1 #abs(ref.x[1] - ref.x[0]).item()
+  pixel_height_ref = 0.1 #abs(ref.y[1] - ref.y[0]).item()
   geotransform_ref = (ref.x.min().item(), pixel_width_ref, 0, ref.y.max().item(), 0, -pixel_height_ref)
   projection_ref = CRS.from_epsg(32632).to_wkt()
   geo_ref_image = GeoArray(ref.values.astype(np.float32), geotransform=geotransform_ref, projection=projection_ref)
@@ -193,70 +202,75 @@ def coreg(ds, ref):
 
   # Global coregistration
   corrected_images_stack = []
+  coreg_mask = np.zeros(len(ds_tgt.time), dtype=bool)
 
-  for i in range(ds.sizes['time']):
-      print(f'Coregistering image {i}, time {str(ds.time.values[i])}')
-      target_image = ds.isel(time=i)
-      geo_tgt_image = GeoArray(target_image.to_array().values.transpose(1, 2, 0), geotransform=geotransform_tgt, projection=projection_tgt)
+  for i in range(ds_tgt.sizes['time']):
+      
+      print(f'Coregistering image {i}, time {str(ds_tgt.time.values[i])}')
+      target_image = ds_tgt.isel(time=i).s2_B04
+      geo_tgt_image = GeoArray(target_image.values, geotransform=geotransform_tgt, projection=projection_tgt)
+  
       # Pass cloud mask
-      scl = ds.isel(time=i).s2_SCL
+      scl = ds_tgt.isel(time=i).s2_SCL
       scl_mask = xr.where(scl.isin([0,1,2,3,7,8,9,10]), True, False) 
-      cloud = ds.isel(time=i).s2_mask
+      cloud = ds_tgt.isel(time=i).s2_mask
       cloud_mask = xr.where(cloud != 0, True, False)
       data_mask = scl_mask & cloud_mask
       
       # Check if there is any data
-      #print(f'Clouds masked {data_mask.values.sum()}/{data_mask.shape[0]*data_mask.shape[1]}')
-      #print(f'Missing data: {np.sum(target_image.values == 65535)}')
-      if not data_mask.values.sum() == data_mask.shape[0]*data_mask.shape[1]: 
+      print(f'Clouds masked {data_mask.values.sum()}/{data_mask.shape[0]*data_mask.shape[1]}')
+      print(f'Missing data: {np.sum(target_image.values == 65535)}')
+      nodata_mask = data_mask.values.sum()
+      if not data_mask.values.sum() > 0.8*(data_mask.shape[0]*data_mask.shape[1]):  # max 80% clouds
         try:
 
             # Initialize the COREG object
             CR = COREG(
                 im_ref=geo_ref_image,  # Reference image array
                 im_tgt=geo_tgt_image,  # Target image array
-                ws=(12800,12800),           # Size of the matching window in reference pixels
-                max_iter=10,             # Maximum number of iterations
-                path_out=None,           # Path to save the coregistered image (None if not saving)
-                fmt_out='Zarr',             # Output format (None if not saving)
+                ws=(128,128),          # Size of the matching window in pixels
+                max_iter=10,           # Maximum number of iterations
+                path_out=None,         # Path to save the coregistered image (None if not saving)
+                fmt_out='Zarr',        # Output format (None if not saving)
                 nodata =(255, 65535),
                 mask_baddata_tgt=data_mask.values,
                 footprint_poly_ref=footprint_ref,
                 footprint_poly_tgt=footprint_tgt,
                 align_grids=True,
-                #q=True
-                #s_b4match = 1, # target image band to use (starts with 1)
-                #r_b4match = 3, # ref image band to use (starts with 1)
-                #CPUs=10
+                q=True
             )
 
             # Compute shifts
             CR.calculate_spatial_shifts()
             corrected_dict = CR.correct_shifts() # returns an OrderedDict containing the co-registered numpy array and its corresponding geoinformation.
-            corrected_images_stack.append(corrected_dict['arr_shifted'])
+            shift_x, shift_y = CR.coreg_info['corrected_shifts_map']['x']*-1,  CR.coreg_info['corrected_shifts_map']['y']*-1
+            geo_tgt_image = GeoArray(ds_tgt.isel(time=i).to_array().values.transpose(1, 2, 0), geotransform=geotransform_tgt, projection=projection_tgt)
+            corrected_image = apply_shifts(geo_tgt_image.arr, [shift_x, shift_y], geo_tgt_image.arr.shape)
+            corrected_images_stack.append(corrected_image)#corrected_dict['arr_shifted']) 
             print('Added coreg')
+            coreg_mask[i] = True
         except Exception as e:
             print(f'Error: {e}')
-            corrected_images_stack.append(geo_tgt_image.arr)
+            corrected_images_stack.append(ds_tgt.isel(time=i).to_array().values.transpose(1, 2, 0))
             pass
         
       else:
         print('Too many clouds/missing data')
-        corrected_images_stack.append(geo_tgt_image.arr)
+        corrected_images_stack.append(ds_tgt.isel(time=i).to_array().values.transpose(1, 2, 0))
   
   corrected_images_stack = np.stack(corrected_images_stack, axis=0).transpose((3,0,1,2))  # Final shape is (bands, time, lat, lon)
 
   # Create a new xarray Dataset
-  time_dim = ds.sizes['time']
-  lat_dim = ds.sizes['lat']
-  lon_dim = ds.sizes['lon']
+  time_dim = ds_tgt.sizes['time']
+  lat_dim = ds_tgt.sizes['lat']
+  lon_dim = ds_tgt.sizes['lon']
   bands_dim = len(bands)
 
   # Create DataArray for each band
   data_vars = {band: xr.DataArray(
       data=corrected_images_stack[bands.index(band),:, :, :],
       dims=['time','lat','lon',],
-      coords={'lon': ds['lon'].values, 'lat': ds['lat'].values, 'time': ds['time'].values},
+      coords={'lon': ds_tgt['lon'].values, 'lat': ds_tgt['lat'].values, 'time': ds_tgt['time'].values},
       name=band
   ) for band in bands}
 
@@ -271,7 +285,7 @@ def coreg(ds, ref):
   # Add back variables
   ds_coreg[to_drop] = ds[to_drop]
 
-  return ds_coreg
+  return ds_coreg, coreg_mask
 
 
 def extract_date(time):
@@ -343,7 +357,7 @@ def run_coregistration(target_folder, reference_folder, output_folder):
   if not os.path.exists(output_folder):
     os.makedirs(output_folder)
 
-  target_files = [os.path.join(target_folder, f) for f in os.listdir(target_folder) if f.endswith('.zarr') and '350940_5209260' in f] #
+  target_files = [os.path.join(target_folder, f) for f in os.listdir(target_folder) if f.endswith('.zarr') and '439260_5248940' in f] #
   processed_files = [os.path.join(output_folder, f) for f in os.listdir(output_folder) if f.endswith('.zarr')]
 
   for i, f in enumerate(target_files):
@@ -351,19 +365,25 @@ def run_coregistration(target_folder, reference_folder, output_folder):
       print(f)
       # Load file and all possible contigous files (up to 8 other cubes)
       ds, minx, maxy, attrs = load_cubes(f, target_folder)
+      #plot_single_gif(ds, 'ds_loaded.gif')
       # Load SwissImage of correspoding central cube
       ref = xr.open_zarr(os.path.join(reference_folder, f'SwissImage0.1_{int(minx)}_{int(maxy)}.zarr')).compute()
       #ref.rio.to_raster('ref.tif')
       #ds[["s2_B04", "s2_B03", "s2_B02"]].isel(time=0).rename({'lat':'y', 'lon':'x'}).rio.to_raster('tgt.tif')
       # Coreg (if too big, can do year by year)
-      ds_coreg = coreg(ds, ref)
+      ds_coreg, coreg_mask = coreg(ds, ref)
+      
+
+      # Plot before/after
+      #plot_gif(ds.isel(time=slice(0,10)).isel(time=coreg_mask).sel(lat=slice(maxy,maxy-1270), lon=slice(minx, minx+1270)), ds_coreg.isel(time=coreg_mask).sel(lat=slice(maxy, maxy-1270), lon=slice(minx, minx+1270)), 'test_arosics.gif')
+      plot_gif(ds.sel(lat=slice(maxy,maxy-1270), lon=slice(minx, minx+1270)), ds_coreg.sel(lat=slice(maxy, maxy-1270), lon=slice(minx, minx+1270)), 'test_arosics.gif')
+
+
+      break
       # Save year by year
       split_and_save(ds_coreg, minx, maxy, output_folder, attrs)
       # Add that file for all years to processed files
       processed_files += [f for f in os.listdir(target_folder) if f'S2_{minx}_{maxy}_' in f]
-
-      # Plot before/after
-      #plot_gif(ds.sel(lat=slice(maxy-1270,maxy), lon=slice(minx, minx+1270)), ds_coreg.sel(lat=slice(maxy-1270,maxy), lon=slice(minx, minx+1270)), 'test_arosics.gif')
 
       break
 
@@ -374,8 +394,8 @@ def plot_gif(ds, ds_coreg, outpath):
 
   # Need to rescale each band to 0-255 and then set the nan values to 255
   rgb_coreg = rgb_coreg.where(rgb_coreg != 65535, np.nan)
-  max_vals = rgb_coreg.max(dim=['time', 'lat', 'lon'])
-  min_vals = rgb_coreg.min(dim=['time', 'lat', 'lon'])
+  max_vals = rgb_coreg.max(dim=['time', 'lat', 'lon'], skipna=True)
+  min_vals = rgb_coreg.min(dim=['time', 'lat', 'lon'], skipna=True)
   rgb_scaled = ((rgb_coreg - min_vals) / (max_vals - min_vals)) * 255.0
   rgb_coreg = rgb_scaled.where(~rgb_scaled.isnull(), 0)
 
@@ -383,16 +403,15 @@ def plot_gif(ds, ds_coreg, outpath):
   rgb = ds[['s2_B04','s2_B03','s2_B02']].astype(float)
 
   # Need to rescale each band to 0-255 and then set the nan values to 255
-  rgb = rgb.where(rgb_coreg != 65535, np.nan)
-  max_vals = rgb.max(dim=['time', 'lat', 'lon'])
-  min_vals = rgb.min(dim=['time', 'lat', 'lon'])
+  rgb = rgb.where(rgb != 65535, np.nan)
+  max_vals = 10000 #rgb.max(dim=['time', 'lat', 'lon'], skipna=True)
+  min_vals = 0 #rgb.min(dim=['time', 'lat', 'lon'], skipna=True)
   rgb_scaled = ((rgb - min_vals) / (max_vals - min_vals)) * 255.0
   rgb = rgb_scaled.where(~rgb_scaled.isnull(), 0)
 
-
   # Create a PIL Image object from the numpy array
   gif = []
-  for t in range(rgb.sizes['time']):
+  for t in range(rgb_coreg.sizes['time']):
       img_orig = rgb.isel(time=t).to_array().values.transpose(1,2,0)
       im_rescaled_orig = img_orig*3
 
@@ -405,6 +424,47 @@ def plot_gif(ds, ds_coreg, outpath):
       # Convert numpy array to PIL Image and resize
       pil_img = Image.fromarray(combined_img.astype("uint8")).resize((1600, 600))  # Resize to twice the width
       gif.append(pil_img)
+
+
+  # Save the GIF
+  gif[0].save(outpath,
+              save_all=True,
+              append_images=gif[1:],
+              duration=500,  # Set duration between frames in milliseconds
+              loop=1)  # Set loop to 0 for infinite looping
+  return
+
+
+def plot_single_gif(ds, outpath):
+  
+  rgb = ds[['s2_B04','s2_B03','s2_B02']].astype(float)
+
+  # Need to rescale each band to 0-255 and then set the nan values to 255
+  rgb = rgb.where(rgb != 65535, np.nan)
+  max_vals = rgb.max(dim=['time', 'lat', 'lon'])
+  min_vals = rgb.min(dim=['time', 'lat', 'lon'])
+  rgb_scaled = ((rgb - min_vals) / (max_vals - min_vals)) * 255.0
+  rgb = rgb_scaled.where(~rgb_scaled.isnull(), 0)
+
+  # Create a PIL Image object from the numpy array
+  gif = []
+  for t in range(rgb.sizes['time']):
+
+      # CHeck clouds < 50%
+      scl = ds.isel(time=t).s2_SCL
+      scl_mask = xr.where(scl.isin([0,1,2,3,7,8,9,10]), True, False) 
+      cloud = ds.isel(time=t).s2_mask
+      cloud_mask = xr.where(cloud != 0, True, False)
+      data_mask = scl_mask & cloud_mask
+
+      if not data_mask.values.sum() > (data_mask.shape[0]*data_mask.shape[1])//2: 
+  
+        img_orig = rgb.isel(time=t).to_array().values.transpose(1,2,0)
+        im_rescaled_orig = img_orig*5
+
+        # Convert numpy array to PIL Image and resize
+        pil_img = Image.fromarray(im_rescaled_orig.astype("uint8")).resize((600, 600))  # Resize to twice the width
+        gif.append(pil_img)
 
 
   # Save the GIF
