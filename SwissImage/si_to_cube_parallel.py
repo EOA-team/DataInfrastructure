@@ -110,7 +110,6 @@ def open_rasters(files):
     # Combine rasters by coordinates
     combined = xr.combine_by_coords(rasters, combine_attrs='override').fillna(255).rio.write_nodata(255)
     #combined = combined.to_dataset("band").rename({1:"R", 2:"G", 3:"B"})
-    #combined = combined.drop_vars(['spatial_ref'])
 
     return combined#.to_array("band").rio.write_crs(2056)
 
@@ -198,7 +197,7 @@ def resample_to_s2(da, res):
       end_y = round_to_lower_dec(da['y'].values[-1])
       new_x = np.arange(start_x, end_x+0.1, 0.1)
       new_y = np.arange(start_y, end_y-0.1, -0.1)
-    
+
     width = len(new_x)
     height = len(new_y)
     
@@ -224,12 +223,14 @@ def reshape_data(row, da, res):
     Reshape data to same as geometry, and fill missing values with 255
     """
     geometry_bounds = row.geometry.bounds
+    num_x = int(round((geometry_bounds[2] - geometry_bounds[0]) / res)) 
+    num_y = int(round((geometry_bounds[3] - geometry_bounds[1]) / res)) 
     template = xr.DataArray(
         np.full((int(1280/res), int(1280/res)), 255),  # Fill with no data value initially
         dims=["y", "x"],
         coords={
-            "y": np.arange(geometry_bounds[3], geometry_bounds[1], -res),  # y from top to bottom
-            "x": np.arange(geometry_bounds[0], geometry_bounds[2], res),   # x from left to right
+            "y": np.linspace(geometry_bounds[3], geometry_bounds[1]+res, num_y), # y from top to bottom
+            "x": np.linspace(geometry_bounds[0], geometry_bounds[2]-res, num_x)  # x from left to right
         },
         name="template"
     ).rio.write_crs(32632)
@@ -309,81 +310,8 @@ def reproject_dataarray(da, res, output_shape, resampling_method, src_crs, dst_c
 
     return combined_data
 
-def run_processing(grid, grid_copy, output_prefix, data_path, res, metadata, overwrite):
-    """
-    Download data for all grid cells and save each to zarr year by year
 
-    :param grid: original grid used for downloading
-    :param grid_copy: copy of grid that will be updated to track what geometries and yeas have been downloaded
-    :param output_prefix: path to save zarr stores
-    :param data_path: path where raw data stored
-    :param res: resolution of SwissImage (0.1 or 2)
-    :param overwrite: if True, will overwrite existing zarr stores
-    :param metadat: dict of metadata to add to zarr store
-    return grid_copy: updated grid_copy
-    """
-    lock = threading.Lock()
-
-    start_index = 22
-    for i, row in grid.iloc[start_index:].iterrows(): #for i, row in grid.iterrows():
-        all_files = [f for f in os.listdir(data_path)]
-        if not grid_copy.loc[i, 'selected'] or overwrite is True:
-            start_all = time.time()
-            print(f"{datetime.datetime.now()}----Processing patch {i}/{len(grid)}----")
-            
-            # Find the SI images that would intersect with the grid cell
-            patch_2056 = gpd.GeoDataFrame([row], crs=32632).to_crs(2056).geometry
-            minx, miny, maxx, maxy = patch_2056.total_bounds
-            files = match_si_to_patch(minx, miny, maxx, maxy, data_path, res, all_files)
-            
-            # Open and prepare SwissImage data
-            if len(files):
-                da = open_rasters(files)
-            else:
-                continue
-
-            # Shift coords to topleft of pixel     
-            da = coords_to_topleft(da, res)
-
-            # Reproject to EPSG 32632
-            da = reproject_dataarray(da, res=res, output_shape=(da.sizes['x'],da.sizes['y']), resampling_method=Resampling.cubic, src_crs=da.rio.crs, dst_crs="EPSG:32632")
-            # da_reproj = da.rio.reproject("EPSG:32632", shape=(da.sizes['x'],da.sizes['y']), resampling=Resampling.cubic)
-
-            # Check if data fills in the patch. If not, will need to reshape before resampling and clipping
-            minx, miny, maxx, maxy = row.geometry.bounds
-            if da.x.min().item() > minx or da.x.max().item() < maxx or da.y.min().item() > miny or da.y.max().item() < maxy:
-                #print('Doesnt fill cell')
-                da = reshape_data(row, da, res)
-                da = resample_to_s2(da, res)
-            else:
-                #print('Fills cell')
-                # Directly resample
-                da = resample_to_s2(da, res)
-                
-            # Clip to grid cell
-            da = da.rio.clip_box(*(row.geometry.bounds[0], row.geometry.bounds[1]+res, row.geometry.bounds[2]-res, row.geometry.bounds[3]))
-            # Convert to dataset
-            ds = da.to_dataset("band").rename({1:"R", 2:"G", 3:"B"}).drop_vars('spatial_ref').rio.write_crs(32632)
-            # Update metadata
-            source_files = [f.split('/')[-1] for f in files]
-            metadata.update({'source_files': ', '.join(source_files)})
-            ds.attrs = metadata
-            # Save data
-            save_cube(ds, res, output_prefix, overwrite)
-            end_all = time.time()
-            print('Took:', end_all-start_all)
-        
-            """
-            transform = Affine(res, 0.0, row.geometry.bounds[0], 0.0, -res, row.geometry.bounds[3])
-            ds.rio.write_transform(transform, inplace=True)
-            print(ds.spatial_ref.GeoTransform)
-            print(ds.rio.transform())
-            ds[['R', 'G', 'B']].rio.to_raster(f'pipeline_test_{i}.tif')
-            """
-
-    return grid_copy
-
-def process_patch(row_data, data_path, grid_copy, res, output_prefix, overwrite, metadata):
+def process_patch(row_data, data_path, grid_copy, res, output_prefix, overwrite, metadata, all_files):
     """
     Search for SwissImage data that fills in a grid cell. Process data and write to zarr
 
@@ -394,10 +322,11 @@ def process_patch(row_data, data_path, grid_copy, res, output_prefix, overwrite,
     :param output_prefix: path to save zarr stores
     :param overwrite: if True, will overwrite existing zarr stores
     :param metadata: dictionary of metadata to add to cube
+    :param all_files: list of files already produced by code
     :return: None
     """
     i, row = row_data
-    all_files = [f for f in os.listdir(data_path)]
+    
     if not grid_copy.loc[i, 'selected'] or overwrite is True:
         
         start_all = time.time()
@@ -422,19 +351,27 @@ def process_patch(row_data, data_path, grid_copy, res, output_prefix, overwrite,
 
         # Check if data fills in the patch. If not, will need to reshape before resampling and clipping
         minx, miny, maxx, maxy = row.geometry.bounds
+        da = reshape_data(row, da, res)
+        """ 
         if da.x.min().item() > minx or da.x.max().item() < maxx or da.y.min().item() > miny or da.y.max().item() < maxy:
             #print('Doesnt fill cell')
+            print('Geom', i, row.geometry.bounds)
             da = reshape_data(row, da, res)
+            print('Reshape', i, da.x.values[0], da.x.values[-1], da.y.values[0], da.y.values[-1])
             da = resample_to_s2(da, res)
+            print('Resample', i, da.x.values[0], da.x.values[-1], da.y.values[0], da.y.values[-1])
         else:
+            return
             #print('Fills cell')
             # Directly resample
             da = resample_to_s2(da, res)
+        """
             
         # Clip to grid cell
-        da = da.rio.clip_box(*(row.geometry.bounds[0], row.geometry.bounds[1]+res, row.geometry.bounds[2]-res, row.geometry.bounds[3]))
+        
+        #da = da.rio.clip_box(*(row.geometry.bounds[0], row.geometry.bounds[1]+res, row.geometry.bounds[2]-res, row.geometry.bounds[3]))
         # Convert to dataset
-        ds = da.to_dataset("band").rename({1:"R", 2:"G", 3:"B"}).drop_vars('spatial_ref').rio.write_crs(32632)
+        ds = da.to_dataset("band").rename({1:"R", 2:"G", 3:"B"}).rio.write_crs(32632)
         # Update metadata
         source_files = [f.split('/')[-1] for f in files]
         metadata.update({'source_files': ', '.join(source_files)})
@@ -444,10 +381,13 @@ def process_patch(row_data, data_path, grid_copy, res, output_prefix, overwrite,
         end_all = time.time()
         print(f"{datetime.datetime.now()} - Processing patch {i}/{len(grid)} took {end_all-start_all} s")
 
-def parallel_process(grid_copy, data_path, res, output_prefix, overwrite, metadata, num_workers=4):
-    # Prepare the arguments for each task
-    tasks = [(row_data, data_path, grid_copy, res, output_prefix, overwrite, metadata) for row_data in grid_copy.iterrows()]
+def parallel_process(grid_copy, data_path, res, output_prefix, overwrite, metadata, num_workers=10):
     
+    all_files = [f for f in os.listdir(data_path) if f.endswith('tif')]
+    # Prepare the arguments for each task
+    tasks = [(row_data, data_path, grid_copy, res, output_prefix, overwrite, metadata, all_files) for row_data in grid_copy.iterrows()]
+    
+    """ 
     # Use ThreadPoolExecutor for parallel execution
     with ProcessPoolExecutor(max_workers=num_workers) as executor:
         futures = [executor.submit(process_patch, *task) for task in tasks]
@@ -455,7 +395,26 @@ def parallel_process(grid_copy, data_path, res, output_prefix, overwrite, metada
             try:
                 future.result()  # Get the result of the future (raises exceptions if any)
             except Exception as e:
-              print(f"An error occurred: {e}")
+                print("Error occured", e)
+    """ 
+
+   
+    with ProcessPoolExecutor(max_workers=num_workers) as executor:
+        # Map each future to its corresponding task
+        future_to_task = {executor.submit(process_patch, *task): task for task in tasks}
+        
+        for future in as_completed(future_to_task):
+            task = future_to_task[future]  # Get the task associated with this future
+            try:
+                future.result()  # Get the result of the future (raises exceptions if any)
+            except Exception as e:
+                row_data = task[0] # Assuming task is the row_data or contains it
+                print(f"Error occurred with task {row_data}: {e}")
+                break
+    """
+    for row_data in grid_copy.iterrows():
+        process_patch(row_data, data_path, grid_copy, res, output_prefix, overwrite, metadata, all_files)
+    """ 
 
 
               
@@ -476,6 +435,11 @@ if __name__ == "__main__":
 
     # Check what is already processed and update grid based on files
     grid_copy = check_processed_files(output_prefix, grid)
+    """ 
+    grid_copy = grid.copy()
+    grid_copy['selected'] = [False]*len(grid_copy)
+    print(grid_copy.selected.sum())
+    """
 
     # Run processing
     metadata = {
@@ -483,7 +447,7 @@ if __name__ == "__main__":
               "source": "Swisstopo SwissImage",
               "grid": f"EPSG:32632. Coordinates are upper left corners of pixels",
               "missing data fill value": 255,
-              "processing": "Reprojected from EPSG:2056. Resampled to closest even coordinates. Cubic resampling used at every step.",
+              "processing": "Reprojected from EPSG:2056. Aligned to Sentinel-2 coordinates, with 10cm resolution. Cubic resampling used at every step.",
             }
 
     #grid_copy = run_processing(grid, grid_copy, output_prefix, data_path, res, metadata, overwrite)
