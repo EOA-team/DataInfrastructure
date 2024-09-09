@@ -120,7 +120,9 @@ The download history is tracked here:
 | 31.05.2024| Run S2 downloading | Package versions: sen2nbar==2023.8.1  minicuber ([commit version](https://github.com/EOA-team/minicuber/tree/14eb81ee93f91c0076e21debf23e4a82e6d7cc9e))| 
 | 18.07.2024| Completed S2 download | | 
 | 26.07.2024| Downloaded SwissImage 2m | | 
-| 29.07.2024| Downloaded SwissImage 0.1m | | 
+| 29.07.2024| Downloaded SwissImage 0.1m | |
+| 09.09.2024| Processed SwissImage 0.1m and 2m to cubes | |
+| 09.09.2024| Downloaded S2 2016 |Package versions: sen2nbar==2023.8.1  minicuber ([commit version](https://github.com/EOA-team/minicuber/tree/14eb81ee93f91c0076e21debf23e4a82e6d7cc9e))| 
 
 
 ### Overview of data storage structure
