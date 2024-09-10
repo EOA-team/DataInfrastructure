@@ -5,6 +5,7 @@ Coregistration pipeline using SwissImage to correct S2 data
 import os
 import xarray as xr
 import numpy as np
+import geopandas as gpd
 import glob
 import warnings
 warnings.filterwarnings('ignore')
@@ -20,6 +21,13 @@ from collections import defaultdict
 import rioxarray
 from PIL import Image
 from scipy.ndimage import affine_transform
+import matplotlib.pyplot as plt
+from matplotlib import cm
+from matplotlib.colors import ListedColormap
+from matplotlib.animation import FuncAnimation
+from matplotlib.ticker import MaxNLocator
+import time
+from concurrent.futures import ProcessPoolExecutor, as_completed
 
 
 def extract_ids(product_uri):
@@ -163,7 +171,7 @@ def apply_shifts(image, shifts, output_shape):
     matrix = np.array([[1, 0, shifts[0]], [0, 1, shifts[1]], [0, 0, 1]])
     transformed_image = np.zeros(output_shape, dtype=image.dtype)
     for band in range(image.shape[2]):
-        transformed_image[:, :, band] = affine_transform(image[:, :, band], matrix, order=1, mode='nearest', output_shape=output_shape[:2])
+        transformed_image[:, :, band] = affine_transform(image[:, :, band], matrix, mode='nearest', output_shape=output_shape[:2])
     
     return transformed_image
 
@@ -220,7 +228,6 @@ def coreg(ds, ref):
       # Check if there is any data
       print(f'Clouds masked {data_mask.values.sum()}/{data_mask.shape[0]*data_mask.shape[1]}')
       print(f'Missing data: {np.sum(target_image.values == 65535)}')
-      nodata_mask = data_mask.values.sum()
       if not data_mask.values.sum() > 0.8*(data_mask.shape[0]*data_mask.shape[1]):  # max 80% clouds
         try:
 
@@ -229,7 +236,7 @@ def coreg(ds, ref):
                 im_ref=geo_ref_image,  # Reference image array
                 im_tgt=geo_tgt_image,  # Target image array
                 ws=(128,128),          # Size of the matching window in pixels
-                max_iter=10,           # Maximum number of iterations
+                max_iter=5,            # Maximum number of iterations
                 path_out=None,         # Path to save the coregistered image (None if not saving)
                 fmt_out='Zarr',        # Output format (None if not saving)
                 nodata =(255, 65535),
@@ -237,13 +244,14 @@ def coreg(ds, ref):
                 footprint_poly_ref=footprint_ref,
                 footprint_poly_tgt=footprint_tgt,
                 align_grids=True,
-                q=True
+                q=False,
+                max_shift=3
             )
 
             # Compute shifts
             CR.calculate_spatial_shifts()
             corrected_dict = CR.correct_shifts() # returns an OrderedDict containing the co-registered numpy array and its corresponding geoinformation.
-            shift_x, shift_y = CR.coreg_info['corrected_shifts_map']['x']*-1,  CR.coreg_info['corrected_shifts_map']['y']*-1
+            shift_x, shift_y = CR.coreg_info['corrected_shifts_px']['x']*-1,  CR.coreg_info['corrected_shifts_px']['y']*-1
             geo_tgt_image = GeoArray(ds_tgt.isel(time=i).to_array().values.transpose(1, 2, 0), geotransform=geotransform_tgt, projection=projection_tgt)
             corrected_image = apply_shifts(geo_tgt_image.arr, [shift_x, shift_y], geo_tgt_image.arr.shape)
             corrected_images_stack.append(corrected_image)#corrected_dict['arr_shifted']) 
@@ -269,7 +277,7 @@ def coreg(ds, ref):
   # Create DataArray for each band
   data_vars = {band: xr.DataArray(
       data=corrected_images_stack[bands.index(band),:, :, :],
-      dims=['time','lat','lon',],
+      dims=['time','lat','lon'],
       coords={'lon': ds_tgt['lon'].values, 'lat': ds_tgt['lat'].values, 'time': ds_tgt['time'].values},
       name=band
   ) for band in bands}
@@ -335,13 +343,12 @@ def split_and_save(ds, minx, maxy, output_folder, attrs):
           attrs['history'] += f". Coregistered with SwissImage on {datetime.date.today()}."
           ds_yr.attrs = attrs
           
-          """ 
           # Save to zarr store
-          output_path = output_folder + f'S2_{minx}_{maxy}_{year_start}{month_start}{day_start}_{year_end}{month_end}{day_end}.zarr'
+          output_path = os.path.join(output_folder, f'S2_{minx}_{maxy}_{year_start}{month_start}{day_start}_{year_end}{month_end}{day_end}.zarr')
           compressor = zarr.Blosc(cname='zstd', clevel=3, shuffle=2)
           if not os.path.exists(output_path):
+              print('Saving', output_path)
               ds_yr.to_zarr(output_path, consolidated=True, mode='w', encoding={var: {'compressor': compressor} for var in ds_yr.data_vars})
-          """
           
     return
 
@@ -363,6 +370,7 @@ def run_coregistration(target_folder, reference_folder, output_folder):
   for i, f in enumerate(target_files):
     if f not in processed_files:
       print(f)
+      start= time.time()
       # Load file and all possible contigous files (up to 8 other cubes)
       ds, minx, maxy, attrs = load_cubes(f, target_folder)
       #plot_single_gif(ds, 'ds_loaded.gif')
@@ -372,24 +380,141 @@ def run_coregistration(target_folder, reference_folder, output_folder):
       #ds[["s2_B04", "s2_B03", "s2_B02"]].isel(time=0).rename({'lat':'y', 'lon':'x'}).rio.to_raster('tgt.tif')
       # Coreg (if too big, can do year by year)
       ds_coreg, coreg_mask = coreg(ds, ref)
-      
-
-      # Plot before/after
-      #plot_gif(ds.isel(time=slice(0,10)).isel(time=coreg_mask).sel(lat=slice(maxy,maxy-1270), lon=slice(minx, minx+1270)), ds_coreg.isel(time=coreg_mask).sel(lat=slice(maxy, maxy-1270), lon=slice(minx, minx+1270)), 'test_arosics.gif')
-      plot_gif(ds.sel(lat=slice(maxy,maxy-1270), lon=slice(minx, minx+1270)), ds_coreg.sel(lat=slice(maxy, maxy-1270), lon=slice(minx, minx+1270)), 'test_arosics.gif')
-
-
-      break
       # Save year by year
-      split_and_save(ds_coreg, minx, maxy, output_folder, attrs)
+      #split_and_save(ds_coreg, minx, maxy, output_folder, attrs)
       # Add that file for all years to processed files
-      processed_files += [f for f in os.listdir(target_folder) if f'S2_{minx}_{maxy}_' in f]
+      #processed_files += [f for f in os.listdir(target_folder) if f'S2_{minx}_{maxy}_' in f]
+
+      end = time.time()
+      print('Took', end-start)
+
+      #Plot fixed times
+      #plot_imgs(ref, ds.isel(time=slice(,50)).sel(lat=slice(maxy,maxy-1270), lon=slice(minx, minx+1270)), ds_coreg.sel(lat=slice(maxy,maxy-1270), lon=slice(minx, minx+1270)), 2, 'test_arosics.png')
+      # Plot before/after
+      plot_mp4(ref, ds.isel(time=slice(0,70)).isel(time=coreg_mask).sel(lat=slice(maxy,maxy-1270), lon=slice(minx, minx+1270)), ds_coreg.isel(time=coreg_mask).sel(lat=slice(maxy, maxy-1270), lon=slice(minx, minx+1270)), 'test_arosics_64.mp4')
+      #plot_gif(ds.sel(lat=slice(maxy,maxy-1270), lon=slice(minx, minx+1270)), ds_coreg.sel(lat=slice(maxy, maxy-1270), lon=slice(minx, minx+1270)), 'test_arosics.gif')
+
 
       break
+
+
+def run_coregistration_file(f, processed_files, reference_folder, output_folder):
+  """
+  Run coregistration pipeline for all files in target folder. Files in target and reference must have same name system and contain zarr stores
+
+  :param f: file to coregister
+  :param reference_folder: path to reference files
+  :param output_folder: folder where to write new files
+  """
+  
+  if f not in processed_files:
+    print('Coreg file', f)
+    start= time.time()
+    # Load file and all possible contigous files (up to 8 other cubes)
+    ds, minx, maxy, attrs = load_cubes(f, target_folder)
+    # Load SwissImage of correspoding central cube
+    ref = xr.open_zarr(os.path.join(reference_folder, f'SwissImage0.1_{int(minx)}_{int(maxy)}.zarr')).compute()
+    # Coreg (if too big, can do year by year)
+    ds_coreg, coreg_mask = coreg(ds, ref)
+    # Save year by year
+    split_and_save(ds_coreg, minx, maxy, output_folder, attrs)
+    # Add that file for all years to processed files]
+
+    end = time.time()
+    print(f'{f}: Took', end-start)
+
+    return
+
+
+def parallel_process(target_folder, reference_folder, output_folder, num_workers=5):
+
+    if not os.path.exists(output_folder):
+      os.makedirs(output_folder)
+
+    target_files = [os.path.join(target_folder, f) for f in os.listdir(target_folder) if f.endswith('.zarr')] 
+    processed_files = [os.path.join(output_folder, f) for f in os.listdir(output_folder) if f.endswith('.zarr')]
+    
+    tasks = [(f, processed_files, reference_folder, output_folder) for f in target_files if f not in processed_files]
+
+    # Using ProcessPoolExecutor to process files in parallel
+    with ProcessPoolExecutor(max_workers=num_workers) as executor:
+        # Submit tasks to the executor
+        future_to_task = {executor.submit(run_coregistration_file, *task): task for task in tasks}
+        
+        # Iterate through completed futures
+        for future in as_completed(future_to_task):
+            task = future_to_task[future]  # Get the associated task
+            try:
+                result = future.result()  # Get the result of the future (raises exceptions if any)
+                print(f"Successfully processed {result}")
+            except Exception as e:
+                f = task[0]  # Get the file being processed in the task
+                print(f"Error occurred with file {f}: {e}")
+                # Optionally, log or take some other action here
+                break  # Exit the loop on error, or you can continue if desired
+
+
+
+              
+
+
+
+def plot_imgs(ref, ds, ds_coreg, i, outpath):
+  scale_factor = 1.0 / 10000.0  # Scale factor for DN to [0, 1]
+  r = ds_coreg['s2_B04'] * scale_factor
+  g = ds_coreg['s2_B03'] * scale_factor
+  b = ds_coreg['s2_B02'] * scale_factor
+
+  # Stack bands into an RGB array
+  rgb_coreg = xr.concat([r, g, b], dim='band').transpose('time', 'lat', 'lon', 'band')
+  rgb_coreg = rgb_coreg.where(~np.isnan(rgb_coreg), other=1.0)
+
+  r = ds['s2_B04'] * scale_factor
+  g = ds['s2_B03'] * scale_factor
+  b = ds['s2_B02'] * scale_factor
+
+  # Stack bands into an RGB array
+  rgb = xr.concat([r, g, b], dim='band').transpose('time', 'lat', 'lon', 'band')
+  rgb = rgb.where(~np.isnan(rgb), other=1.0)
+
+  ref_rgb = ref[['R','G','B']].to_array().values.transpose(1,2,0)
+    
+  f, axs = plt.subplots(1, 3, figsize=(15, 5))
+
+  axs[0].imshow(ref_rgb)
+  axs[0].set_xticks(np.arange(ref_rgb.shape[1]))
+  axs[0].set_yticks(np.arange(ref_rgb.shape[0]))
+  axs[0].set_xticklabels(ref.coords['x'].values)
+  axs[0].set_yticklabels(ref.coords['y'].values)
+  axs[0].xaxis.set_major_locator(MaxNLocator(integer=True, prune='both', nbins=6))
+  axs[0].yaxis.set_major_locator(MaxNLocator(integer=True, prune='both', nbins=6))
+  plt.setp(axs[0].get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
+
+  axs[1].imshow(rgb[i].values*3)
+  axs[1].set_xticks(np.arange(rgb.sizes['lon']))
+  axs[1].set_yticks(np.arange(rgb.sizes['lat']))
+  axs[1].set_xticklabels(rgb.coords['lon'].values)
+  axs[1].set_yticklabels(rgb.coords['lat'].values)
+  axs[1].xaxis.set_major_locator(MaxNLocator(integer=True, prune='both', nbins=6))
+  axs[1].yaxis.set_major_locator(MaxNLocator(integer=True, prune='both', nbins=6))
+  plt.setp(axs[1].get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
+
+  axs[2].imshow(rgb_coreg[i].values*3)
+  axs[2].set_xticks(np.arange(rgb_coreg.sizes['lon']))
+  axs[2].set_yticks(np.arange(rgb_coreg.sizes['lat']))
+  axs[2].set_xticklabels(rgb_coreg.coords['lon'].values)
+  axs[2].set_yticklabels(rgb_coreg.coords['lat'].values)
+  axs[2].xaxis.set_major_locator(MaxNLocator(integer=True, prune='both', nbins=6))
+  axs[2].yaxis.set_major_locator(MaxNLocator(integer=True, prune='both', nbins=6))
+  plt.setp(axs[2].get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
+  plt.savefig(outpath)
+
+  return
 
 
 def plot_gif(ds, ds_coreg, outpath):
   
+  """ 
   rgb_coreg = ds_coreg[['s2_B04','s2_B03','s2_B02']].astype(float)
 
   # Need to rescale each band to 0-255 and then set the nan values to 255
@@ -398,8 +523,18 @@ def plot_gif(ds, ds_coreg, outpath):
   min_vals = rgb_coreg.min(dim=['time', 'lat', 'lon'], skipna=True)
   rgb_scaled = ((rgb_coreg - min_vals) / (max_vals - min_vals)) * 255.0
   rgb_coreg = rgb_scaled.where(~rgb_scaled.isnull(), 0)
+  """
 
+  scale_factor = 1.0 / 10000.0  # Scale factor for DN to [0, 1]
+  r = ds_coreg['s2_B04'] * scale_factor
+  g = ds_coreg['s2_B03'] * scale_factor
+  b = ds_coreg['s2_B02'] * scale_factor
 
+  # Stack bands into an RGB array
+  rgb_coreg = xr.concat([r, g, b], dim='band').transpose('time', 'lat', 'lon', 'band')
+  rgb_coreg = rgb_coreg.where(~np.isnan(rgb_coreg), other=1.0)
+
+  """ 
   rgb = ds[['s2_B04','s2_B03','s2_B02']].astype(float)
 
   # Need to rescale each band to 0-255 and then set the nan values to 255
@@ -408,15 +543,26 @@ def plot_gif(ds, ds_coreg, outpath):
   min_vals = 0 #rgb.min(dim=['time', 'lat', 'lon'], skipna=True)
   rgb_scaled = ((rgb - min_vals) / (max_vals - min_vals)) * 255.0
   rgb = rgb_scaled.where(~rgb_scaled.isnull(), 0)
+  """
+
+  r = ds['s2_B04'] * scale_factor
+  g = ds['s2_B03'] * scale_factor
+  b = ds['s2_B02'] * scale_factor
+
+  # Stack bands into an RGB array
+  rgb = xr.concat([r, g, b], dim='band').transpose('time', 'lat', 'lon', 'band')
+  rgb = rgb.where(~np.isnan(rgb), other=1.0)
+  print(rgb)
+
 
   # Create a PIL Image object from the numpy array
   gif = []
   for t in range(rgb_coreg.sizes['time']):
-      img_orig = rgb.isel(time=t).to_array().values.transpose(1,2,0)
-      im_rescaled_orig = img_orig*3
+      img_orig = rgb[t] #.isel(time=t).to_array().values.transpose(1,2,0)
+      im_rescaled_orig = img_orig*5
 
-      img_coreg = rgb_coreg.isel(time=t).to_array().values.transpose(1,2,0)
-      im_rescaled_coreg = img_coreg*3
+      img_coreg = rgb_coreg[t] #.isel(time=t).to_array().values.transpose(1,2,0)
+      im_rescaled_coreg = img_coreg*5
 
       # Combine the original and coregistered images side by side
       combined_img = np.hstack((im_rescaled_orig, im_rescaled_coreg))
@@ -432,6 +578,57 @@ def plot_gif(ds, ds_coreg, outpath):
               append_images=gif[1:],
               duration=500,  # Set duration between frames in milliseconds
               loop=1)  # Set loop to 0 for infinite looping
+  return
+
+
+def update(frame):
+    # Update images for the current timestamp
+    im_rgb.set_array(rgb[frame].values*3)
+    im_rgbcoreg.set_array(rgb_coreg[frame].values*3)
+    
+    return im_rgb, im_rgbcoreg
+
+
+def plot_mp4(ref, ds, ds_coreg, outpath):
+  global rgb, rgb_coreg, im_rgb, im_rgbcoreg
+  scale_factor = 1.0 / 10000.0  # Scale factor for DN to [0, 1]
+  r = ds_coreg['s2_B04'] * scale_factor
+  g = ds_coreg['s2_B03'] * scale_factor
+  b = ds_coreg['s2_B02'] * scale_factor
+
+  # Stack bands into an RGB array
+  rgb_coreg = xr.concat([r, g, b], dim='band').transpose('time', 'lat', 'lon', 'band')
+  rgb_coreg = rgb_coreg.where(~np.isnan(rgb_coreg), other=1.0)
+
+  r = ds['s2_B04'] * scale_factor
+  g = ds['s2_B03'] * scale_factor
+  b = ds['s2_B02'] * scale_factor
+
+  # Stack bands into an RGB array
+  rgb = xr.concat([r, g, b], dim='band').transpose('time', 'lat', 'lon', 'band')
+  rgb = rgb.where(~np.isnan(rgb), other=1.0)
+
+  ref_rgb = ref[['R','G','B']].to_array().values.transpose(1,2,0)
+
+  # Set up the figure and axis
+  fig, axs = plt.subplots(1, 3, figsize=(15, 5))
+
+  # Initialize images
+  img_ref = axs[0].imshow(ref_rgb)
+  im_rgb = axs[1].imshow(rgb[0].values*3)
+  im_rgbcoreg = axs[2].imshow(rgb_coreg[0].values*3)
+
+  # Set titles and axis labels
+  axs[0].set_title('Ref')
+  axs[1].set_title('Orig')
+  axs[2].set_title('Coreg')
+
+  # Create the animation
+  ani = FuncAnimation(fig, update, frames=len(rgb.time), blit=True)
+
+  # Save the animation as an MP4 video using ffmpeg
+  ani.save(outpath, writer='ffmpeg', fps=2)  # Adjust fps (frames per second) as needed
+
   return
 
 
@@ -475,10 +672,11 @@ def plot_single_gif(ds, outpath):
               loop=0)  # Set loop to 0 for infinite looping
   return
 
+
 if __name__ == "__main__":
 
   target_folder = os.path.expanduser('~/mnt/eo-nas1/data/satellite/sentinel2/raw/CH')
   reference_folder = os.path.expanduser('~/mnt/eo-nas1/data/swisstopo/SwissImage/cubes/10cm')
   output_folder = os.path.expanduser('~/mnt/eo-nas1/data/satellite/sentinel2/coreg/CH')
 
-  run_coregistration(target_folder, reference_folder, output_folder)
+  parallel_process(target_folder, reference_folder, output_folder)
