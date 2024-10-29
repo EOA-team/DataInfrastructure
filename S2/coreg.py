@@ -167,8 +167,11 @@ def clean_dataset(ds, cloud_thresh=0.1, shadow_thresh=0.1, snow_thresh=0.1, cirr
 
 
 def apply_shifts(image, shifts, output_shape):
+    """
+    Apply affine transform on image given shifts in y and x dimension. Since the image dimensions are (y,x,band), shifts should be (shift_y, shift_x)
+    """
     # Function to apply affine transformation based on shifts
-    matrix = np.array([[1, 0, shifts[0]], [0, 1, shifts[1]], [0, 0, 1]])
+    matrix = np.array([[1, 0, shifts[1]], [0, 1, shifts[0]], [0, 0, 1]])
     transformed_image = np.zeros(output_shape, dtype=image.dtype)
     for band in range(image.shape[2]):
         transformed_image[:, :, band] = affine_transform(image[:, :, band], matrix, mode='nearest', output_shape=output_shape[:2])
@@ -250,11 +253,11 @@ def coreg(ds, ref):
 
             # Compute shifts
             CR.calculate_spatial_shifts()
-            corrected_dict = CR.correct_shifts() # returns an OrderedDict containing the co-registered numpy array and its corresponding geoinformation.
-            shift_x, shift_y = CR.coreg_info['corrected_shifts_px']['x']*-1,  CR.coreg_info['corrected_shifts_px']['y']*-1
-            geo_tgt_image = GeoArray(ds_tgt.isel(time=i).to_array().values.transpose(1, 2, 0), geotransform=geotransform_tgt, projection=projection_tgt)
-            corrected_image = apply_shifts(geo_tgt_image.arr, [shift_x, shift_y], geo_tgt_image.arr.shape)
-            corrected_images_stack.append(corrected_image)#corrected_dict['arr_shifted']) 
+            corrected_dict = CR.correct_shifts() # returns an OrderedDict containing the co-registered numpy array and its corresponding geoinformation
+            shift_x, shift_y = CR.coreg_info['corrected_shifts_px']['x'],  CR.coreg_info['corrected_shifts_px']['y']
+            geo_tgt_image = GeoArray(ds_tgt.isel(time=i).to_array().values.transpose(1, 2, 0), geotransform=geotransform_tgt, projection=projection_tgt) #lat, lon, band
+            corrected_image = apply_shifts(geo_tgt_image.arr, [shift_x, shift_y], geo_tgt_image.arr.shape) 
+            corrected_images_stack.append(corrected_image) 
             print('Added coreg')
             coreg_mask[i] = True
         except Exception as e:
@@ -325,8 +328,12 @@ def split_and_save(ds, minx, maxy, output_folder, attrs):
     :param output_folder: folder where to write new data
     :param attrs: original metadata of cube
     """
-    ds = ds.sel(lat=slice(maxy-1270,maxy), lon=slice(minx, minx+1270))
-    ds = ds.sel(lat=slice(None, None, -1))
+
+    if ds.lat.values[0] > ds.lat.values[-1]:
+      ds = ds.sel(lat=slice(maxy,maxy-1270), lon=slice(minx, minx+1270))
+    else:
+      ds = ds.sel(lat=slice(maxy-1270, maxy), lon=slice(minx, minx+1270))
+      ds = ds.sel(lat=slice(None, None, -1))
     
     for yr in np.arange(2017, 2024, 1):
 
@@ -351,51 +358,6 @@ def split_and_save(ds, minx, maxy, output_folder, attrs):
               ds_yr.to_zarr(output_path, consolidated=True, mode='w', encoding={var: {'compressor': compressor} for var in ds_yr.data_vars})
           
     return
-
-
-def run_coregistration(target_folder, reference_folder, output_folder):
-  """
-  Run coregistration pipeline for all files in target folder. Files in target and reference must have same name system and contain zarr stores
-
-  :param target folder: path to target files
-  :param reference_folder: path to reference files
-  :param output_folder: folder where to write new files
-  """
-  if not os.path.exists(output_folder):
-    os.makedirs(output_folder)
-
-  target_files = [os.path.join(target_folder, f) for f in os.listdir(target_folder) if f.endswith('.zarr') and '439260_5248940' in f] #
-  processed_files = [os.path.join(output_folder, f) for f in os.listdir(output_folder) if f.endswith('.zarr')]
-
-  for i, f in enumerate(target_files):
-    if f not in processed_files:
-      print(f)
-      start= time.time()
-      # Load file and all possible contigous files (up to 8 other cubes)
-      ds, minx, maxy, attrs = load_cubes(f, target_folder)
-      #plot_single_gif(ds, 'ds_loaded.gif')
-      # Load SwissImage of correspoding central cube
-      ref = xr.open_zarr(os.path.join(reference_folder, f'SwissImage0.1_{int(minx)}_{int(maxy)}.zarr')).compute()
-      #ref.rio.to_raster('ref.tif')
-      #ds[["s2_B04", "s2_B03", "s2_B02"]].isel(time=0).rename({'lat':'y', 'lon':'x'}).rio.to_raster('tgt.tif')
-      # Coreg (if too big, can do year by year)
-      ds_coreg, coreg_mask = coreg(ds, ref)
-      # Save year by year
-      #split_and_save(ds_coreg, minx, maxy, output_folder, attrs)
-      # Add that file for all years to processed files
-      #processed_files += [f for f in os.listdir(target_folder) if f'S2_{minx}_{maxy}_' in f]
-
-      end = time.time()
-      print('Took', end-start)
-
-      #Plot fixed times
-      #plot_imgs(ref, ds.isel(time=slice(,50)).sel(lat=slice(maxy,maxy-1270), lon=slice(minx, minx+1270)), ds_coreg.sel(lat=slice(maxy,maxy-1270), lon=slice(minx, minx+1270)), 2, 'test_arosics.png')
-      # Plot before/after
-      plot_mp4(ref, ds.isel(time=slice(0,70)).isel(time=coreg_mask).sel(lat=slice(maxy,maxy-1270), lon=slice(minx, minx+1270)), ds_coreg.isel(time=coreg_mask).sel(lat=slice(maxy, maxy-1270), lon=slice(minx, minx+1270)), 'test_arosics_64.mp4')
-      #plot_gif(ds.sel(lat=slice(maxy,maxy-1270), lon=slice(minx, minx+1270)), ds_coreg.sel(lat=slice(maxy, maxy-1270), lon=slice(minx, minx+1270)), 'test_arosics.gif')
-
-
-      break
 
 
 def run_coregistration_file(f, processed_files, reference_folder, output_folder):
@@ -426,7 +388,7 @@ def run_coregistration_file(f, processed_files, reference_folder, output_folder)
     return
 
 
-def parallel_process(target_folder, reference_folder, output_folder, num_workers=5):
+def parallel_process(target_folder, reference_folder, output_folder, num_workers=1):
 
     if not os.path.exists(output_folder):
       os.makedirs(output_folder)
@@ -455,8 +417,7 @@ def parallel_process(target_folder, reference_folder, output_folder, num_workers
 
 
 
-              
-
+            
 
 
 def plot_imgs(ref, ds, ds_coreg, i, outpath):
