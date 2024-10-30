@@ -84,7 +84,7 @@ def open_cubes_conflicting(cubes):
   return ds
 
 
-def load_cubes(f, target_folder):
+def find_cubes(f, target_folder):
   """
   Find contiguous cubes to the on in f. Load all of the cubes to an xarray dataset
 
@@ -107,16 +107,18 @@ def load_cubes(f, target_folder):
   cubes = [file for pattern in file_patterns for file in glob.glob(pattern)]
   #cubes = ['/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5113260_20170103_20171231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5113260_20210102_20211230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5113260_20230102_20231230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5113260_20180103_20181231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5113260_20220102_20221230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5113260_20190103_20191231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5113260_20200103_20201230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5114540_20170103_20171231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5114540_20210102_20211230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5114540_20230102_20231230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5114540_20180103_20181231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5114540_20220102_20221230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5114540_20190103_20191231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5114540_20200103_20201230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5115820_20170103_20171231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5115820_20210102_20211230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5115820_20230102_20231230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5115820_20190103_20191231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5115820_20180103_20181231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5115820_20220102_20221230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_262620_5115820_20200103_20201230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5113260_20170103_20171231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5113260_20210102_20211230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5113260_20230102_20231230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5113260_20180103_20181231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5113260_20220102_20221230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5113260_20190103_20191231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5113260_20200103_20201230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5114540_20170103_20171231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5114540_20210102_20211230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5114540_20230102_20231230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5114540_20180103_20181231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5114540_20220102_20221230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5114540_20190103_20191231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5114540_20200103_20201230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5115820_20170103_20171231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5115820_20210102_20211230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5115820_20220102_20221230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5115820_20230102_20231230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5115820_20180103_20181231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5115820_20190103_20191231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_263900_5115820_20200103_20201230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5113260_20170103_20171231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5113260_20210102_20211230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5113260_20230102_20231230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5113260_20180103_20181231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5113260_20220102_20221230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5113260_20190103_20191231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5113260_20200103_20201230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5114540_20170103_20171231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5114540_20210102_20211230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5114540_20230102_20231230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5114540_20180103_20181231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5114540_20220102_20221230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5114540_20190103_20191231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5114540_20200103_20201230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5115820_20170103_20171231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5115820_20210102_20211230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5115820_20220102_20221230.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5115820_20230102_20231230.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5115820_20190103_20191231.zarr', '/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5115820_20180103_20181231.zarr','/home/f80873755@agsad.admin.ch/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/S2_265180_5115820_20200103_20201230.zarr']
   
+  return cubes, minx, maxy
+
+def load_cubes(cubes):
   try:
     # No conflicting timestamps
     ds = xr.open_mfdataset(cubes, combine='by_coords').compute()
   except:
     ds = open_cubes_conflicting(cubes)
 
-  central_cube_attrs = [xr.open_zarr(f).attrs for f in cubes if f'{minx}_{maxy}' in f][0]
-  central_cube = [xr.open_zarr(f) for f in cubes if f'{minx}_{maxy}' in f][0]
- 
-  return ds, minx, maxy, central_cube_attrs
+  cube_attrs = xr.open_zarr(cubes[0]).attrs
+
+  return ds, cube_attrs
 
 
 def has_all_65535(ds):
@@ -166,6 +168,7 @@ def clean_dataset(ds, cloud_thresh=0.1, shadow_thresh=0.1, snow_thresh=0.1, cirr
   ds = ds.isel(time=mask_dates)
 
   return ds
+
 
 
 def apply_shifts(image, shifts, output_shape):
@@ -220,16 +223,17 @@ def coreg_single_step(i, ds_tgt, geo_ref_image, geotransform_tgt, projection_tgt
         CR.calculate_spatial_shifts()
         corrected_dict = CR.correct_shifts() # returns an OrderedDict containing the co-registered numpy array and its corresponding geoinformation.
         shift_x, shift_y = CR.coreg_info['corrected_shifts_px']['x'],  CR.coreg_info['corrected_shifts_px']['y']
-        geo_tgt_image = GeoArray(ds_tgt.isel(time=i).to_array().values.transpose(1, 2, 0), geotransform=geotransform_tgt, projection=projection_tgt) #lat, lon, band
+        geo_tgt_image = GeoArray(ds_tgt.isel(time=i).to_array().values.transpose(1, 2, 0), geotransform=geotransform_tgt, projection=projection_tgt)
         corrected_image = apply_shifts(geo_tgt_image.arr, [shift_x, shift_y], geo_tgt_image.arr.shape)
-      
+        print('Added coreg')
         return corrected_image, True  # Return coregistered image and a flag indicating success
 
       except Exception as e:
-        #print(f'Error in coreg step {i}: {e}')
+        print(f'Error in coreg step {i}: {e}')
         return ds_tgt.isel(time=i).to_array().values.transpose(1, 2, 0), False  # Return the original image and failure flag
 
     else:
+      print('Too many clouds/missing data')
       return ds_tgt.isel(time=i).to_array().values.transpose(1, 2, 0), False
 
 
@@ -364,56 +368,54 @@ def split_and_save(ds, minx, maxy, output_folder, attrs):
     return
 
 
-def run_coregistration_file(f, processed_files, reference_folder, output_folder):
+def run_coregistration_files(target_files, reference_folder, output_folder):
   """
   Run coregistration pipeline for all files in target folder. Files in target and reference must have same name system and contain zarr stores
 
-  :param f: file to coregister
+  :param target_files: list of files to coregister together
   :param reference_folder: path to reference files
   :param output_folder: folder where to write new files
   """
-  
-  if f not in processed_files:
-    print('Coreg file', f)
-    start= time.time()
+  all_cubes = []
+  all_ref = []
+
+
+  for i, f in enumerate(target_files):
+    print('Fetching data for file', i)
     # Load file and all possible contigous files (up to 8 other cubes)
-    ds, minx, maxy, attrs = load_cubes(f, target_folder)
-    ds = ds.isel(lat=slice(None, None, -1)) # make sure lat is decreasing
+    cubes, minx, maxy = find_cubes(f, target_folder)
+    all_cubes += cubes
     # Load SwissImage of correspoding central cube
-    ref = xr.open_zarr(os.path.join(reference_folder, f'SwissImage0.1_{int(minx)}_{int(maxy)}.zarr')).compute() # make sure y is decreasing
-    # Coreg (if too big, can do year by year)
-    ds_coreg, coreg_mask = coreg_dask(ds, ref)
-    # Save year by year
-    split_and_save(ds_coreg, minx, maxy, output_folder, attrs)
-    # Add that file for all years to processed files]
+    ref = xr.open_zarr(os.path.join(reference_folder, f'SwissImage0.1_{int(minx)}_{int(maxy)}.zarr')).compute()
+    all_ref.append(ref)
+  
+  ds, cube_attrs = load_cubes(list(set(all_cubes)))
+  if ds.lat.values[1] > ds.lat.values[0]:
+    ds = ds.isel(lat=slice(None, None, -1))  # make sure lat is decreasing
+  ref = xr.combine_by_coords(all_ref, combine_attrs="override") # make sure y is decreasing
+
+  years = np.arange(2016, 2024, 1)
+  for yr in years:
+    mask_dates = np.ones(len(ds.time), dtype=bool)
+    dates_to_drop = [i for i, date in enumerate(ds.time.values) if date.astype('datetime64[Y]').astype(int) + 1970 != yr] 
+    mask_dates[dates_to_drop] = False
+    ds_yr = ds.isel(time=mask_dates)
+  
+    # Coreg 
+    ds_coreg, coreg_mask = coreg_dask(ds_yr, ref)
+    coreg_mask = np.array(coreg_mask)
     
-    end = time.time()
-    print(f'{f}: Took', end-start)
+    plot_mp4(ref, ds_yr.isel(time=coreg_mask).sel(lat=slice(maxy,maxy-1270), lon=slice(minx, minx+1270)), ds_coreg.isel(time=coreg_mask).sel(lat=slice(maxy,maxy-1270), lon=slice(minx, minx+1270)), 'reckenholz_coreg.mp4')
+    break
+    """
+    for i, f in enumerate(target_files):
+      print(f'Split and saving for file {i} yr {yr}')
+      minx, maxy = f.split('_')[1], f.split('_')[2]
+      # Save year by year
+      split_and_save(ds_coreg, int(minx), int(maxy), output_folder, cube_attrs)
+    """
+  return
 
-
-    return
-
-
-def parallel_process_dask(target_folder, reference_folder, output_folder, num_workers=1):
-    client = Client(n_workers=num_workers)  # Dask distributed client
-    print(f"Dashboard available at: {client.dashboard_link}")  # Link to the Dask dashboard
-
-    if not os.path.exists(output_folder):
-      os.makedirs(output_folder)
-
-    target_files = [os.path.join(target_folder, f) for f in os.listdir(target_folder) if f.endswith('.zarr')]
-    processed_files = [os.path.join(output_folder, f) for f in os.listdir(output_folder) if f.endswith('.zarr')]
-
-    tasks = [dask.delayed(run_coregistration_file)(f, processed_files, reference_folder, output_folder)
-             for f in target_files if f not in processed_files]
-    tasks = tasks[-1:]
-
-    # Execute tasks with Dask and use distributed resources via the client
-    dask.compute(*tasks)
-
-    client.close()  # Close the Dask client after computation
-
-    return
 
 
 def parallel_process(target_folder, reference_folder, output_folder, num_workers=1):
@@ -422,33 +424,13 @@ def parallel_process(target_folder, reference_folder, output_folder, num_workers
       os.makedirs(output_folder)
 
     # Filter files
-    target_files = [os.path.join(target_folder, f) for f in os.listdir(target_folder) if f.endswith('.zarr')]
-    processed_files = [os.path.join(output_folder, f) for f in os.listdir(output_folder) if f.endswith('.zarr')]
+    reckenholz_files = ['S2_462300_5254060_20170107_20171231.zarr']#, 'S2_462300_5252780_20170107_20171231.zarr', 'S2_463580_5254060_20170107_20171231.zarr', 'S2_463580_5252780_20170107_20171231.zarr']
+
+    target_files = [os.path.join(target_folder, f) for f in os.listdir(target_folder) if f in reckenholz_files] #[os.path.join(target_folder, f) for f in os.listdir(target_folder) if f.endswith('.zarr')]
     
-    tasks = [(f, processed_files, reference_folder, output_folder) for f in target_files if f not in processed_files]
+    run_coregistration_files(target_files, reference_folder, output_folder)
 
-    # Using ProcessPoolExecutor to process files in parallel
-    with ProcessPoolExecutor(max_workers=num_workers) as executor:
-        # Submit tasks to the executor
-        future_to_task = {executor.submit(run_coregistration_file, *task): task for task in tasks}
-        
-        # Iterate through completed futures
-        for future in as_completed(future_to_task):
-            task = future_to_task[future]  # Get the associated task
-            try:
-                result = future.result()  # Get the result of the future (raises exceptions if any)
-                f = task[0]
-                print(f"Successfully processed {f}")
-            except Exception as e:
-                f = task[0]  # Get the file being processed in the task
-                print(f"Error occurred with file {f}: {e}")
-                # Optionally, log or take some other action here
-                break  # Exit the loop on error, or you can continue if desired
-
-
-
-              
-
+    return
 
 
 def plot_imgs(ref, ds, ds_coreg, i, outpath):

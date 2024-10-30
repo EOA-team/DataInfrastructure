@@ -239,7 +239,7 @@ def coreg(ds, ref):
                 im_ref=geo_ref_image,  # Reference image array
                 im_tgt=geo_tgt_image,  # Target image array
                 ws=(128,128),          # Size of the matching window in pixels
-                max_iter=5,            # Maximum number of iterations
+                max_iter=10,            # Maximum number of iterations
                 path_out=None,         # Path to save the coregistered image (None if not saving)
                 fmt_out='Zarr',        # Output format (None if not saving)
                 nodata =(255, 65535),
@@ -289,8 +289,7 @@ def coreg(ds, ref):
   ds_coreg = xr.Dataset(data_vars=data_vars)
 
   # Convert back to uint16
-  ds_coreg = ds_coreg.fillna(65535)
-  ds_coreg = ds_coreg.round()
+  ds_coreg = ds_coreg.fillna(65535).clip(0, 65535).round()
   ds_coreg = ds_coreg.astype(np.uint16)
 
   # Add back variables
@@ -374,8 +373,9 @@ def run_coregistration_file(f, processed_files, reference_folder, output_folder)
     start= time.time()
     # Load file and all possible contigous files (up to 8 other cubes)
     ds, minx, maxy, attrs = load_cubes(f, target_folder)
+    ds = ds.isel(lat=slice(None, None, -1))  # make sure lat is decreasing
     # Load SwissImage of correspoding central cube
-    ref = xr.open_zarr(os.path.join(reference_folder, f'SwissImage0.1_{int(minx)}_{int(maxy)}.zarr')).compute()
+    ref = xr.open_zarr(os.path.join(reference_folder, f'SwissImage0.1_{int(minx)}_{int(maxy)}.zarr')).compute() # make sure y is decreasing
     # Coreg (if too big, can do year by year)
     ds_coreg, coreg_mask = coreg(ds, ref)
     # Save year by year
