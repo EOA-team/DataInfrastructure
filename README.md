@@ -6,6 +6,7 @@
 - [Sentinel-2](#Sentinel-2)
 - [MeteoSuisse](#MeteoSuisse)
 - [SwissImage](#SwissImage)
+- [swissalti3D](#swissalti3d)
 - [Data status](#Data-status)
 
 <a name="grid-creation"></a>
@@ -108,7 +109,15 @@ For more information on the products please visit [here](https://www.swisstopo.a
 
 ### Fomratting to custom grid
 
-The data was then reprojected to EPSG:32632 and resampled to be aligned to the Sentinel-2 grid:
+The data was then reprojected to EPSG:32632 and resampled to be aligned to the Sentinel-2 grid.
+
+<a name="swissalti3D"></a>
+## 5. swissalti3D (Swisstopo)
+
+A Digital Elevation Model (DEM) of Switzerland at 2m resolution produced by swisstopo was added to the dataset. The product was reprojected from EPSG:2056 to EPSG:32632 and resampled using nearest inteprolation to align to the custom grid (i.e. align to Sentinel-2 pixels).
+
+For more information on swissalti3D please visit [here](https://www.swisstopo.admin.ch/en/height-model-swissalti3d)
+
 
 <a name="Data-status"></a>
 ## Data status
@@ -123,6 +132,8 @@ The download history is tracked here:
 | 29.07.2024| Downloaded SwissImage 0.1m | |
 | 09.09.2024| Processed SwissImage 0.1m and 2m to cubes | |
 | 09.09.2024| Downloaded S2 2016 |Package versions: sen2nbar==2023.8.1  minicuber ([commit version](https://github.com/EOA-team/minicuber/tree/14eb81ee93f91c0076e21debf23e4a82e6d7cc9e))| 
+| 25.11.2024| Processed MeteoSwiss variables to cubes | |
+| 02.12.2024| Processed swissalti3D to cubes | |
 
 
 ### Overview of data storage structure
@@ -137,9 +148,11 @@ The download history is tracked here:
   │   ├── raw
   │   │   ├── SwissImage_10cm
   │   │   └── SwissImage_2m
-  │   └── cubes
-  │       ├── SwissImage_10cm
-  │       └── SwissImage_2m
+  │   ├── cubes
+  │   │   ├── SwissImage_10cm
+  │   │   └── SwissImage_2m
+  │   └── dem
+  │
   │
   └── meteo
       ├── Rhires
