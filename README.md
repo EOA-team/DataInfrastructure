@@ -116,7 +116,7 @@ The data was then reprojected to EPSG:32632 and resampled to be aligned to the S
 
 A Digital Elevation Model (DEM) of Switzerland at 2m resolution produced by swisstopo was added to the dataset. The product was reprojected from EPSG:2056 to EPSG:32632 and resampled using nearest inteprolation to align to the custom grid (i.e. align to Sentinel-2 pixels).
 
-The files are stored in `~/mnt/eo-nas1/data/swisstopo/DEM` and are named `swissalti3D_MINX_MAXY.tif` where MINX and MINY correspond to the coordinates of the top left corner of the file, in meters (EPSG:32632).
+The files are stored in `~/mnt/eo-nas1/data/swisstopo/DEM` and are named `swissalti3D_MINX_MAXY.zarr` where MINX and MINY correspond to the coordinates of the top left corner of the file, in meters (EPSG:32632).
 
 For more information on swissalti3D please visit [here](https://www.swisstopo.admin.ch/en/height-model-swissalti3d)
 
