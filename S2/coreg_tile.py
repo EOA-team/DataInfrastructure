@@ -30,9 +30,11 @@ from matplotlib.animation import FuncAnimation
 from matplotlib.ticker import MaxNLocator
 import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
+from multiprocessing import Manager
 import contextily as cx
 import json
 import pickle
+from multiprocessing import Lock
 
 
 def extract_ids(product_uri):
@@ -121,6 +123,25 @@ def find_cubes_aoi_yrs(data_folder, geom, yrs):
   filtered_files = gdf_cubes[gdf_cubes.intersects(geom.unary_union)]
   filtered_files = filtered_files[(filtered_files['yr_start'].isin(yrs)) | (filtered_files['yr_end'].isin(yrs))]
   
+  return filtered_files
+
+
+def find_cubes_aoi(data_folder, geom):
+  """
+  Find S2 cubes that fall in perimeter given by geometry
+
+  :param data_folder: path to where S2 data is stored
+  :param geom: gpd.GeoDataFrame containing geometry to use to filter files
+  :return: gdf with filtered files as rows
+  """
+  # 1. Filter S2 based on geom intersection
+  cubes = [f for f in os.listdir(data_folder) if f.endswith('zarr')]
+  df_cubes = pd.DataFrame(cubes, columns=['file'])
+  df_cubes[['minx', 'miny', 'maxx', 'maxy', 'yr_start', 'yr_end']] = df_cubes['file'].apply(lambda x: pd.Series(extract_bounds_multiyear(x)))
+  df_cubes['geometry'] = df_cubes.apply(lambda row: box(row['minx'], row['miny'], row['maxx'], row['maxy']), axis=1)
+  gdf_cubes = gpd.GeoDataFrame(df_cubes, geometry='geometry')
+  filtered_files = gdf_cubes[gdf_cubes.intersects(geom.unary_union)]
+  filtered_files = filtered_files.drop_duplicates(subset=['minx', 'miny', 'maxx', 'maxy'], keep='first')
   return filtered_files
 
 
@@ -406,72 +427,107 @@ def split_and_save(ds, minx, maxy, output_folder, attrs):
     return
 
 
-def run_coregistration_file(f, target_folder, reference_folder, output_folder):
+def run_coregistration_file(f, target_folder, reference_folder):
   """
   Run coregistration pipeline for all files in target folder. Files in target and reference must have same name system and contain zarr stores
 
   :param f: file to coregister
   :param reference_folder: path to reference files
-  :param output_folder: folder where to write new files
   """
 
   # Load file and all possible contigous files (up to 8 other cubes)
   ds, minx, maxy, attrs = load_cubes(f, target_folder)
-  ds = ds.isel(lat=slice(None, None, -1)) # make sure lat is decreasing
+  if ds.lat.values[0] < ds.lat.values[-1]:
+    ds = ds.isel(lat=slice(None, None, -1)) # make sure lat is decreasing
   # Load SwissImage of correspoding central cube
-  ref = xr.open_zarr(os.path.join(reference_folder, f'SwissImage0.1_{int(minx)}_{int(maxy)}.zarr')).compute() # make sure y is decreasing
+  ref = xr.open_zarr(os.path.join(reference_folder, f'SwissImage0.1_{int(minx)}_{int(maxy)}.zarr')).compute() 
+  if ref.y.values[0] < ref.y.values[-1]:
+    ref = ref.isel(y=slice(None, None, -1)) # make sure lat is decreasing
   # Coreg (if too big, can do year by year)
   shifts, coreg_mask = coreg_dask(ds, ref)
 
   return shifts, coreg_mask, ds
 
 
-def parallel_process(target_folder, reference_folder, output_folder, num_workers=1):
+def save_to_pickle(dataframe, tile_name, lock):
+    """
+    Save DataFrame to a pickle file or add to existing file.
+    """
+    pickle_filename = f"shift_results_{tile_name}.pkl"
+    with lock:  # Ensure thread-safe writes
+        if not os.path.exists(pickle_filename): 
+            dataframe.to_pickle(pickle_filename)
+            print(f"Saved DataFrame to {pickle_filename}, {len(dataframe)}")
+        else:
+            # Load existing file, append, and save
+            existing_df = pd.read_pickle(pickle_filename)
+            updated_df = pd.concat([existing_df, dataframe], ignore_index=True)
+            updated_df.to_pickle(pickle_filename)
+            print(f"Saved DataFrame to {pickle_filename}, {len(updated_df)}")
+    return
 
+
+def parallel_process(file_list, reference_folder, output_folder, tile_name, num_workers=1, save_interval=1):
     if not os.path.exists(output_folder):
-      os.makedirs(output_folder)
+        os.makedirs(output_folder)
 
     # Filter files
-     
-    target_files = [os.path.join(target_folder, f) for f in os.listdir(target_folder) if f.endswith('.zarr')]
-    processed_files = [os.path.join(output_folder, f) for f in os.listdir(output_folder) if f.endswith('.zarr')]
-    """
-    reckenholz_files = ['S2_462300_5254060_20170107_20171231.zarr', 'S2_462300_5252780_20170107_20171231.zarr', 'S2_463580_5254060_20170107_20171231.zarr', 'S2_463580_5252780_20170107_20171231.zarr']
-    target_files = [os.path.join(target_folder, f) for f in os.listdir(target_folder) if f in reckenholz_files]
-    processed_files = []
-    """
-    
-    tasks = [(f, processed_files, reference_folder, output_folder) for f in target_files if f not in processed_files]
+    target_files = [os.path.join(target_folder, f) for f in os.listdir(target_folder) if f in file_list]
+    processed_files = [] #os.path.join(output_folder, f) for f in os.listdir(output_folder) if f.endswith('.zarr')]
 
+    tasks = [(f, target_folder, reference_folder) for f in target_files if f not in processed_files]
+ 
     # Using ProcessPoolExecutor to process files in parallel
+    lock = Lock()
     with ProcessPoolExecutor(max_workers=num_workers) as executor:
-        # Submit tasks to the executor
+        #future_to_task = {executor.submit(run_coregistration_file, *task, lock): task for task in tasks}
         future_to_task = {executor.submit(run_coregistration_file, *task): task for task in tasks}
-        
+
         # Iterate through completed futures
         for future in as_completed(future_to_task):
-            task = future_to_task[future]  # Get the associated task
+            task = future_to_task[future]  
             try:
-                result = future.result()  # Get the result of the future (raises exceptions if any)
+                shifts, coreg_mask, ds = future.result()  # Get the result from `run_coregistration_file`
                 f = task[0]
+
+                # Extract information and append rows to the shared list
+                lon_size, lat_size, time_size = ds.sizes['lon'], ds.sizes['lat'], ds.sizes['time']
+                cube_key = f"{os.path.basename(f).split('_')[1]}_{os.path.basename(f).split('_')[2]}"
+                uris = ds.isel(lon=lon_size // 2, lat=lat_size // 2).product_uri.values
+
+                rows = []
+                for i, uri in enumerate(uris):
+                    if coreg_mask[i] == False:
+                        rows.append([cube_key, uri, np.nan, np.nan])
+                    else:
+                        rows.append([cube_key, uri, shifts[i][0], shifts[i][1]])
+
                 print(f"Successfully processed {f}")
+                rows_array = np.array(rows, dtype=object)  # Ensure dtype=object for mixed types
+                df = pd.DataFrame(rows_array, columns=["name", "uri", "shift_x", "shift_y"])
+                save_to_pickle(df, tile_name, lock)
+
+  
             except Exception as e:
-                f = task[0]  # Get the file being processed in the task
+                f = task[0]
                 print(f"Error occurred with file {f}: {e}")
-                # Optionally, log or take some other action here
-                break  # Exit the loop on error, or you can continue if desired
+
+        return 
 
               
 def update(frame):
     # Update images for the current timestamp
     im_rgb.set_array(rgb[frame].values*3)
     im_rgbcoreg.set_array(rgb_coreg[frame].values*3)
+
+    axs[0].set_title(f'{str(rgb.time.values[frame]).split("T")[0]}')
+    axs[1].set_title(f'{str(rgb_coreg.time.values[frame]).split("T")[0]}')
     
     return im_rgb, im_rgbcoreg
 
 
-def plot_mp4(ref, ds, ds_coreg, outpath):
-  global rgb, rgb_coreg, im_rgb, im_rgbcoreg
+def plot_mp4(ds, ds_coreg, outpath):
+  global rgb, rgb_coreg, im_rgb, im_rgbcoreg, axs
   scale_factor = 1.0 / 10000.0  # Scale factor for DN to [0, 1]
   r = ds_coreg['s2_B04'] * scale_factor
   g = ds_coreg['s2_B03'] * scale_factor
@@ -489,20 +545,16 @@ def plot_mp4(ref, ds, ds_coreg, outpath):
   rgb = xr.concat([r, g, b], dim='band').transpose('time', 'lat', 'lon', 'band')
   rgb = rgb.where(~np.isnan(rgb), other=1.0)
 
-  ref_rgb = ref[['R','G','B']].to_array().values.transpose(1,2,0)
-
   # Set up the figure and axis
-  fig, axs = plt.subplots(1, 3, figsize=(15, 5))
+  fig, axs = plt.subplots(1, 2, figsize=(15, 5))
 
   # Initialize images
-  img_ref = axs[0].imshow(ref_rgb)
-  im_rgb = axs[1].imshow(rgb[0].values*3)
-  im_rgbcoreg = axs[2].imshow(rgb_coreg[0].values*3)
+  im_rgb = axs[0].imshow(rgb[0].values*3)
+  im_rgbcoreg = axs[1].imshow(rgb_coreg[0].values*3)
 
   # Set titles and axis labels
-  axs[0].set_title('Ref')
-  axs[1].set_title('Orig')
-  axs[2].set_title('Coreg')
+  axs[0].set_title(f'{str(rgb.time.values[0]).split("T")[0]}')
+  axs[1].set_title(f'{str(rgb_coreg.time.values[0]).split("T")[0]}')
 
   # Create the animation
   ani = FuncAnimation(fig, update, frames=len(rgb.time), blit=True)
@@ -513,26 +565,67 @@ def plot_mp4(ref, ds, ds_coreg, outpath):
   return
 
 
+def split_and_save(ds, minx, maxy, output_folder, attrs):
+    """
+    Extract cube of interest, update attributes and save data year by year
+
+    :param ds: xr Dataset with coregistered data
+    :param minx: min lon of cube
+    :param maxy: max lat of cube
+    :param output_folder: folder where to write new data
+    :param attrs: original metadata of cube
+    """
+    if ds.lat.values[0] > ds.lat.values[-1]:
+      ds = ds.sel(lat=slice(maxy,maxy-1270), lon=slice(minx, minx+1270))
+    else:
+      ds = ds.sel(lat=slice(maxy-1270, maxy), lon=slice(minx, minx+1270))
+      ds = ds.sel(lat=slice(None, None, -1))
+    
+    
+    for yr in np.arange(2016, 2024, 1):
+
+        mask_dates = np.ones(len(ds.time), dtype=bool)
+        dates_to_drop = [i for i, date in enumerate(ds.time.values) if date.astype('datetime64[Y]').astype(int) + 1970 != yr] 
+        mask_dates[dates_to_drop] = False
+        ds_yr = ds.isel(time=mask_dates)
+
+        if len(ds_yr.time):
+          time_min, time_max = ds_yr.time.values[0], ds_yr.time.values[-1]
+          year_start, month_start, day_start = extract_date(time_min)
+          year_end, month_end, day_end = extract_date(time_max)
+
+          attrs['history'] += f". Coregistered with SwissImage on {datetime.date.today()}."
+          ds_yr.attrs = attrs
+          
+          # Save to zarr store
+          output_path = os.path.join(output_folder, f'S2_{minx}_{maxy}_{year_start}{month_start}{day_start}_{year_end}{month_end}{day_end}.zarr')
+          compressor = zarr.Blosc(cname='zstd', clevel=3, shuffle=2)
+          if 1: #not os.path.exists(output_path):
+            print('Saving', output_path)
+            ds_yr.to_zarr(output_path, consolidated=True, mode='w', encoding={var: {'compressor': compressor} for var in ds_yr.data_vars})
+        
+          
+    return
+
 
 if __name__ == "__main__":
-
+  
   target_folder = os.path.expanduser('~/mnt/eo-nas1/data/satellite/sentinel2/raw/CH')
   reference_folder = os.path.expanduser('~/mnt/eo-nas1/data/swisstopo/SwissImage/cubes/10cm')
   output_folder = os.path.expanduser('~/mnt/eo-nas1/data/satellite/sentinel2/coreg/CH')
 
-  
   # Step 1: compute shifts at one location
 
   shift_dict = {}
 
   tiles = {'32TMT': [(7.66286529045287, 47.845914826827),(7.68758850048273, 46.8581759574933),(9.12805716115049, 46.8656282472998),(9.1304703619161, 47.8536277114283),(7.66286529045287, 47.845914826827)],
-            #'32TLT': [(6.32792675947954,47.8225951267953),(6.37728036218156, 46.8356437136561),(7.81664846692137, 46.8595830833696),(7.79435498889756, 47.8473711518664),(6.32792675947954, 47.8225951267953)],
-            #'32TNT': [(8.9997326423426, 47.8537018420053),(8.99973758744939,46.8656998728757),(10.4401498244026, 46.8566398814282),(10.4672773767603, 47.8443250460311),(8.9997326423426, 47.8537018420053)],
-            #'32TNS': [(8.99973715756222,46.9537091787344),(8.9997418700468, 45.9655511480415),(10.4166561015996, 45.9567698586004),(10.442508097938, 46.9446214409232),(8.99973715756222, 46.9537091787344)],
-            #'32TMS': [(7.68543924709582, 46.9461622205863),(7.7089998702566, 45.9582586884214),(9.12596726307512, 45.9654817261501),(9.12826694512377, 46.9536373337673),(7.68543924709582, 46.9461622205863)],
-            #'32TLS': [(6.37298980762373, 46.9235610080068),(6.42002507864337, 45.9364192287437),(7.83595551698163, 45.9596225320207),(7.81471043979331, 46.94757365544),(6.37298980762373, 46.9235610080068)],
-            #'31TGM': [(5.62648535526562, 46.9235730577955),(5.57945945554239, 45.9364308725672),(6.99300216652316, 45.8957352511058),(7.06565713267192, 46.8814596607493),(5.62648535526562, 46.9235730577955)],
-            #'31TGN': [(5.67153942638492, 47.8226075594756),(5.62219565549863, 46.8356557266896),(7.05902986502132, 46.793670687313),(7.13525847525188, 47.7791570713891),(5.67153942638492, 47.8226075594756)]
+            '32TLT': [(6.32792675947954,47.8225951267953),(6.37728036218156, 46.8356437136561),(7.81664846692137, 46.8595830833696),(7.79435498889756, 47.8473711518664),(6.32792675947954, 47.8225951267953)],
+            '32TNT': [(8.9997326423426, 47.8537018420053),(8.99973758744939,46.8656998728757),(10.4401498244026, 46.8566398814282),(10.4672773767603, 47.8443250460311),(8.9997326423426, 47.8537018420053)],
+            '32TNS': [(8.99973715756222,46.9537091787344),(8.9997418700468, 45.9655511480415),(10.4166561015996, 45.9567698586004),(10.442508097938, 46.9446214409232),(8.99973715756222, 46.9537091787344)],
+            '32TMS': [(7.68543924709582, 46.9461622205863),(7.7089998702566, 45.9582586884214),(9.12596726307512, 45.9654817261501),(9.12826694512377, 46.9536373337673),(7.68543924709582, 46.9461622205863)],
+            '32TLS': [(6.37298980762373, 46.9235610080068),(6.42002507864337, 45.9364192287437),(7.83595551698163, 45.9596225320207),(7.81471043979331, 46.94757365544),(6.37298980762373, 46.9235610080068)],
+            '31TGM': [(5.62648535526562, 46.9235730577955),(5.57945945554239, 45.9364308725672),(6.99300216652316, 45.8957352511058),(7.06565713267192, 46.8814596607493),(5.62648535526562, 46.9235730577955)],
+            '31TGN': [(5.67153942638492, 47.8226075594756),(5.62219565549863, 46.8356557266896),(7.05902986502132, 46.793670687313),(7.13525847525188, 47.7791570713891),(5.67153942638492, 47.8226075594756)]
           }
   
   for tile, tile_geom in tiles.items():
@@ -540,46 +633,32 @@ if __name__ == "__main__":
     gdf = gpd.GeoDataFrame(geometry=[polygon], crs='EPSG:4326').to_crs('EPSG:32632')
     
     # Find grid cubes in tile 
-    yrs = [2017]
-    tile_cubes = find_cubes_aoi_yrs(data_folder=target_folder, geom=gdf, yrs=yrs)
+    tile_cubes = find_cubes_aoi(data_folder=target_folder, geom=gdf)
     tile_cubes = tile_cubes.set_crs(32632)
-    
-
-    # Sample grid cubes
-    sample_cubes = tile_cubes.iloc[[100,400,2000]]#.sample(3)
-    """ 
-    f, ax = plt.subplots()
-    tile_cubes.plot(ax=ax, alpha=0.5)
-    sample_cubes.iloc[0:1].plot(ax=ax, color='r')
-    sample_cubes.iloc[1:].plot(ax=ax, color='g')
-    cx.add_basemap(ax=ax, crs=tile_cubes.crs)
-    plt.savefig('tile_cube.png')
-    
-   
    
     # Launch coreg without applying shift, just saving shifts
-    print(sample_cubes.file.values[0])
+    parallel_process(tile_cubes.file.tolist(), reference_folder, output_folder, tile, num_workers=1)
+    """
     shifts, coreg_mask, ds = run_coregistration_file(sample_cubes.file.values[0], target_folder, reference_folder, output_folder)
     lon_size, lat_size, time_size = ds.sizes['lon'], ds.sizes['lat'], ds.sizes['time']
     
     shift_dict[f'{sample_cubes.file.values[0]}'] = {
       'timestamps' : ds.time.values,
-      'product_uri' : ds.product_uri.values[lon_size//2][lat_size//2],
+      'product_uri' : ds.isel(lon=lon_size//2, lat=lat_size//2).product_uri.values, #check if this works
       'shifts' : shifts
     }
     
     # Save shifts: file, timestamp, product_uri, shifts
-    with open('shift_dict.pkl', 'wb') as f:
+    with open('shift_dict_32TNS.pkl', 'wb') as f:
       pickle.dump(shift_dict, f)
     
     """ 
     
-    
     break
-  
-
+ 
+  """
   # Step 2: apply saved shifts
-  with open('shift_dict.pkl', 'rb') as f:
+  with open('shift_dict_32TNS.pkl', 'rb') as f:
     shift_dict = pickle.load(f)
 
   file_key = f'{sample_cubes.file.values[0]}'
@@ -587,42 +666,133 @@ if __name__ == "__main__":
   product_uris = shift_dict[file_key]['product_uri']
   shifts = shift_dict[file_key]['shifts']
 
-   
+
   for i, cube in sample_cubes.iterrows():
     ds, minx, maxy, attrs = load_cubes(cube.file, target_folder)
-    ds = ds.isel(lat=slice(None, None, -1)) 
+    ds = ds.isel(lat=slice(None, None, -1)).sel(time=ds.time.dt.year == 2017)
+    lon_size, lat_size, time_size = ds.sizes['lon'], ds.sizes['lat'], ds.sizes['time']
 
     to_drop = ['mean_sensor_azimuth', 'mean_sensor_zenith', 'mean_solar_azimuth', 'mean_solar_zenith', 'product_uri']
     ds_tgt = ds.drop_vars(to_drop)
     bands = list(ds_tgt.data_vars)
 
     coreg_stack = []
-    # loop over time and apply shift where needed
-    print(ds.sizes)
+
+    # Loop over time and apply shift where needed
     for i in range(ds.sizes['time']):
       t = ds.time.values[i]
+      uri = ds.isel(lon=lon_size//2, lat=lat_size//2, time=i).product_uri.values
+
       if t in timestamps:
-        idx = list(timestamps).index(t) # to do: what if there are duplicate timestamps
+        indices = [i for i, time in enumerate(timestamps) if time==t]
+        if len(indices)==1:
+          idx = indices[0]
+        if len(indices)>1:
+          # If there are duplicate timestamps then use product_uri to confirm
+          idx = [i for i in indices if product_uris[i]==uri][0]
+
         corresponding_product_uri = product_uris[idx]
         corresponding_shifts = shifts[idx]
+
+        if corresponding_product_uri == uri:
         
-        # Print or process the corresponding product_uri and shifts
-        print(f'Found match for timestamp {t}:')
-        print(f'  Product URI: {corresponding_product_uri}')
-        print(f'  Shifts: {corresponding_shifts}')
+          # Print or process the corresponding product_uri and shifts
+          print(f'Found match for timestamp {t}:')
+          print(f'  Product URI: {corresponding_product_uri}')
+          print(f'  Shifts: {corresponding_shifts}')
 
-        # Apply shifts
-        tgt_image = ds_tgt.isel(time=i).to_array().values.transpose(1, 2, 0) #lat, lon, band
-        corrected_image = apply_shifts(tgt_image, [corresponding_shifts[0], corresponding_shifts[1]], tgt_image.shape)
-        coreg_stack.append(corrected_image)
+          # Apply shifts
+          if corresponding_shifts is not None:
+            tgt_image = ds_tgt.isel(time=i).to_array().values.transpose(1, 2, 0) #lat, lon, band
+            corrected_image = apply_shifts(tgt_image, [corresponding_shifts[0], corresponding_shifts[1]], tgt_image.shape)
+            coreg_stack.append(corrected_image)
+          else:
+            coreg_stack.append(ds_tgt.isel(time=i).to_array().values.transpose(1, 2, 0))
+        
+        else:
+            coreg_stack.append(ds_tgt.isel(time=i).to_array().values.transpose(1, 2, 0))
 
-        break
+      else:
+          coreg_stack.append(ds_tgt.isel(time=i).to_array().values.transpose(1, 2, 0))
 
-    break 
+    
+
+    # Convert back to xr.DataSet format
+    corrected_images_stack = np.stack(coreg_stack, axis=0).transpose((3,0,1,2))  # Final shape is (bands, time, lat, lon)
 
 
+    # Create a new xarray Dataset
+    time_dim = ds_tgt.sizes['time']
+    lat_dim = ds_tgt.sizes['lat']
+    lon_dim = ds_tgt.sizes['lon']
+    bands_dim = len(bands)
+
+    # Create DataArray for each band
+    data_vars = {band: xr.DataArray(
+        data=corrected_images_stack[bands.index(band),:, :, :],
+        dims=['time','lat','lon'],
+        coords={'lon': ds_tgt['lon'].values, 'lat': ds_tgt['lat'].values, 'time': ds_tgt['time'].values},
+        name=band
+    ) for band in bands}
+
+    # Create Dataset
+    ds_coreg = xr.Dataset(data_vars=data_vars)
+
+    # Convert back to uint16
+    ds_coreg = ds_coreg.fillna(65535).clip(0, 65535).round()
+    ds_coreg = ds_coreg.astype(np.uint16)
+
+    # Add back variables
+    ds_coreg[to_drop] = ds[to_drop]
+
+    # Save central cube
+    split_and_save(ds_coreg, minx, maxy, output_folder, attrs)
   
+  """ 
+
+  """
   # Step 3: Compare new coregistration
+  #coreg_cubes = ["~/mnt/eo-nas1/data/satellite/sentinel2/coreg/CH/S2_445660_5219500_20170107_20170427.zarr",\
+  #  "~/mnt/eo-nas1/data/satellite/sentinel2/coreg/CH/S2_450780_5250220_20170107_20170427.zarr",\
+  #   "~/mnt/eo-nas1/data/satellite/sentinel2/coreg/CH/S2_480220_5201580_20170107_20170311.zarr"]
+
+  ds_shifts = xr.open_zarr(os.path.join(output_folder,sample_cubes.reset_index(drop=True).iloc[0].file)).compute() #xr.open_zarr(os.path.join(output_folder,os.path.expanduser(coreg_cubes[1]))).compute() #
+  ds_coreg = xr.open_zarr(os.path.join(output_folder,sample_cubes.reset_index(drop=True).iloc[1].file)).compute() #xr.open_zarr(os.path.join(output_folder,os.path.expanduser(coreg_cubes[1]))).compute() #
+  lon_size, lat_size = ds_shifts.sizes['lon'], ds_shifts.sizes['lat']
+
+  tile_id = list(tiles.keys())[0]
+
+  if ds_shifts.sizes['time'] != ds_coreg.sizes['time']:
+    coreg_time_idx = []
+    coreg_timestamps = ds_coreg.time.values
+    coreg_uris = ds_coreg.isel(lon=lon_size//2, lat=lat_size//2).product_uri.values
+    coreg_idx = []
+    shift_idx = []
+
+    for i in range(ds_shifts.sizes['time']):
+      t = ds_shifts.time.values[i]
+      uri = ds_shifts.isel(lon=lon_size//2, lat=lat_size//2, time=i).product_uri.values.item()
+
+      if t in coreg_timestamps and tile_id in uri:
+        indices = [i for i, time in enumerate(coreg_timestamps) if time==t]
+        if len(indices)==1:
+          coreg_idx.append(indices[0])
+          shift_idx.append(i)
+        if len(indices)>1:
+          # If there are duplicate timestamps then use product_uri to confirm
+          idx = [i for i in indices if coreg_uris[i]==uri][0]
+          coreg_idx.append(idx)
+          shift_idx.append(i)
 
 
+    ds_shifts = ds_shifts.isel(time=shift_idx)
+    ds_shifts = ds_shifts.where(ds_shifts.product_uri.str.contains(tile_id), drop=True)
+    ds_coreg = ds_coreg.isel(time=coreg_idx)
+    ds_coreg = ds_coreg.where(ds_coreg.product_uri.str.contains(tile_id), drop=True)
+
+  print(ds_shifts.sizes, ds_coreg.sizes)
+ 
+  plot_mp4(ds_shifts, ds_coreg, 'tile_coreg.mp4')
+  """
+  
 
