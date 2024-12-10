@@ -170,3 +170,7 @@ The download history is tracked here:
       ├── Tmax
       └── Tmin
 ```
+
+### Tools
+
+Code examples and function to extract the data and process the zarr files with the `xarray` package can be found [here](https://github.com/EOA-team/SwissEODI_utils)
