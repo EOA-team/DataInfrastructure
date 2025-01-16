@@ -17,6 +17,9 @@ from scipy.ndimage import affine_transform
 import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 import pickle
+import time
+import rioxarray
+import matplotlib.pyplot as plt
 
 
 def extract_ids(product_uri):
@@ -138,16 +141,18 @@ def load_cubes(f, target_folder):
 # Parallelize each coregistration step with Dask
 @dask.delayed
 def coreg_single_step(i, ds_tgt, geo_ref_image, geotransform_tgt, projection_tgt, footprint_tgt, geotransform_ref, projection_ref, footprint_ref):
+    
     # Same coreg logic for one timestep
     target_image = ds_tgt.isel(time=i).s2_B04
     geo_tgt_image = GeoArray(target_image.values, geotransform=geotransform_tgt, projection=projection_tgt)
 
     # Pass cloud mask as nodata mask
     scl = ds_tgt.isel(time=i).s2_SCL
-    scl_mask = xr.where(scl.isin([0,1,2,3,7,8,9,10]), True, False) 
+    scl_mask = xr.where(scl.isin([0,1,7,8,9,10]), True, False) 
     cloud = ds_tgt.isel(time=i).s2_mask
-    cloud_mask = xr.where(cloud != 0, True, False)
+    cloud_mask = xr.where(cloud.isin([1,2,4]), True, False)  #cloud != 0, True, False)
     data_mask = scl_mask & cloud_mask
+    geo_data_mask = GeoArray(data_mask.values, geotransform=geotransform_tgt, projection=projection_tgt)
 
     try:
       # Initialize the COREG object
@@ -159,7 +164,7 @@ def coreg_single_step(i, ds_tgt, geo_ref_image, geotransform_tgt, projection_tgt
           path_out=None,         # Path to save the coregistered image (None if not saving)
           fmt_out='Zarr',        # Output format (None if not saving)
           nodata =(255, 65535),
-          mask_baddata_tgt=data_mask.values,
+          mask_baddata_tgt=geo_data_mask, #data_mask.values,
           footprint_poly_ref=footprint_ref,
           footprint_poly_tgt=footprint_tgt,
           align_grids=True,
@@ -169,18 +174,26 @@ def coreg_single_step(i, ds_tgt, geo_ref_image, geotransform_tgt, projection_tgt
 
       # Compute shifts
       CR.calculate_spatial_shifts()
+      """
+      from py_tools_ds.geo.coord_trafo import mapXY2imXY
+      wp = tuple(CR.win_pos_XY)
+      imX, imY = mapXY2imXY(wp, CR.shift.mask_baddata.gt)
+      print(CR.shift.mask_baddata[int(imY), int(imX)])
+      """
       corrected_dict = CR.correct_shifts() # returns an OrderedDict containing the co-registered numpy array and its corresponding geoinformation.
       shift_x, shift_y = CR.coreg_info['corrected_shifts_px']['x'],  CR.coreg_info['corrected_shifts_px']['y']
-      
+
       return (shift_x, shift_y), True  # Return coreg shifts and a flag indicating success
 
     except Exception as e:
       #print(f'Error in coreg step {i}: {e}')
+      #print('Skipped', data_mask.sum().item())
       return (np.nan, np.nan), False  # Return the original image and failure flag
 
 
 def coreg(ds, ref, batch_size=20):
   
+  start = time.time()
   # Remove variables that shouldn't be coregistered
   to_drop = ['mean_sensor_azimuth', 'mean_sensor_zenith', 'mean_solar_azimuth', 'mean_solar_zenith', 'product_uri']
   ds_tgt = ds.drop_vars(to_drop)
@@ -205,21 +218,41 @@ def coreg(ds, ref, batch_size=20):
   minx, miny, maxx, maxy = [ds_tgt.lon.min(), ds_tgt.lat.min()-pixel_height_tgt, ds_tgt.lon.max()+pixel_width_tgt, ds_tgt.lat.max()]
   footprint_tgt = Polygon([(maxx, maxy), (maxx, miny), (minx, miny), (minx, maxy), (maxx, maxy)])
 
+  # Check which timestamps are cloud free (<60% clouds)
+  scl = ds_tgt.s2_SCL
+  scl_mask = xr.where(scl.isin([0,1,7,8,9,10]), True, False) 
+  cloud = ds_tgt.s2_mask
+  cloud_mask = xr.where(cloud.isin([1,2,4]), True, False)  #cloud != 0, True, False)
+  data_mask = scl_mask & cloud_mask
+  cloud_cover = data_mask.sum(dim=["lon", "lat"])
+  total_cells = ds_tgt.sizes['lat'] * ds_tgt.sizes['lon']
+  cloud_cover = cloud_cover/total_cells
+  cloud_mask = cloud_cover < 0.6
+
   # Parallel processing  
   tasks = [coreg_single_step(i, ds_tgt, geo_ref_image, geotransform_tgt, projection_tgt, footprint_tgt, geotransform_ref, projection_ref, footprint_ref)
-         for i in range(ds_tgt.sizes['time'])]
-  
+         for i in range(ds_tgt.sizes['time']) if cloud_mask.values[i]]
+  end = time.time()
+  print('Preparing coreg', end-start)
+
   final_results = []
   for i in range(0, len(tasks), batch_size):
+    start = time.time()
     batch = tasks[i:i + batch_size]
     results = dask.compute(*batch)
     final_results.extend(results)
-    #print('Did batch', i)
+    end = time.time()
+    #print(f'Batch of {batch_size} took', end-start)
 
   # Extract results from Dask output
-  shifts, coreg_mask = zip(*final_results)
+  shifts_done, coreg_mask_done = zip(*final_results)
 
-  return shifts, coreg_mask
+  # Return ds_tgt where cloud_mask and coreg_mask done
+  ds = ds.where(cloud_mask, drop=True)
+  #coreg_mask_done = list(coreg_mask_done) + [False]*(len(ds.time)-len(coreg_mask_done))
+  ds = ds.isel(time=list(coreg_mask_done))
+
+  return shifts_done, coreg_mask_done, ds
 
 
 def run_coregistration_file(f, target_folder, reference_folder, batch_size):
@@ -233,17 +266,26 @@ def run_coregistration_file(f, target_folder, reference_folder, batch_size):
   """
 
   # Load file, inlcuding other years at same location
+  start = time.time()
   ds, minx, maxy, attrs = load_cubes(f, target_folder)
   if ds.lat.values[0] < ds.lat.values[-1]:
     ds = ds.isel(lat=slice(None, None, -1)) 
+  end = time.time()
+  print('Loading cubes', end-start)
 
+  start = time.time()
   # Load SwissImage of correspoding central cube
   ref = xr.open_zarr(os.path.join(reference_folder, f'SwissImage0.1_{int(minx)}_{int(maxy)}.zarr')).compute() 
   if ref.y.values[0] < ref.y.values[-1]:
     ref = ref.isel(y=slice(None, None, -1)) 
-    
+  end = time.time()
+  print('Loading SwissImage', end-start)
+
   # Coreg
-  shifts, coreg_mask = coreg(ds, ref, batch_size)
+  start = time.time()
+  shifts, coreg_mask, ds = coreg(ds, ref, batch_size)
+  end = time.time()
+  print('Coreg took', end-start)
 
   return shifts, coreg_mask, ds
 
@@ -286,13 +328,13 @@ def save_to_pickle(dataframe, tile_name): #, lock):
     pickle_filename = f"shift_results_{tile_name}.pkl"
     #with lock:  # Ensure thread-safe writes
     if not os.path.exists(pickle_filename): 
-        #dataframe.to_pickle(pickle_filename)
+        dataframe.to_pickle(pickle_filename)
         print(f"Saved DataFrame to {pickle_filename}, {len(dataframe)}")
     else:
         # Load existing file, append, and save
         existing_df = pd.read_pickle(pickle_filename)
         updated_df = pd.concat([existing_df, dataframe], ignore_index=True)
-        #updated_df.to_pickle(pickle_filename)
+        updated_df.to_pickle(pickle_filename)
         print(f"Saved DataFrame to {pickle_filename}, {len(updated_df)}")
     return
 
@@ -312,12 +354,13 @@ def process_tile(file_list, processed_names, target_folder, reference_folder, ti
     target_files = [f for f in target_files if not any(name in f for name in processed_names)]
 
     for i, f in enumerate(target_files):
-      print(f"Processing file {i+1}/{len(target_files)}")
+      print(f"----Processing file {i+1}/{len(target_files)}")
+      start = time.time()
       result_df = process_single_file(f, target_folder, reference_folder, batch_size)
-      print(result_df)
+      end = time.time()
+      print('Whole process for file took', end-start)
       if result_df is not None:
-        pass
-        #save_to_pickle(result_df, tile_name)
+        save_to_pickle(result_df, tile_name)
 
     return
 
@@ -328,12 +371,15 @@ def compute_shifts(target_folder, reference_folder, tiles):
   """
   for tile, tile_geom in tiles.items():
       print(f"Computing shifts for {tile}")
+      start = time.time()
       polygon = Polygon(tile_geom)
       gdf = gpd.GeoDataFrame(geometry=[polygon], crs='EPSG:4326').to_crs('EPSG:32632')
 
       # Find grid cubes in the tile
       tile_cubes = find_cubes_aoi(data_folder=target_folder, geom=gdf)
       tile_cubes = tile_cubes.set_crs(32632)
+      end = time.time()
+      print('Looking for all files to process', end-start)
 
       # Launch coreg without applying shift, just saving shifts
       processed_names = []
@@ -347,7 +393,7 @@ def compute_shifts(target_folder, reference_folder, tiles):
           target_folder=target_folder,
           reference_folder=reference_folder,
           tile_name=tile,
-          batch_size=20 # number of timestamps to process in parallel for each file
+          batch_size=40 # number of timestamps to process in parallel for each file
       )
 
   return
