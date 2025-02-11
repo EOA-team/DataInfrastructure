@@ -7,6 +7,7 @@
 - [MeteoSuisse](#MeteoSuisse)
 - [SwissImage](#SwissImage)
 - [swissalti3D](#swissalti3d)
+- [Landsat](#landsat)
 - [Data status](#Data-status)
 
 <a name="grid-creation"></a>
@@ -16,7 +17,7 @@ The data is saved on the EPSG:32632 grid. The pixels align to those of the Senti
 
 The grid has a resolution of 1280m x 1280m, meaning 128x128 Sentinel-2 pixels (10m resolution) are included per grid cell. To create the grid, run the QGIS model in `grid_creator.model3` in QGIS. The inputs are:
 - a weather file from MeteoSuisse (e.g.`O:/Data-Raw/27_Natural_Resources-RE/99_Meteo_Public/MeteoSwiss_netCDF/__griddedData/lv95updated/TminY_ch01r.swiss.lv95_202301010000_202301010000.nc`)
-- an image from the Sentinel-2 tile T32TPS (e.g.`~/mnt/eo-nas1/data/satellite/sentinel2/CH/2020/S2A_MSIL2A_20200228T101021_N0214_R022_T32TPS_20200228T114852.SAFE/GRANULE/L2A_T32TPS_A024472_20200228T101400/IMG_DATA/R10m/T32TPS_20200228T101021_B03_10m.jp2`)
+- an image from the Sentinel-2 tile T32TPS (e.g.`~/mnt/eo-nas1/data/satellite/sentinel2/CH_old/2020/S2A_MSIL2A_20200228T101021_N0214_R022_T32TPS_20200228T114852.SAFE/GRANULE/L2A_T32TPS_A024472_20200228T101400/IMG_DATA/R10m/T32TPS_20200228T101021_B03_10m.jp2`)
 
 The resulting grid will start at the first pixel of T32TPS covering the weather file. This corresponds to the eastern most point of the data. The grid is then extended to cover the entire weather file. It is provided at the following path:
 ```
@@ -127,6 +128,29 @@ The files are named `sa3D_MINX_MAXY.zarr` where MINX and MINY correspond to the 
 
 For more information on swissalti3D please visit [here](https://www.swisstopo.admin.ch/en/height-model-swissalti3d)
 
+
+
+<a name="landsat"></a>
+## 6. Landsat 
+
+Landsat data is downloaded on a different grid than Sentinel-2 due to different resolution and alignment. S2 pixels occur every 10m while Landsat is every 30m, meaning that S2 cubes aligned to Landsat could be created by restructuring the S2 data.
+
+### Grid creation
+We use as reference to start the grid creation the upper left corner of a Landsat tile (path 195, row 27 - one of the main tiles covering Switzerland and already in EPSG:32632). This coordinate was extracted from metadata. 
+
+A grid extending from this coordinate and covering the extent of the weather data is produced. The tiles have the size 3840m x 3840m, corresponding to 128 x 128 pixels, and the coordinates are in EPSG:32632. We then cropped to keep only grid tiles covering Switzerland.
+
+```
+python landsat_grid.py # create rectangle grid starting from coord and extneding over bounds of weather file
+python crop_grid.py # keep only geometries/tiles that cover Switzerland
+```
+
+The shapefile containing the grid tiles for Landsat is stored at
+```
+~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/grid_landsat_CH.shp
+```
+
+### Data
 
 <a name="Data-status"></a>
 ## Data status

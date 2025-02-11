@@ -11,12 +11,11 @@ May 17th 2024
 
 import geopandas as gpd
 
-grid_path = '~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/gridface_s2tiles.shp'
+grid_path = '~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/grid_landsat.shp' #'~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/gridface_s2tiles.shp'
 gdf = gpd.read_file(grid_path)
 
 # Keep only the patches in Switzerland
-
 meteo_vector = gpd.read_file('~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/meteofile_vectorised.shp')
-intersection = gpd.sjoin(gdf, meteo_vector, how="inner", op="intersects")
+intersection = gpd.sjoin(gdf, meteo_vector, how="inner", predicate="intersects")
 result = gdf[gdf.index.isin(intersection.index)]
-result.to_file('~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/gridface_s2tiles_CH.shp')
+result.to_file('~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/grid_landsat_CH.shp')
