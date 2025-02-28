@@ -163,6 +163,7 @@ When the raw data is provided in EPSG:32631, it has been reprojected to EPSG:326
 The available variables are:
 - Landsat 4-5: TM_B1 (blue), TM_B2 (green), TM_B3 (red), TM_B4 (nir), TM_B5 (swir1), TM_B6 (surface temp, lwir), TM_B7 (swir2), SR_ATMOS_OPACITY (atmospheric opacity)
 - Landsat 8-9: OLI_B1 (coastal aerosol), OLI_B2 (blue), OLI_B3 (green), OLI_B4 (red), OLI_B5 (nir), OLI_B6 (swir1), OLI_B7 (swir2), TIRS_B10 (surface temp, lwir11)
+
 For more information on the bands refer to: https://www.usgs.gov/faqs/what-are-band-designations-landsat-satellites
 
 In addition to these bands there is also:
