@@ -74,7 +74,7 @@ The data is saved year by year in a `zarr` store (https://zarr.readthedocs.io/en
 ```
 S2_minx_maxy_startyeastartmonthstartday_endyearendmonthendday.zarr
 ```
-where (minx, maxy) will correspond to the upper left coordinate of the grid tile. There are two chunks per zarr file, where the data has been split in hald along the longitude dimension.
+where (minx, maxy) will correspond to the upper left coordinate of the grid tile. There are two chunks per zarr file, where the data has been split in half along the longitude dimension.
 
 <a name="MeteoSuisse"></a>
 ## 3. MeteoSuisse
@@ -149,8 +149,26 @@ The shapefile containing the grid tiles for Landsat is stored at
 ```
 ~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/grid_landsat_CH.shp
 ```
+## Data location and format
+You may find the data in `~/mnt/eo-nas1/data/satellite/landsat/raw/CH/45` and `~/mnt/eo-nas1/data/satellite/landsat/raw/CH/89` for Landsat 4-5 and Landsat 8-9 respectively. Landsat 4-5 covers 1982-2012, Landsat 8-9 covers 2013-present.
 
-### Data
+The data is saved year by year in a `zarr` store (https://zarr.readthedocs.io/en/stable/index.html) with the following name system:
+```
+LS_minx_maxy_startyeastartmonthstartday_endyearendmonthendday.zarr
+```
+where (minx, maxy) will correspond to the upper left coordinate of the grid tile. There are two chunks per zarr file, where the data has been split in half along the longitude dimension.
+
+When the raw data is provided in EPSG:32631, it has been reprojected to EPSG:32632. Each data vraible has its own metadata with a description, scale and offset values to convert the data to reflectance and the fill value for missing data. 
+
+The available variables are:
+- Landsat 4-5: TM_B1 (blue), TM_B2 (green), TM_B3 (red), TM_B4 (nir), TM_B5 (swir1), TM_B6 (surface temp, lwir), TM_B7 (swir2), SR_ATMOS_OPACITY (atmospheric opacity)
+- Landsat 8-9: OLI_B1 (coastal aerosol), OLI_B2 (blue), OLI_B3 (green), OLI_B4 (red), OLI_B5 (nir), OLI_B6 (swir1), OLI_B7 (swir2), TIRS_B10 (surface temp, lwir11)
+For more information on the bands refer to: https://www.usgs.gov/faqs/what-are-band-designations-landsat-satellites
+
+In addition to these bands there is also:
+- "Quality Assessment" bitmasks: ST_QA, QA_RADSAT, QA_PIXEL, QA_AEROSOL, SR_CLOUD_QA 
+- Surface temperature: ST_ATRAN (atmospheric transmissivity), ST_DRAD (downwell radiance), ST_TRAD (thermal radiance), ST_URAD (upwell radiance), ST_EMIS (emissivity), ST_EMSD (emissitivity stdev), ST_CDIST (cloud distance)
+- Metadata such as scene id, original projetion, orbit path and row...
 
 <a name="Data-status"></a>
 ## Data status
@@ -167,15 +185,21 @@ The download history is tracked here:
 | 09.09.2024| Downloaded S2 2016 |Package versions: sen2nbar==2023.8.1  minicuber ([commit version](https://github.com/EOA-team/minicuber/tree/14eb81ee93f91c0076e21debf23e4a82e6d7cc9e))| 
 | 25.11.2024| Processed MeteoSwiss variables to cubes | |
 | 02.12.2024| Processed swissalti3D to cubes | |
+| 28.02.2025| Downloaded Landsat 8-9 and processed to cubes |Package versions: sen2nbar==2023.8.1  minicuber ([commit version]https://github.com/EOA-team/minicuber/tree/3660b36fd5b61f93b9984634d95b136420f3ea3c) |
 
 
 ### Overview of data storage structure
 ```
  📁 \\eo-nas1\data
   ├── satellite
-  │   └── sentinel2
-  │       └── raw
-  │           └── CH
+  │   ├── sentinel2
+  │   │    └── raw
+  │   │        └── CH
+  │   └── landsat
+  │         └── raw
+  │            └── CH
+  │                ├── 45
+  │                └── 89
   │   
   ├── swisstopo
   │   ├── SwissImage
