@@ -149,7 +149,7 @@ The shapefile containing the grid tiles for Landsat is stored at
 ```
 ~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/grid_landsat_CH.shp
 ```
-## Data location and format
+### Data location and format
 You may find the data in `~/mnt/eo-nas1/data/satellite/landsat/raw/CH/45` and `~/mnt/eo-nas1/data/satellite/landsat/raw/CH/89` for Landsat 4-5 and Landsat 8-9 respectively. Landsat 4-5 covers 1982-2012, Landsat 8-9 covers 2013-present.
 
 The data is saved year by year in a `zarr` store (https://zarr.readthedocs.io/en/stable/index.html) with the following name system:
