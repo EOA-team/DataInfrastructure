@@ -187,7 +187,7 @@ The download history is tracked here:
 | 25.11.2024| Processed MeteoSwiss variables to cubes | |
 | 02.12.2024| Processed swissalti3D to cubes | |
 | 28.02.2025| Downloaded Landsat 8-9 and processed to cubes |Package versions: sen2nbar==2023.8.1  minicuber ([commit version](https://github.com/EOA-team/minicuber/tree/3660b36fd5b61f93b9984634d95b136420f3ea3c)) |
-| 20.03.2025| Downloaded S2 for 2025 | Package versions: sen2nbar==2023.8.1  minicuber ([commit version](https://github.com/EOA-team/minicuber/tree/686227f8fc0131053a448a3db59a6054e44c08da))| 
+| 20.03.2025| Downloaded S2 for 2024 | Package versions: sen2nbar==2023.8.1  minicuber ([commit version](https://github.com/EOA-team/minicuber/tree/686227f8fc0131053a448a3db59a6054e44c08da))| 
 
 
 ### Overview of data storage structure
