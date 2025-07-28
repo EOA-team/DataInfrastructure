@@ -173,7 +173,7 @@ In addition to these bands there is also:
 - Metadata such as scene id, original projetion, orbit path and row...
 
 
-## 8. PlanetLabs
+## 8. PlanetLabs <a name="landsat"></a>
 
 Planet Labs data is stored on `~/mnt/eo-nas1/data/satellite/PlanetLabs/raw/<site_name>`-
 
