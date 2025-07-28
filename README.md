@@ -173,9 +173,9 @@ In addition to these bands there is also:
 - Metadata such as scene id, original projetion, orbit path and row...
 
 
-## 8. PlanetLabs <a name="landsat"></a>
+## 8. PlanetLabs <a name="planet"></a>
 
-Planet Labs data is stored on `~/mnt/eo-nas1/data/satellite/PlanetLabs/raw/<site_name>`-
+Planet Labs data is stored on `~/mnt/eo-nas1/data/satellite/PlanetLabs/raw/<site_name>`.
 
 Different AOIs were downloaded for various date ranges, available in `PlanetLabs/geoms` (geojson files)
 
@@ -198,6 +198,9 @@ The download history is tracked here:
 | 02.12.2024| Processed swissalti3D to cubes | |
 | 28.02.2025| Downloaded Landsat 8-9 and processed to cubes |Package versions: sen2nbar==2023.8.1  minicuber ([commit version](https://github.com/EOA-team/minicuber/tree/3660b36fd5b61f93b9984634d95b136420f3ea3c)) |
 | 20.03.2025| Downloaded S2 for 2024 | Package versions: sen2nbar==2023.8.1  minicuber ([commit version](https://github.com/EOA-team/minicuber/tree/686227f8fc0131053a448a3db59a6054e44c08da))| 
+| 25.07.2024| Processed MeteoSwiss 2024 variables to cubes | |
+| 25.07.2025| Downloaded PlanetLabs data for some AOIs | | 
+| 28.07.2025| Downloaded S2 until 2025-07 for some regions | Package versions: minicuber ([commit version](https://github.com/EOA-team/minicuber/tree/f201746395ed9e088ba9ef806e5e9f5c87ad2460)) with local sen2nbar provided in minicuber repo| 
 
 
 ### Overview of data storage structure
@@ -207,6 +210,9 @@ The download history is tracked here:
   │   ├── sentinel2
   │   │    └── raw
   │   │        └── CH
+  │   ├── PlanetLabs
+  │   │    └── raw
+  │   │       └── AOI_name
   │   └── landsat
   │         └── raw
   │            └── CH
