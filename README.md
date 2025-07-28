@@ -8,6 +8,7 @@
 - [SwissImage](#SwissImage)
 - [swissalti3D](#swissalti3d)
 - [Landsat](#landsat)
+- [PlanetLabs](#planet)
 - [Data status](#Data-status)
 
 <a name="grid-creation"></a>
@@ -170,6 +171,15 @@ In addition to these bands there is also:
 - "Quality Assessment" bitmasks: ST_QA, QA_RADSAT, QA_PIXEL, QA_AEROSOL, SR_CLOUD_QA 
 - Surface temperature: ST_ATRAN (atmospheric transmissivity), ST_DRAD (downwell radiance), ST_TRAD (thermal radiance), ST_URAD (upwell radiance), ST_EMIS (emissivity), ST_EMSD (emissitivity stdev), ST_CDIST (cloud distance)
 - Metadata such as scene id, original projetion, orbit path and row...
+
+
+## 8. PlanetLabs
+
+Planet Labs data is stored on `~/mnt/eo-nas1/data/satellite/PlanetLabs/raw/<site_name>`-
+
+Different AOIs were downloaded for various date ranges, available in `PlanetLabs/geoms` (geojson files)
+
+The data is the 8-band product (PSB.SD) downloaded as TIF files clipped for the AOI for each date where the scene cloud coverage was <60%. The code to download an AOI is in `PlanetLabs/PlanetScopeDownload.py`, where the AOI and date range need to specified.
 
 <a name="Data-status"></a>
 ## Data status
