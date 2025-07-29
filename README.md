@@ -8,6 +8,7 @@
 - [SwissImage](#SwissImage)
 - [swissalti3D](#swissalti3d)
 - [Landsat](#landsat)
+- [DLR Soilsuite](#dlr)
 - [PlanetLabs](#planet)
 - [Data status](#Data-status)
 
@@ -172,8 +173,23 @@ In addition to these bands there is also:
 - Surface temperature: ST_ATRAN (atmospheric transmissivity), ST_DRAD (downwell radiance), ST_TRAD (thermal radiance), ST_URAD (upwell radiance), ST_EMIS (emissivity), ST_EMSD (emissitivity stdev), ST_CDIST (cloud distance)
 - Metadata such as scene id, original projetion, orbit path and row...
 
+## 8. DLR soilsuite <a name="planet"></a>
 
-## 8. PlanetLabs <a name="planet"></a>
+The bare soil composite produced by DLR wsa downlaoded and also processed to data cubes. It is a 5 year composite (2018-2022) produced from Sentinel-2 (for more info: https://geoservice.dlr.de/web/datasets/soilsuite_eur_5y).
+
+The raw TIF files were downloaded with 
+```
+python download_src.py
+```
+and then the data was processed (reprojected to EPSG:32632, chunked, saved to zarr files) with 
+```
+python SRC_to_cube.py
+```
+
+The data is saved at `~/mnt/eo-nas1/data/satellite/sentinel2/DLR_soilsuite`, where each data file is named `SRC_<left>_<top>.zarr` indicating the top left coriner of the grid used to download the Sentinel-2 data.
+
+
+## 9. PlanetLabs <a name="planet"></a>
 
 Planet Labs data is stored on `~/mnt/eo-nas1/data/satellite/PlanetLabs/raw/<site_name>`.
 
@@ -198,7 +214,8 @@ The download history is tracked here:
 | 02.12.2024| Processed swissalti3D to cubes | |
 | 28.02.2025| Downloaded Landsat 8-9 and processed to cubes |Package versions: sen2nbar==2023.8.1  minicuber ([commit version](https://github.com/EOA-team/minicuber/tree/3660b36fd5b61f93b9984634d95b136420f3ea3c)) |
 | 20.03.2025| Downloaded S2 for 2024 | Package versions: sen2nbar==2023.8.1  minicuber ([commit version](https://github.com/EOA-team/minicuber/tree/686227f8fc0131053a448a3db59a6054e44c08da))| 
-| 25.07.2024| Processed MeteoSwiss 2024 variables to cubes | |
+| 05.2025| Downloaded and processed DLR soilsuite | |
+| 25.07.2025| Processed MeteoSwiss 2024 variables to cubes | |
 | 25.07.2025| Downloaded PlanetLabs data for some AOIs | | 
 | 28.07.2025| Downloaded S2 until 2025-07 for some regions | Package versions: minicuber ([commit version](https://github.com/EOA-team/minicuber/tree/f201746395ed9e088ba9ef806e5e9f5c87ad2460)) with local sen2nbar provided in minicuber repo| 
 
@@ -208,8 +225,9 @@ The download history is tracked here:
  📁 \\eo-nas1\data
   ├── satellite
   │   ├── sentinel2
-  │   │    └── raw
-  │   │        └── CH
+  │   │    ├── raw
+  │   │    │   └── CH
+  │   │    └── DLR_soilsuite
   │   ├── PlanetLabs
   │   │    └── raw
   │   │       └── AOI_name
