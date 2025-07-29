@@ -173,7 +173,7 @@ In addition to these bands there is also:
 - Surface temperature: ST_ATRAN (atmospheric transmissivity), ST_DRAD (downwell radiance), ST_TRAD (thermal radiance), ST_URAD (upwell radiance), ST_EMIS (emissivity), ST_EMSD (emissitivity stdev), ST_CDIST (cloud distance)
 - Metadata such as scene id, original projetion, orbit path and row...
 
-## 8. DLR soilsuite <a name="planet"></a>
+## 8. DLR soilsuite <a name="dlr"></a>
 
 The bare soil composite produced by DLR wsa downlaoded and also processed to data cubes. It is a 5 year composite (2018-2022) produced from Sentinel-2 (for more info: https://geoservice.dlr.de/web/datasets/soilsuite_eur_5y).
 
@@ -186,7 +186,7 @@ and then the data was processed (reprojected to EPSG:32632, chunked, saved to za
 python SRC_to_cube.py
 ```
 
-The data is saved at `~/mnt/eo-nas1/data/satellite/sentinel2/DLR_soilsuite`, where each data file is named `SRC_<left>_<top>.zarr` indicating the top left coriner of the grid used to download the Sentinel-2 data.
+The data is saved at `~/mnt/eo-nas1/data/satellite/sentinel2/DLR_soilsuite`, where each data file is named `SRC_<left>_<top>.zarr` indicating the top left corner of the grid used to download the Sentinel-2 data.
 
 
 ## 9. PlanetLabs <a name="planet"></a>
