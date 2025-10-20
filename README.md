@@ -265,12 +265,17 @@ The download history is tracked here:
   │   │       └── 2m
   │   └── dem
   │
-  └── meteo
-      ├── Rhires
-      ├── Srel
-      ├── Tabs
-      ├── Tmax
-      └── Tmin
+  ├── meteo
+  │   ├── Rhires
+  │   ├── Srel
+  │   ├── Tabs
+  │   ├── Tmax
+  │   └── Tmin
+  │
+  └── soil
+      └── ccsols
+          ├── Daten_2024-01
+          └── datacubes
 ```
 
 ### Tools
