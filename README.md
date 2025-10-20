@@ -10,6 +10,7 @@
 - [Landsat](#landsat)
 - [DLR Soilsuite](#dlr)
 - [PlanetLabs](#planet)
+- [Soil properties - ccsols][#ccsols]
 - [Data status](#Data-status)
 
 <a name="grid-creation"></a>
@@ -197,6 +198,22 @@ Different AOIs were downloaded for various date ranges, available in `PlanetLabs
 
 The data is the 8-band product (PSB.SD) downloaded as TIF files clipped for the AOI for each date where the scene cloud coverage was <60%. The code to download an AOI is in `PlanetLabs/PlanetScopeDownload.py`, where the AOI and date range need to specified.
 
+
+## 10. Soil properties - ccsols <a name="ccsols"></a>
+
+The Swiss Competence Centre for SOil (Kopetenzzentrum Boden KOBO) has produces maps of soil properties at different depths across Switzerland. These raster layers are stored at `~/mnt/eo-nas1/data/soil/ccsols/Daten_2024-01`, and are originally at 30m resolution in EPSG:2056.
+
+The data was reprojected to EPSG:32632 and resampled to align to the Sentinel-2 grid (10m resolution) using nearest interpolation. The processed data is stored as datacubes in zarr format at `~/mnt/eo-nas1/data/soil/ccsols/cubes` with filenames following the structure `ccsols_<minx>_<maxy>.zarr'.
+
+Each datacube contains the following soil properties at different depths:
+- Cation exchange capacity [mmc/kg]: CECpot_depth_0_30, CECpot_depth_30_60, CECpot_depth_60_120
+- Clay content [%]: clay_depth_0_30, clay_depth_30_60, clay_depth_60_120
+- pH [-]: pH_depth_0_30, pH_depth_30_60, pH_depth_60_120
+- Sand content [%]: sand_depth_0_30, sand_depth_30_60, sand_depth_60_120
+- Silt content [%]: silt_depth_0_30, silt_depth_30_60, silt_depth_60_120
+- Soil organic carbon [%]: soc_depth_0_30, soc_depth_30_60, soc_depth_60_120
+
+
 <a name="Data-status"></a>
 ## Data status
 
@@ -218,6 +235,7 @@ The download history is tracked here:
 | 25.07.2025| Processed MeteoSwiss 2024 variables to cubes | |
 | 25.07.2025| Downloaded PlanetLabs data for some AOIs | | 
 | 28.07.2025| Downloaded S2 until 2025-07 for some regions | Package versions: minicuber ([commit version](https://github.com/EOA-team/minicuber/tree/f201746395ed9e088ba9ef806e5e9f5c87ad2460)) with local sen2nbar provided in minicuber repo| 
+| 17.10.2025| Processed ccsols data | | 
 
 
 ### Overview of data storage structure
