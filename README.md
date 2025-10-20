@@ -90,7 +90,7 @@ O:/Data-Raw/27_Natural_Resources-RE/99_Meteo_Public/MeteoSwiss_netCDF/__griddedD
 The daily variables were processed by reprojecting the data to EPSG:32632 and regridding the 1km data to 10m resolution (nearest-neighbor interpolation) aligned to Sentinel-2 pixels.\
 ### Data location and format
 You may find the data in `~/mnt/eo-nas1/data/meteo/`\
-The files are named `<datavar>/MeteoSwiss_<datavar>D_<minx>_<maxx>_<year>0101_<year>1231.zarr`
+The files are named `<datavar>/MeteoSwiss_<datavar>D_<minx>_<maxy>_<year>0101_<year>1231.zarr`
 
 The data variables are Rhires (daily precipitation [mm]), Srel (daily relative sunshine duraiton [%]), Tabs (daily mean air temprature [°C]), Tmin (daily min air temperature [°C]), Tmax (daily max temperature [°C]). For more information about the raw data please consult: https://www.meteoswiss.admin.ch/dam/jcr:215c313a-dc13-4b67-bca0-dbd966597f9a/ProdDoc_Cover-dfie.pdf.
 
@@ -203,7 +203,7 @@ The data is the 8-band product (PSB.SD) downloaded as TIF files clipped for the 
 
 The Swiss Competence Centre for SOil (Kopetenzzentrum Boden KOBO) has produces maps of soil properties at different depths across Switzerland. These raster layers are stored at `~/mnt/eo-nas1/data/soil/ccsols/Daten_2024-01`, and are originally at 30m resolution in EPSG:2056.
 
-The data was reprojected to EPSG:32632 and resampled to align to the Sentinel-2 grid (10m resolution) using nearest interpolation. The processed data is stored as datacubes in zarr format at `~/mnt/eo-nas1/data/soil/ccsols/cubes` with filenames following the structure `ccsols_<minx>_<maxy>.zarr'.
+The data was reprojected to EPSG:32632 and resampled to align to the Sentinel-2 grid (10m resolution) using nearest interpolation. The processed data is stored as datacubes in zarr format at `~/mnt/eo-nas1/data/soil/ccsols/cubes` with filenames following the structure `ccsols_<minx>_<maxy>.zarr`.
 
 Each datacube contains the following soil properties at different depths:
 - Cation exchange capacity [mmc/kg]: CECpot_depth_0_30, CECpot_depth_30_60, CECpot_depth_60_120

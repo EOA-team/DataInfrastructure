@@ -78,7 +78,7 @@ def process_patch(i, row, ds, datavar, output_dir):
 
     patch = row.geometry
     minx, miny, maxx, maxy = patch.bounds
-    output_path = output_dir + f'/cccsols_{int(minx)}_{int(maxy)}.zarr'
+    output_path = output_dir + f'/ccsols_{int(minx)}_{int(maxy)}.zarr'
 
     ds = ds.sel(lon=slice(minx, maxx-10), lat=slice(maxy, miny+10))
 
