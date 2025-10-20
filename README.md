@@ -10,7 +10,7 @@
 - [Landsat](#landsat)
 - [DLR Soilsuite](#dlr)
 - [PlanetLabs](#planet)
-- [Soil properties - ccsols][#ccsols]
+- [Soil properties - ccsols](#ccsols)
 - [Data status](#Data-status)
 
 <a name="grid-creation"></a>
