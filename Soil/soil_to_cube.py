@@ -75,7 +75,7 @@ data_dir = os.path.expanduser('~/mnt/eo-nas1/data/soil/ccsols/Daten_2024-01')
 grid_path = os.path.expanduser('~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/gridface_s2tiles_CH.shp')
 output_dir = os.path.expanduser('~/mnt/eo-nas1/data/soil/ccsols/datacubesv2')
 
-"""
+
 grid = gpd.read_file(grid_path)
 
 for f in os.listdir(data_dir): 
@@ -132,7 +132,6 @@ for f in os.listdir(data_dir):
   # --- Reproject data ---
   ds = ds.rio.reproject_match(ds_grid).rename({'x':'lon', 'y':'lat'}) # will resample with nearest interp and reproject
   ds = ds.drop_vars('spatial_ref')
-"""
 """ 
   ds = ds.assign_coords({
       "lon": ds.lon + 5,
@@ -140,16 +139,12 @@ for f in os.listdir(data_dir):
   })
   ds.rio.write_crs(32632).rename({'lon':'x', 'lat':'y'})[datavar].rio.to_raster(f'{datavar}.tif')
 """
-"""
-  print(ds.compute())
 
   # Slice and save
   slice_and_save(ds, grid, datavar, output_dir)
-"""
+
   
 # Consolidate metadata
-
-
 for i, f in enumerate(os.listdir(output_dir)):
   if f.endswith('.zarr'):
     zarr.consolidate_metadata(os.path.join(output_dir, f))
