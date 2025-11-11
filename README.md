@@ -11,7 +11,7 @@
 - [DLR Soilsuite](#dlr)
 - [PlanetLabs](#planet)
 - [Soil properties - ccsols](#ccsols)
-- [Snow depth](#snow)
+- [Snow depth](#snowdepth)
 - [Data status](#Data-status)
 
 <a name="grid-creation"></a>
