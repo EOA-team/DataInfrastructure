@@ -11,6 +11,7 @@
 - [DLR Soilsuite](#dlr)
 - [PlanetLabs](#planet)
 - [Soil properties - ccsols](#ccsols)
+- [Snow depth](#snow)
 - [Data status](#Data-status)
 
 <a name="grid-creation"></a>
@@ -214,6 +215,13 @@ Each datacube contains the following soil properties at different depths:
 - Soil organic carbon [%]: soc_depth_0_30, soc_depth_30_60, soc_depth_60_120
 
 
+## 11. Snow depth <a name="snowdepth"></a>
+
+Daily snow depth from the 1970s to 2023 at 1km resolution is available at `~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/DataInfrastructure/Meteo/HSCLQMD_ch01h.swiss.lv95_WY_1962_2023.nc` (EPSG:2056)
+
+Data from 2015 onwards has been processed to cubes on the Sentienl-2 grid and upscaled to 10m resolution with nearest interpolation. The data cubes are stored at `~/mnt/eo-nas1/data/meteo/snowdepth` with filename `snowdepth_<minx>_<maxy>.zarr`.
+
+
 <a name="Data-status"></a>
 ## Data status
 
@@ -236,6 +244,7 @@ The download history is tracked here:
 | 25.07.2025| Downloaded PlanetLabs data for some AOIs | | 
 | 28.07.2025| Downloaded S2 until 2025-07 for some regions | Package versions: minicuber ([commit version](https://github.com/EOA-team/minicuber/tree/f201746395ed9e088ba9ef806e5e9f5c87ad2460)) with local sen2nbar provided in minicuber repo| 
 | 17.10.2025| Processed ccsols data | | 
+| 11.11.2025| Processed snowdepth data | | 
 
 
 ### Overview of data storage structure
@@ -270,7 +279,8 @@ The download history is tracked here:
   │   ├── Srel
   │   ├── Tabs
   │   ├── Tmax
-  │   └── Tmin
+  │   ├── Tmin
+  │   └── snowdepth
   │
   └── soil
       └── ccsols
