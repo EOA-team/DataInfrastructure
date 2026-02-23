@@ -2,14 +2,13 @@ import os
 from pathlib import Path
 import sys
 
-base_dir = Path(os.path.dirname(os.path.realpath("__file__"))).parent.parent
+base_dir = Path(os.path.expanduser('~/mnt/eo-nas1/eoa-share/projects/010_CropCovEO'))
 sys.path.insert(0, str(base_dir))
 import earthnet_minicuber as emc
 
 import geopandas as gpd
 import pandas as pd
 from shapely.geometry import Point, Polygon, box
-from shapely.ops import cascaded_union
 import matplotlib.pyplot as plt
 import contextily as cx
 import numpy as np
@@ -21,7 +20,7 @@ import concurrent.futures
 import threading
 import gc
 import rioxarray
-
+import shutil
 
 def extract_minx_maxy(file):
     parts = file.split('_')
@@ -93,6 +92,9 @@ def extract_date(time):
 
     return year, month_str, day_str
 
+def has_all_65535(ds):
+    return ((ds == 65535).all(dim=['lat', 'lon'])).to_array().sum()
+
 def save_cube(cube, n_cells, output_prefix, patch_size=128, resolution=10, overwrite=False):
     """
     Take a xarrays, slice into patches of 128x128 pixels, compress and save to zarr store
@@ -128,10 +130,15 @@ def save_cube(cube, n_cells, output_prefix, patch_size=128, resolution=10, overw
             # Slice the cube
             patch_cube = cube.sel(lat=slice(lat_start, lat_end), lon=slice(lon_start, lon_end))
             patch_cube = patch_cube.chunk({'time': -1, 'lat': -1, 'lon': len(patch_cube.lon)/2}) 
+
+            # Drop empty dates: might have been artificially added when querying mega patch
+            dates_to_drop = [i for i, date in enumerate(patch_cube.time.values) if has_all_65535(patch_cube.isel(time=i))]
+            mask_dates = np.ones(len(patch_cube.time), dtype=bool)
+            mask_dates[dates_to_drop] = False
+            patch_cube = patch_cube.isel(time=mask_dates)
             
             # Define the output path for the Zarr store
             output_path = output_prefix + f'S2_{int(lon_start)}_{int(lat_start)}_{year_start}{month_start}{day_start}_{year_end}{month_end}{day_end}.zarr'
-
             # Save the patch to Zarr with compression
             if overwrite or not os.path.exists(output_path):
                 patch_cube.to_zarr(output_path, consolidated=True, mode='w', encoding={var: {'compressor': compressor} for var in patch_cube.data_vars})
@@ -150,16 +157,14 @@ def download_year(year, specs, n_cells, output_prefix, overwrite, mega_patch):
     :param mega_patch: geometries to download
     """
     try:
-        if grid_copy.loc[mega_patch.index, 'years_done'].isnull().any() or \
-                not any(year in sublist for sublist in grid_copy.loc[mega_patch.index, 'years_done']):
-            
-            print(f"{datetime.datetime.now()}: Downloading year {year}")
-            specs["time_interval"] = f"{year}-01-01/{year}-12-31"
-            # Call minicuber
-            cube = emc.load_minicube(specs, compute=True, verbose=True)
-            
-            # Call a function to rechunk, slice data based on mega-patch, compress, save to zarr
-            save_cube(cube, n_cells, output_prefix=output_prefix, overwrite=overwrite)
+    
+        print(f"{datetime.datetime.now()}: Downloading year {year}")
+        specs["time_interval"] = f"{year}-01-01/{year}-12-31"
+        # Call minicuber
+        cube = emc.load_minicube(specs, compute=True, verbose=True)
+        
+        # Call a function to rechunk, slice data based on mega-patch, compress, save to zarr
+        save_cube(cube, n_cells, output_prefix=output_prefix, overwrite=overwrite)
         return year, True
  
     except Exception as e:
@@ -182,7 +187,7 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
         lock = threading.Lock()
 
         # Start download
-        for i, row in grid.iterrows(): #for i, row in grid.iterrows():
+        for i, row in grid.iterrows(): 
             if not grid_copy.loc[i, 'selected']:
                 print(f"{datetime.datetime.now()}----Downloading patch {i}/{len(grid)}----")
                 
@@ -190,13 +195,14 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
                 patch = row.geometry
                 n_cells, mega_patch = create_max_square(patch, grid_copy, num_cells, patch_size, epsg=4326)
                 print(f"Adding {n_cells**2 -1} patches to download. Cube has side {int(patch_size*(n_cells)/specs['resolution'])}")
+                print(patch)
 
                 # Update specs 
                 specs["lon_lat"] = (patch.bounds[0], patch.bounds[-1]) # upper left corner
                 specs["xy_shape"] = (int(patch_size*(n_cells)/specs["resolution"]), int(patch_size*(n_cells)/specs["resolution"]))
                 
                 # Force all years to complete, in case of error
-                years_to_download = [2016] #list(range(2017, 2024))
+                years_to_download = list(range(2025, 2026))
                 successful_years = []
 
                 while years_to_download:
@@ -211,19 +217,17 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
                         # Update grid_copy immediately after a year is successfully downloaded
                         grid_copy.loc[mega_patch.index, 'years_done'] = grid_copy.loc[mega_patch.index, 'years_done'].apply(
                             lambda x: successful_years if x is None else list(set(x + successful_years)))
-                        grid_copy.to_pickle(output_prefix + 'grid_2016.pkl')
+                        grid_copy.to_pickle(output_prefix + 'grid_2025.pkl')
 
                 
                     # Mark the selected cells
                     if len(successful_years) == 1: #7:
                         grid_copy.loc[mega_patch.index, 'selected'] = True
-                        grid_copy.to_pickle(output_prefix + 'grid_2016.pkl')
+                        grid_copy.to_pickle(output_prefix + 'grid_2025.pkl')
 
                 # Clean up variables after each iteration
                 del mega_patch, years_to_download, successful_years
                 gc.collect()  # Explicitly call garbage collector to free up memory
-
-
 
         return grid_copy
 
@@ -232,8 +236,8 @@ if __name__ == "__main__":
 
     # Define download parameters
     patch_size = 1280 # meters
-    num_cells = 10
-    output_prefix = os.path.expanduser('~/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/')
+    num_cells = 5
+    output_prefix = os.path.expanduser('~/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/') #os.path.expanduser('~/mnt/eo-nas1/eoa-share/share/Sentinel-2/') #
     overwrite = False # If True, will overwrite existing files of same name
 
     # Define path to grid
@@ -241,7 +245,7 @@ if __name__ == "__main__":
     grid = gpd.read_file(grid_path)
 
     # Check what is currently downloaded and update grid based on files
-    data_path = os.path.expanduser('~/mnt/eo-nas1/data/satellite/sentinel2/raw/CH')
+    data_path = output_prefix
     data_files = [f for f in os.listdir(data_path) if f.endswith('zarr')]
     df_zarr = pd.DataFrame(data_files, columns=['file'])
     
@@ -255,7 +259,9 @@ if __name__ == "__main__":
         grid = grid.merge(grouped_df, how='left', right_on=['minx', 'maxy'], left_on=['left', 'top'])
         mask = grid['years_done'].isna()
         grid.loc[mask, 'years_done'] = grid.loc[mask, 'years_done'].apply(lambda x: [None])
-        grid['selected'] = grid['years_done'].apply(lambda x: False if len(x) < 8 else True)
+        grid['selected'] = grid['years_done'].apply(lambda x: False if len(x) < 10 else True)
+        #grid['selected'] = grid['years_done'].apply(lambda x: any(y is not None for y in x)) # for downloading 1 yr to new folder
+
     else:
         grid['selected'] = [False]*len(grid)
         grid['years_done'] = [None]*len(grid)
@@ -263,6 +269,7 @@ if __name__ == "__main__":
     grid_copy = grid.copy()
 
     # Further set download to AOI
+    """ 
     mask_path = os.path.expanduser('~/mnt/eo-nas1/eoa-share/projects/015_malve/data/world_cover_10m_4classes_reclassified.tif')
     mask = rioxarray.open_rasterio(mask_path)
     mask = mask.rio.reproject("EPSG:32632")
@@ -271,21 +278,36 @@ if __name__ == "__main__":
     raster_maxx = mask.x.values[-1]+50
     raster_maxy = mask.y.values[0]+50
     raster_miny = mask.y.values[-1]-50
+    """
+    """
+    #shapefiles = os.path.expanduser('~/mnt/Data-Work-RE/27_Natural_Resources-RE/99_GIS_User_protected/AP22_25/SFF14_Nachhaltigkeit/Nitratprojekt_CriticalN/01_CriticalN_GIS/Conf_PaperECPA25/2024_ECPA_layers.gpkg')
+    shapefiles = os.path.expanduser('~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/swissEO/Recki_bbox.shp')
+    perim = gpd.read_file(shapefiles).to_crs(32632)
+    raster_minx, raster_miny, raster_maxx, raster_maxy = perim.total_bounds
 
     grid_copy = grid_copy[
-    (grid_copy['left'] <= raster_maxx) &  # Left edge of the box is left of or inside the raster's right edge
-    (grid_copy['right'] >= raster_minx) &  # Right edge of the box is right of or inside the raster's left edge
-    (grid_copy['bottom'] <= raster_maxy) &  # Bottom edge of the box is below or inside the raster's top edge
-    (grid_copy['top'] >= raster_miny)    # Top edge of the box is above or inside the raster's bottom edge
-    ] 
+    (grid_copy['left'] <= raster_maxx) &  # Left edge of the box is right of or on the raster's left edge
+    (grid_copy['right'] >= raster_minx) &  # Right edge of the box is left of or on the raster's right edge
+    (grid_copy['bottom'] <= raster_maxy) &  # Bottom edge of the box is above or on the raster's bottom edge
+    (grid_copy['top'] >= raster_miny)       # Top edge of the box is below or on the raster's top edge
+]
 
     grid = grid[
-    (grid['left'] <= raster_maxx) &  # Left edge of the box is left of or inside the raster's right edge
+    (grid['left'] <= raster_maxx) & # Left edge of the box is left of or inside the raster's right edge
     (grid['right'] >= raster_minx) &  # Right edge of the box is right of or inside the raster's left edge
     (grid['bottom'] <= raster_maxy) &  # Bottom edge of the box is below or inside the raster's top edge
-    (grid['top'] >= raster_miny)    # Top edge of the box is above or inside the raster's bottom edge
+    (grid['top'] >= raster_miny)   # Top edge of the box is above or inside the raster's bottom edge
     ]   
-
+    
+    grid_copy = grid.copy()
+    """
+    """
+    f, ax = plt.subplots()
+    grid.plot(ax=ax, column='selected', alpha=0.5)
+    cx.add_basemap(ax=ax, crs=grid.crs)
+    plt.savefig('grid_2025.png')
+    """
+    
     specs = {
         "lon_lat": (None, None), # topleft
         "xy_shape": (None, None), # width, height of cutout around center pixel
@@ -307,7 +329,6 @@ if __name__ == "__main__":
 
     
     grid_copy = run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrite, specs)
-        
 
     # Check that all patches were treated
     any_false_selected = any(grid_copy['selected'] == False)
@@ -317,4 +338,4 @@ if __name__ == "__main__":
     else:
         print("All values in the 'selected' column are True.")
 
-
+   

@@ -2,14 +2,13 @@ import os
 from pathlib import Path
 import sys
 
-base_dir = Path(os.path.dirname(os.path.realpath("__file__"))).parent.parent
+base_dir = Path(os.path.expanduser('~/mnt/eo-nas1/eoa-share/projects/010_CropCovEO'))
 sys.path.insert(0, str(base_dir))
 import earthnet_minicuber as emc
 
 import geopandas as gpd
 import pandas as pd
 from shapely.geometry import Point, Polygon, box
-from shapely.ops import cascaded_union
 import matplotlib.pyplot as plt
 import contextily as cx
 import numpy as np
@@ -190,7 +189,6 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
                 
                 # Add surrounding patches to create up to num_cells x num_cells mega-patch (use patch as upper left corner)
                 patch = row.geometry
-                print(patch)
                 n_cells, mega_patch = create_max_square(patch, grid_copy, num_cells, patch_size, epsg=4326)
                 print(f"Adding {n_cells**2 -1} patches to download. Cube has side {int(patch_size*(n_cells)/specs['resolution'])}")
 
@@ -199,9 +197,8 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
                 specs["xy_shape"] = (int(patch_size*(n_cells)/specs["resolution"]), int(patch_size*(n_cells)/specs["resolution"]))
                 
                 # Force all years to complete, in case of error
-                #years_to_download = list(range(2013, 2025))
-                years_to_download = list(set(range(2013, 2025)) - set(grid_copy.loc[i, 'years_done']))
-                print(years_to_download)
+                years_to_download = list(range(2025, 2026))
+                #years_to_download = list(set(range(2013, 2025)) - set(grid_copy.loc[i, 'years_done']))
                 successful_years = []
 
                 while years_to_download:
@@ -216,13 +213,13 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
                         # Update grid_copy immediately after a year is successfully downloaded
                         grid_copy.loc[mega_patch.index, 'years_done'] = grid_copy.loc[mega_patch.index, 'years_done'].apply(
                             lambda x: successful_years if x is None else list(set(x + successful_years)))
-                        grid_copy.to_pickle(output_prefix + 'grid_landsat.pkl')
+                        grid_copy.to_pickle(output_prefix + 'grid_landsat2025.pkl')
 
                 
                     # Mark the selected cells
-                    if len(successful_years) == (2025-2013+1):
+                    if len(successful_years) == 1: #(2025-2013+1):
                         grid_copy.loc[mega_patch.index, 'selected'] = True
-                        grid_copy.to_pickle(output_prefix + 'grid_landsat.pkl')
+                        grid_copy.to_pickle(output_prefix + 'grid_landsat2025.pkl')
 
                 # Clean up variables after each iteration
                 del mega_patch, years_to_download, successful_years
@@ -237,7 +234,7 @@ if __name__ == "__main__":
     # Define download parameters
     patch_size = 128*30 # meters
     num_cells = 4
-    output_prefix = os.path.expanduser('~/mnt/eo-nas1/data/satellite/landsat/raw/CH/89/')
+    output_prefix = os.path.expanduser('~/mnt/eo-nas1/data/satellite/landsat/raw/CH/89/') #os.path.expanduser('~/mnt/eo-nas1/eoa-share/share/landsat89/') #
     overwrite = False # If True, will overwrite existing files of same name
 
     # Define path to grid
@@ -258,18 +255,19 @@ if __name__ == "__main__":
         grid = grid.merge(grouped_df, how='left', right_on=['minx', 'maxy'], left_on=['left', 'top'])
         mask = grid['years_done'].isna()
         grid.loc[mask, 'years_done'] = grid.loc[mask, 'years_done'].apply(lambda x: [None])
-        grid['selected'] = grid['years_done'].apply(lambda x: False if len(set(x)) < (2025-2013) else True) # years 2013 to 2024 included
+        grid['selected'] = grid['years_done'].apply(lambda x: False if len(set(x)) < (2026-2013) else True) # years 2013 to 2024 included
+        #grid['selected'] = grid['years_done'].apply(lambda x: any(y is not None for y in x))
     else:
         grid['selected'] = [False]*len(grid)
         grid['years_done'] = [None]*len(grid)
     
     grid_copy = grid.copy()
-    
+    """
     f, ax = plt.subplots()
     grid.plot(ax=ax, column='selected', alpha=0.5)
     cx.add_basemap(ax=ax, crs=grid.crs)
     plt.savefig('landsat_download_status.png')
-    
+    """
     
     # Setup download params
     specs = {
