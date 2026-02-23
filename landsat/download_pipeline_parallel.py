@@ -217,7 +217,7 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
 
                 
                     # Mark the selected cells
-                    if len(successful_years) == 1: #(2025-2013+1):
+                    if len(successful_years) == (2025-2013+1):
                         grid_copy.loc[mega_patch.index, 'selected'] = True
                         grid_copy.to_pickle(output_prefix + 'grid_landsat2025.pkl')
 

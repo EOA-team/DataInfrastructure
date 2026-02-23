@@ -267,46 +267,6 @@ if __name__ == "__main__":
         grid['years_done'] = [None]*len(grid)
 
     grid_copy = grid.copy()
-
-    # Further set download to AOI
-    """ 
-    mask_path = os.path.expanduser('~/mnt/eo-nas1/eoa-share/projects/015_malve/data/world_cover_10m_4classes_reclassified.tif')
-    mask = rioxarray.open_rasterio(mask_path)
-    mask = mask.rio.reproject("EPSG:32632")
-
-    raster_minx = mask.x.values[0]-50
-    raster_maxx = mask.x.values[-1]+50
-    raster_maxy = mask.y.values[0]+50
-    raster_miny = mask.y.values[-1]-50
-    """
-    """
-    #shapefiles = os.path.expanduser('~/mnt/Data-Work-RE/27_Natural_Resources-RE/99_GIS_User_protected/AP22_25/SFF14_Nachhaltigkeit/Nitratprojekt_CriticalN/01_CriticalN_GIS/Conf_PaperECPA25/2024_ECPA_layers.gpkg')
-    shapefiles = os.path.expanduser('~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/swissEO/Recki_bbox.shp')
-    perim = gpd.read_file(shapefiles).to_crs(32632)
-    raster_minx, raster_miny, raster_maxx, raster_maxy = perim.total_bounds
-
-    grid_copy = grid_copy[
-    (grid_copy['left'] <= raster_maxx) &  # Left edge of the box is right of or on the raster's left edge
-    (grid_copy['right'] >= raster_minx) &  # Right edge of the box is left of or on the raster's right edge
-    (grid_copy['bottom'] <= raster_maxy) &  # Bottom edge of the box is above or on the raster's bottom edge
-    (grid_copy['top'] >= raster_miny)       # Top edge of the box is below or on the raster's top edge
-]
-
-    grid = grid[
-    (grid['left'] <= raster_maxx) & # Left edge of the box is left of or inside the raster's right edge
-    (grid['right'] >= raster_minx) &  # Right edge of the box is right of or inside the raster's left edge
-    (grid['bottom'] <= raster_maxy) &  # Bottom edge of the box is below or inside the raster's top edge
-    (grid['top'] >= raster_miny)   # Top edge of the box is above or inside the raster's bottom edge
-    ]   
-    
-    grid_copy = grid.copy()
-    """
-    """
-    f, ax = plt.subplots()
-    grid.plot(ax=ax, column='selected', alpha=0.5)
-    cx.add_basemap(ax=ax, crs=grid.crs)
-    plt.savefig('grid_2025.png')
-    """
     
     specs = {
         "lon_lat": (None, None), # topleft
