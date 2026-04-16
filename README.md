@@ -108,6 +108,8 @@ The files are named `<datavar>/MeteoSwiss_<datavar>D_<minx>_<maxy>_<year>0101_<y
 
 The data variables are Rhires (daily precipitation [mm]), Srel (daily relative sunshine duraiton [%]), Tabs (daily mean air temprature [°C]), Tmin (daily min air temperature [°C]), Tmax (daily max temperature [°C]). For more information about the raw data please consult: https://www.meteoswiss.admin.ch/dam/jcr:215c313a-dc13-4b67-bca0-dbd966597f9a/ProdDoc_Cover-dfie.pdf.
 
+> [!WARNING]
+> As nearest interpolation was used, the data is at 10m resolution but resembles the 1km original data. To actually get 10m data, the data should be reporcessed with a bilinear interpolation.
 
 
 <a name="SwissImage"></a>
@@ -145,6 +147,8 @@ The files are named `sa3D_MINX_MAXY.zarr` where MINX and MINY correspond to the 
 
 For more information on swissalti3D please visit [here](https://www.swisstopo.admin.ch/en/height-model-swissalti3d)
 
+> [!WARNING]
+> The DEM extends a bit beyond the borders of Switzerland. The nan value was set to 65535 but during reprojection this affect the value of neighboring pixels. Grid tiles at the edge of Switzerland have artificially high values due to 65535 not being considered as missing data correctly. However, these (most likely) all fall outside of the border. The code would need to be edited to correctly consider missing data during reprojection to fix this issue.
 
 
 <a name="landsat"></a>
@@ -217,7 +221,7 @@ The data is the 8-band product (PSB.SD) downloaded as TIF files clipped for the 
 
 The Swiss Competence Centre for SOil (Kopetenzzentrum Boden KOBO) has produces maps of soil properties at different depths across Switzerland. These raster layers are stored at `~/mnt/eo-nas1/data/soil/ccsols/Daten_2024-01`, and are originally at 30m resolution in EPSG:2056.
 
-The data was reprojected to EPSG:32632 and resampled to align to the Sentinel-2 grid (10m resolution) using nearest interpolation. The processed data is stored as datacubes in zarr format at `~/mnt/eo-nas1/data/soil/ccsols/cubes` with filenames following the structure `ccsols_<minx>_<maxy>.zarr`.
+The data was reprojected to EPSG:32632 and resampled to align to the Sentinel-2 grid (10m resolution) using nearest interpolation. The processed data is stored as datacubes in zarr format at `~/mnt/eo-nas1/data/soil/ccsols/datacubes` with filenames following the structure `ccsols_<minx>_<maxy>.zarr`.
 
 Each datacube contains the following soil properties at different depths:
 - Cation exchange capacity [mmc/kg]: CECpot_depth_0_30, CECpot_depth_30_60, CECpot_depth_60_120
