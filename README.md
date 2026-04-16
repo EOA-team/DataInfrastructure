@@ -85,7 +85,8 @@ where (minx, maxy) will correspond to the upper left coordinate of the grid tile
 > [!NOTE]
 > Code:
 > - Currently the code is parallelised across a single year (and can be accelerated by using a larger `num_cells`). Since download now is likely to occur for a single, the code could be improved so that parallelisation occurs across space (grid tiles).
-> - Due to multiple grid tiles being downloaded at once (i.e. using `num_cells`>1), artificial missing data was sometimes introduced when timestamps didn't patch across all grid tiles. There are therefore some timestamps full of missing data, that need to be dropped. This could be implemented in the code.\\ 
+> - Due to multiple grid tiles being downloaded at once (i.e. using `num_cells`>1), artificial missing data was sometimes introduced when timestamps didn't patch across all grid tiles. There are therefore some timestamps full of missing data, that need to be dropped. This could be implemented in the code.
+>
 > Product:
 > - "product_uri" variable keeps track of which original Sentinel-2 product the datacube originates from. Atmospheric correction was applied to at this level. More [here](https://sentiwiki.copernicus.eu/web/s2-products).
 > - Due to multiple grid tiles being downloaded at once (i.e. using `num_cells`>1), artificial missing data was sometimes introduced when timestamps didn't patch across all grid tiles. There are therefore some timestamps full of missing data, that need to be dropped.
@@ -97,7 +98,7 @@ where (minx, maxy) will correspond to the upper left coordinate of the grid tile
 
 The original data are netCDF files stored at
 ```
-O:/Data-Raw/27_Natural_Resources-RE/99_Meteo_Public/MeteoSwiss_netCDF/__griddedData/lv95updated/```
+O:/Data-Raw/27_Natural_Resources-RE/99_Meteo_Public/MeteoSwiss_netCDF/__griddedData/lv95updated/
 ```
 
 The daily variables were processed by reprojecting the data to EPSG:32632 and regridding the 1km data to 10m resolution (nearest-neighbor interpolation) aligned to Sentinel-2 pixels.
