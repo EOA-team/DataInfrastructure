@@ -4,7 +4,7 @@
 
 - [Grid creation](#grid-creation) 
 - [Sentinel-2](#Sentinel-2)
-- [MeteoSuisse](#MeteoSuisse)
+- [MeteoSwiss](#MeteoSwiss)
 - [SwissImage](#SwissImage)
 - [swissalti3D](#swissalti3d)
 - [Landsat](#landsat)
@@ -93,14 +93,18 @@ where (minx, maxy) will correspond to the upper left coordinate of the grid tile
 
 
 
-<a name="MeteoSuisse"></a>
-## 3. MeteoSuisse
+<a name="MeteoSwiss"></a>
+## 3. MeteoSwiss
 
 The original data are netCDF files stored at
 ```
 O:/Data-Raw/27_Natural_Resources-RE/99_Meteo_Public/MeteoSwiss_netCDF/__griddedData/lv95updated/
 ```
-
+### How to run:
+To process the raw data into zarr datacubes: 
+```
+python Meteo/meteo_to_cube_parallel.py
+```
 The daily variables were processed by reprojecting the data to EPSG:32632 and regridding the 1km data to 10m resolution (nearest-neighbor interpolation) aligned to Sentinel-2 pixels.
 ### Data location and format
 You may find the data in `~/mnt/eo-nas1/data/meteo/`\
@@ -141,6 +145,12 @@ You may find the data in `~/mnt/eo-nas1/data/swisstopo/SwissImage/cubes/10cm` or
 ## 5. swissalti3D (Swisstopo)
 
 A Digital Elevation Model (DEM) of Switzerland at 2m resolution produced by swisstopo was added to the dataset. The product was reprojected from EPSG:2056 to EPSG:32632 and resampled using nearest inteprolation to align to the custom grid (i.e. align to Sentinel-2 pixels).
+### How to run:
+To process the raw data into zarr datacubes: 
+```
+python DEM/dem_to_cube_inverse.py
+```
+
 ### Data location and format
 You may find the data in `~/mnt/eo-nas1/data/swisstopo/DEM`\
 The files are named `sa3D_MINX_MAXY.zarr` where MINX and MINY correspond to the coordinates of the top left corner of the file, in meters (EPSG:32632).
@@ -170,6 +180,20 @@ The shapefile containing the grid tiles for Landsat is stored at
 ```
 ~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/grid_landsat_CH.shp
 ```
+
+### How to run:
+To process the raw data into zarr datacubes: 
+```
+python landsat/download_pipeline_parallel.py
+```
+
+Hard coded in the script/variables that could be modified:
+- the path to the output folder (where data is stored)
+- In `run_download`line 220 and in the main script line 258, the year needs to be updated (latest year to download)
+
+> [!NOTE]
+> See Sentinel-2 section for potential issues/improvements on the code and product
+
 ### Data location and format
 You may find the data in `~/mnt/eo-nas1/data/satellite/landsat/raw/CH/45` and `~/mnt/eo-nas1/data/satellite/landsat/raw/CH/89` for Landsat 4-5 and Landsat 8-9 respectively. Landsat 4-5 covers 1982-2012, Landsat 8-9 covers 2013-present.
 
@@ -223,6 +247,11 @@ The Swiss Competence Centre for SOil (Kopetenzzentrum Boden KOBO) has produces m
 
 The data was reprojected to EPSG:32632 and resampled to align to the Sentinel-2 grid (10m resolution) using nearest interpolation. The processed data is stored as datacubes in zarr format at `~/mnt/eo-nas1/data/soil/ccsols/datacubes` with filenames following the structure `ccsols_<minx>_<maxy>.zarr`.
 
+### How to run
+```
+python Soil/soil_to_cube.py
+```
+
 Each datacube contains the following soil properties at different depths:
 - Cation exchange capacity [mmc/kg]: CECpot_depth_0_30, CECpot_depth_30_60, CECpot_depth_60_120
 - Clay content [%]: clay_depth_0_30, clay_depth_30_60, clay_depth_60_120
@@ -237,6 +266,12 @@ Each datacube contains the following soil properties at different depths:
 Daily snow depth from the 1970s to 2023 at 1km resolution is available at `~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/DataInfrastructure/Meteo/HSCLQMD_ch01h.swiss.lv95_WY_1962_2023.nc` (EPSG:2056)
 
 Data from 2015 onwards has been processed to cubes on the Sentienl-2 grid and upscaled to 10m resolution with nearest interpolation. The data cubes are stored at `~/mnt/eo-nas1/data/meteo/snowdepth` with filename `snowdepth_<minx>_<maxy>.zarr`.
+
+### How to run
+```
+python Meteo/snow.py
+```
+
 
 
 <a name="Data-status"></a>

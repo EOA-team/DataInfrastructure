@@ -4,6 +4,7 @@ import xarray as xr
 import rioxarray
 import requests
 from io import BytesIO
+import os
 
 
 def download_SRC_from_STAC(bbox, assets, download_dir, STAC_URL='https://geoservice.dlr.de/eoc/ogc/stac/v1', collection_id="S2-soilsuite-europe-2018-2022-P5Y"):
@@ -101,7 +102,12 @@ def download_SRC_from_STAC(bbox, assets, download_dir, STAC_URL='https://geoserv
 
 STAC_URL = "https://geoservice.dlr.de/eoc/ogc/stac/v1/"
 collection_id = "S2-soilsuite-europe-2018-2022-P5Y"
-bbox = [5.96, 45.82, 10.49, 47.81]  # Switzerland
+bbox = [22.357, 41.235, 28.597, 44.216] # Bulgaria
+""" 
+[5.96, 45.82, 10.49, 47.81]  # Switzerland
+[6.627, 35.288, 18.784, 47.092] # Italy
+[14.123, 49.002, 24.145, 54.839] # Poland
+"""
 assets = ['SRC', 'SRC-STD', 'SRC-CI95', 'MASK']
 download_dir = os.path.expanduser('~/mnt/eo-nas1/data/satellite/sentinel2/raw/DLR_soilsuite/')
 

@@ -31,7 +31,7 @@ s2_grid = os.path.expanduser('~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfras
 grid_shp = gpd.read_file(s2_grid, crs=36232)
 
 
-for f in os.listdir(raw_data_dir):
+for n_file, f in enumerate(os.listdir(raw_data_dir)):
   ds = xr.open_zarr(os.path.join(raw_data_dir, f)).compute().drop_vars('spatial_ref')
  
   # To reproject to S2 grid in EPSG:32632 :
@@ -103,28 +103,35 @@ for f in os.listdir(raw_data_dir):
       'reprocessing': 'Reprojected to EPSG:32632 and interpolated to S2 grid by Selene Ledain, 05.2025'
   })
 
+
   # Chunk up to S2 datacubes
   for i, cube in grid_shp.iterrows():
     left = cube.left
     top = cube.top
 
-    if left in ds_reproj.x.values and top in ds_reproj.y.values and left+1270 in ds_reproj.x.values and top+1270 in ds_reproj.y.values:
-      ds_chunk = ds_reproj.sel(x=slice(left, left + 1270), y=slice(top, top -1270))
-      
-      if not np.isnan(ds_chunk.to_array().values).all():
-        for var_name in original_vars:
-          # Replace nan values back with fill values, and convert to int16
-          if var_name in fill_is_neg10:
-            ds_chunk[var_name] = xr.where(ds_chunk[var_name].isnull(), -10, ds_chunk[var_name])
-          elif var_name in fill_is_neg10k:
-            ds_chunk[var_name] = ds_chunk[var_name] = xr.where(ds_chunk[var_name].isnull(), -10000, ds_chunk[var_name])
-          elif var_name in fill_is_0:
-            ds_chunk[var_name] = xr.where(ds_chunk[var_name].isnull(), 0, ds_chunk[var_name])
-          ds_chunk[var_name] = ds_chunk[var_name].round().astype('int16')
+    save_path = os.path.join(out_dir, f'SRC_{int(left)}_{int(top)}.zarr')
+    if not os.path.exists(save_path):
 
-        # Save
-        save_path = os.path.join(out_dir, f'SRC_{int(left)}_{int(top)}.zarr')
-        ds_chunk.to_zarr(save_path, mode='w', consolidated=True)
-        print(f'Saved cube {i}/{len(grid_shp)}: {save_path}')
- 
+      if left in ds_reproj.x.values and top in ds_reproj.y.values and left+1270 in ds_reproj.x.values and top+1270 in ds_reproj.y.values:
+        ds_chunk = ds_reproj.sel(x=slice(left, left + 1270), y=slice(top, top -1270))
 
+        if len(ds_chunk.x.values) != 128 or len(ds_chunk.y.values) != 128:
+          # In case the coords were out of bounds, will make sure that it is filled with Nan
+          ds_chunk = ds_reproj.reindex(x=np.arange(left, left+1280, 10), y=np.arange(top, top-1280, -10), method=None)
+          
+        
+        if not np.isnan(ds_chunk.to_array().values).all():
+          for var_name in original_vars:
+            # Replace nan values back with fill values, and convert to int16
+            if var_name in fill_is_neg10:
+              ds_chunk[var_name] = xr.where(ds_chunk[var_name].isnull(), -10, ds_chunk[var_name])
+            elif var_name in fill_is_neg10k:
+              ds_chunk[var_name] = ds_chunk[var_name] = xr.where(ds_chunk[var_name].isnull(), -10000, ds_chunk[var_name])
+            elif var_name in fill_is_0:
+              ds_chunk[var_name] = xr.where(ds_chunk[var_name].isnull(), 0, ds_chunk[var_name])
+            ds_chunk[var_name] = ds_chunk[var_name].round().astype('int16')
+
+          # Save
+          save_path = os.path.join(out_dir, f'SRC_{int(left)}_{int(top)}.zarr')
+          ds_chunk.to_zarr(save_path, mode='w', consolidated=True)
+          print(f'Saved cube {i}/{len(grid_shp)}: {save_path}')

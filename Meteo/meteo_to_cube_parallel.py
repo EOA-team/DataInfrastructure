@@ -16,6 +16,7 @@ from datetime import date
 from shapely import Polygon
 import glob
 from shapely.geometry import box
+from concurrent.futures import ThreadPoolExecutor
 
 
 def check_processed_cubes(data_file, datavar, datestart, output_prefix):
@@ -103,7 +104,7 @@ def regrid_product_cube(product_cube, lon_lat_grid):
 
   return product_cube
 
-def slice_and_save(ds, grid, datavar, datestart, output_prefix, compressor, overwrite):
+def slice_and_save_old(ds, grid, datavar, datestart, output_prefix, compressor, overwrite):
   """
   Regrid the weather data to the grid and save the datacubes to zarr
 
@@ -157,7 +158,61 @@ def slice_and_save(ds, grid, datavar, datestart, output_prefix, compressor, over
 
   return
 
+def process_patch(i, row, ds, datavar, datestart, output_prefix, compressor, overwrite):
+    """Process and save a single grid patch to Zarr."""
 
+    patch = row.geometry
+    minx, miny, maxx, maxy = patch.bounds
+    output_path = output_prefix + f'{datavar.split("D")[0]}/MeteoSwiss_{datavar}_{int(minx)}_{int(maxy)}_{int(datestart[:4])}0101_{int(datestart[:4])}1231.zarr'
+    
+    if not overwrite and os.path.exists(output_path):
+        print(f'File {output_path} already exists. Skipping...')
+        return
+
+    lon_lat_grid = [np.arange(minx, maxx, 10), np.arange(miny+10, maxy+10, 10)]
+    regrid = regrid_product_cube(ds, lon_lat_grid) 
+
+    if not np.isnan(regrid[datavar]).all():
+        regrid = regrid.drop_vars(["swiss_lv95_coordinates"], errors="ignore")
+        
+        # Update metadata
+        attrs = regrid.attrs
+        attrs['history'] += f". Reprojected and regrid datacube to EPSG 32632 by Sélène Ledain on {date.today()}"
+        regrid.attrs = attrs
+        
+        # Chunk
+        regrid = regrid.chunk({'time': -1, 'lat': -1, 'lon': len(regrid.lon)/2}) 
+       
+        # Save to Zarr with compression
+        regrid.to_zarr(output_path, consolidated=True, mode='w', encoding={var: {'compressor': compressor} for var in regrid.data_vars})
+        print(f'Saved patch {i}', output_path)
+
+def slice_and_save(ds, grid, datavar, datestart, output_prefix, compressor, overwrite):
+    """
+    Regrid the weather data to the grid and save the datacubes to zarr using multithreading.
+
+    :param ds: xarray dataset
+    :param grid: geopandas dataframe
+    :param datavar: variable name
+    :param datestart: year of data
+    :param output_prefix: path to save the zarr files
+    :param compressor: zarr compressor
+    :param overwrite: boolean to overwrite existing files
+    """
+    
+    with ThreadPoolExecutor(max_workers=8) as executor:  # Define the number of threads here
+        # Submit a separate task for each row in the grid
+        futures = [executor.submit(process_patch, i, row, ds, datavar, datestart, output_prefix, compressor, overwrite) for i, row in grid.iterrows()]
+       
+        # Wait for all threads to complete
+        for i, future in enumerate(futures):
+            try:
+                future.result()  # This will raise an exception if the thread failed
+                #print(f'Completed processing grid patch {i+1}/{len(grid)}')
+            except Exception as e:
+                print(f'Error processing patch {i+1}/{len(grid)}: {e}')
+    
+    return
 
 
 if __name__ == "__main__":
@@ -171,17 +226,17 @@ if __name__ == "__main__":
   grid = gpd.read_file(grid_path)
 
   output_prefix = os.path.expanduser('~/mnt/eo-nas1/data/meteo/')
-  overwrite = False # If True, will overwrite existing files of same name
+  overwrite = True # If True, will overwrite existing files of same name
 
   data_path = os.path.expanduser('~/mnt/Data-Raw-RE/27_Natural_Resources-RE/99_Meteo_Public/MeteoSwiss_netCDF/__griddedData/lv95updated')
   data_files = [f for f in os.listdir(data_path) if f.endswith('.nc') and not f.startswith('topo') and f.split('_')[0].endswith('D')]
+  
 
   compressor = zarr.Blosc(cname='zstd', clevel=3, shuffle=2)
-
- 
+  
   #####################
   # PROCESS FILES
-
+ 
   #processed_files = [f for f in os.listdir(output_prefix)]
   
   for i, data_file in enumerate(data_files):
