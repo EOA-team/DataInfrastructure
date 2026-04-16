@@ -61,15 +61,17 @@ For each grid tile, the data is queried using the [minicuber](https://github.com
 
 To download the data:
 ```
-python S2/download_pipeline.py
+python S2/download_pipeline_parallel.py
 ```
+Hard coded in the script/variables that could be modified:
+- the path to the output folder (where data is stored)
+- the number of datacubes (`num_cells`) that are downloaded together. This is done to reduce queries to Microsoft PC. A larger cube of side `num_cells`+1 will be downloaded and then split back to the original sized data cubes. (Example: `num_cells`=2 means a larger block of 3x3 grid tiles will be queried at once. `num_cells` is automatically reduced for tiles at the border of the grid/when the requested number is not possible.)
+- data is downloaded year by year
+- the parallelisation occurs across years 
 
-- More about interrupting and restarting the download
-
-Multiple grid tiles can be queried together (up to 4x4) and are split back to single tiles upon data saving. The returned data cube includes the following bands and variables:
+The returned data cube includes the following bands and variables:
 ```
-- "S2_AOT", "S2_B01", "S2_B02", "S2_B03", "S2_B04", "S2_B05", "S2_B06", "S2_B07", "S2_B08", "S2_B8A", "S2_B09", "S2_B11", "S2_B12", "S2_WVP", "s2_SCL", "S2_mask"
-- "product_uri", "mean_sensor_zenith", "mean_sensor_azimuth", "mean_solar_zenith", "mean_solar_azimuth"
+- "s2_AOT", "s2_B01", "s2_B02", "s2_B03", "s2_B04", "s2_B05", "s2_B06", "s2_B07", "s2_B08", "s2_B8A", "s2_B09", "s2_B11", "s2_B12", "s2_WVP", "s2_SCL", "s2_mask" (Deep learning mask for cloud detection, see `minicuber`package), "product_uri", "mean_sensor_zenith", "mean_sensor_azimuth", "mean_solar_zenith", "mean_solar_azimuth"
 ```
 
 ### Data location and format
@@ -79,6 +81,16 @@ The data is saved year by year in a `zarr` store (https://zarr.readthedocs.io/en
 S2_minx_maxy_startyeastartmonthstartday_endyearendmonthendday.zarr
 ```
 where (minx, maxy) will correspond to the upper left coordinate of the grid tile. There are two chunks per zarr file, where the data has been split in half along the longitude dimension.
+
+> [!NOTE]
+> Code:
+> - Currently the code is parallelised across a single year (and can be accelerated by using a larger `num_cells`). Since download now is likely to occur for a single, the code could be improved so that parallelisation occurs across space (grid tiles).
+> - Due to multiple grid tiles being downloaded at once (i.e. using `num_cells`>1), artificial missing data was sometimes introduced when timestamps didn't patch across all grid tiles. There are therefore some timestamps full of missing data, that need to be dropped. This could be implemented in the code. 
+> Product:
+> - "product_uri" variable keeps track of which original Sentinel-2 product the datacube originates from. Atmospheric correction was applied to at this level. More [here](https://sentiwiki.copernicus.eu/web/s2-products).
+> - Due to multiple grid tiles being downloaded at once (i.e. using `num_cells`>1), artificial missing data was sometimes introduced when timestamps didn't patch across all grid tiles. There are therefore some timestamps full of missing data, that need to be dropped.
+
+
 
 <a name="MeteoSuisse"></a>
 ## 3. MeteoSuisse
@@ -245,7 +257,7 @@ The download history is tracked here:
 | 28.07.2025| Downloaded S2 until 2025-07 for some regions | Package versions: minicuber ([commit version](https://github.com/EOA-team/minicuber/tree/f201746395ed9e088ba9ef806e5e9f5c87ad2460)) with local sen2nbar provided in minicuber repo| 
 | 17.10.2025| Processed ccsols data | | 
 | 11.11.2025| Processed snowdepth data | | 
-
+| 07.04.2026| Downloaded S2 for 2025 | Package versions: sen2nbar==2023.8.1  minicuber ([commit version](https://github.com/EOA-team/minicuber/tree/686227f8fc0131053a448a3db59a6054e44c08da))| 
 
 ### Overview of data storage structure
 ```

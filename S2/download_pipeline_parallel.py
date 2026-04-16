@@ -235,8 +235,8 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
 if __name__ == "__main__":
 
     # Define download parameters
-    patch_size = 1280 # meters
-    num_cells = 5
+    patch_size = 1280 # metersd
+    num_cells = 8
     output_prefix = os.path.expanduser('~/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/') #os.path.expanduser('~/mnt/eo-nas1/eoa-share/share/Sentinel-2/') #
     overwrite = False # If True, will overwrite existing files of same name
 
