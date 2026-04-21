@@ -2,7 +2,8 @@ import os
 from pathlib import Path
 import sys
 
-base_dir = Path(os.path.dirname(os.path.realpath("__file__"))).parent.parent
+# base_dir = Path(os.path.dirname(os.path.realpath("__file__"))).parent.parent
+base_dir = Path(os.path.expanduser('~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure'))
 sys.path.insert(0, str(base_dir))
 import earthnet_minicuber as emc
 
@@ -237,7 +238,7 @@ if __name__ == "__main__":
     # Define download parameters
     patch_size = 128*30 # meters
     num_cells = 4
-    output_prefix = os.path.expanduser('~/mnt/eo-nas1/data/satellite/landsat/raw/CH/45/')
+    output_prefix = os.path.expanduser('~/mnt/eo-nas1/data/satellite/landsat/raw/CH_new/45/')
     overwrite = False # If True, will overwrite existing files of same name
 
     # Define path to grid

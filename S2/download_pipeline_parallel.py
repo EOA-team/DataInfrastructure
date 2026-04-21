@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 import sys
 
-base_dir = Path(os.path.expanduser('~/mnt/eo-nas1/eoa-share/projects/010_CropCovEO'))
+base_dir = Path(os.path.expanduser('~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure'))
 sys.path.insert(0, str(base_dir))
 import earthnet_minicuber as emc
 

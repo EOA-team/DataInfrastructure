@@ -67,7 +67,6 @@ def create_max_square(patch, grid, num_cells, patch_size, epsg=4326):
         square_in_grid = grid[(grid.geometry.within(square)) & (~grid['selected'])]
         
         if len(square_in_grid) < (n_cells+1)**2: # the square has side ncells+1
-            #print('Max found side', n_cells**2)
             return n_cells, max_square 
         else:
             max_square = square_in_grid
@@ -135,7 +134,7 @@ def save_cube(cube, n_cells, output_prefix, patch_size=128, resolution=30, overw
             # Save the patch to Zarr with compression
             if overwrite or not os.path.exists(output_path):
                 patch_cube.to_zarr(output_path, consolidated=True, mode='w', encoding={var: {'compressor': compressor} for var in patch_cube.data_vars})
-                print('Saved patch', output_path) # save_end-save_start
+                print('Saved patch', output_path)
     return
 
 def download_year(year, specs, n_cells, output_prefix, overwrite, mega_patch):
@@ -183,7 +182,7 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
         lock = threading.Lock()
 
         # Start download
-        for i, row in grid.iterrows(): #for i, row in grid.iterrows():
+        for i, row in grid.iterrows():
             if not grid_copy.loc[i, 'selected']:
                 print(f"{datetime.datetime.now()}----Downloading patch {i}/{len(grid)}----")
                 
@@ -197,8 +196,10 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
                 specs["xy_shape"] = (int(patch_size*(n_cells)/specs["resolution"]), int(patch_size*(n_cells)/specs["resolution"]))
                 
                 # Force all years to complete, in case of error
-                years_to_download = list(range(2025, 2026))
-                #years_to_download = list(set(range(2013, 2025)) - set(grid_copy.loc[i, 'years_done']))
+                years_to_download = list(set([1999, 2000, 2001, 2002, 2003, 2004, 2005,
+                                              2006, 2007, 2008, 2009, 2010, 2011, 2012,
+                                              2013])
+                                         - set(grid_copy.loc[i, 'years_done'] or []))
                 successful_years = []
 
                 while years_to_download:
@@ -213,18 +214,16 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
                         # Update grid_copy immediately after a year is successfully downloaded
                         grid_copy.loc[mega_patch.index, 'years_done'] = grid_copy.loc[mega_patch.index, 'years_done'].apply(
                             lambda x: successful_years if x is None else list(set(x + successful_years)))
-                        grid_copy.to_pickle(output_prefix + 'grid_landsat2025.pkl')
+                        grid_copy.to_pickle(output_prefix + 'grid_landsat_7.pkl')
 
-                
                     # Mark the selected cells
-                    if len(successful_years) == (2025-2013+1):
+                    if len(successful_years) == 1:
                         grid_copy.loc[mega_patch.index, 'selected'] = True
-                        grid_copy.to_pickle(output_prefix + 'grid_landsat2025.pkl')
+                        grid_copy.to_pickle(output_prefix + 'grid_landsat_7.pkl')
 
                 # Clean up variables after each iteration
                 del mega_patch, years_to_download, successful_years
                 gc.collect()  # Explicitly call garbage collector to free up memory
-
 
         return grid_copy
 
@@ -234,7 +233,7 @@ if __name__ == "__main__":
     # Define download parameters
     patch_size = 128*30 # meters
     num_cells = 4
-    output_prefix = os.path.expanduser('~/mnt/eo-nas1/data/satellite/landsat/raw/CH/89/') #os.path.expanduser('~/mnt/eo-nas1/eoa-share/share/landsat89/') #
+    output_prefix = os.path.expanduser('~/mnt/eo-nas1/data/satellite/landsat/raw/CH/7/')
     overwrite = False # If True, will overwrite existing files of same name
 
     # Define path to grid
@@ -255,20 +254,21 @@ if __name__ == "__main__":
         grid = grid.merge(grouped_df, how='left', right_on=['minx', 'maxy'], left_on=['left', 'top'])
         mask = grid['years_done'].isna()
         grid.loc[mask, 'years_done'] = grid.loc[mask, 'years_done'].apply(lambda x: [None])
-        grid['selected'] = grid['years_done'].apply(lambda x: False if len(set(x)) < (2026-2013) else True) # years 2013 to 2024 included
-        #grid['selected'] = grid['years_done'].apply(lambda x: any(y is not None for y in x))
+        TARGET_YEARS = {1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013}
+        grid['selected'] = grid['years_done'].apply(
+            lambda x: TARGET_YEARS.issubset(set(x)) if x is not None else False)
     else:
         grid['selected'] = [False]*len(grid)
         grid['years_done'] = [None]*len(grid)
     
+    print(len(grid[grid['selected']]), len(grid))
     grid_copy = grid.copy()
-    """
+
     f, ax = plt.subplots()
     grid.plot(ax=ax, column='selected', alpha=0.5)
     cx.add_basemap(ax=ax, crs=grid.crs)
     plt.savefig('landsat_download_status.png')
-    """
-    
+
     # Setup download params
     specs = {
         "lon_lat": (None, None), # topleft
@@ -280,15 +280,14 @@ if __name__ == "__main__":
             {
                 "name": "ls",
                 "kwargs": {
-                    "bands": ["coastal", "blue", "green", "red", "nir08", "swir16", "lwir", "swir22", "lwir11", "urad", "drad", "trad",  "emis", "emsd", "atran", "cdist", "qa_pixel", "qa_aerosol", "qa_radsat", "qa", "cloud_qa", "atmos_opacity"],
+                    "bands": ["blue", "green", "red", "nir08", "swir16", "lwir", "swir22", "urad", "drad", "trad", "emis", "emsd", "atran", "cdist", "qa_pixel", "qa_radsat", "qa", "cloud_qa", "atmos_opacity"],
                     "data_source": "planetary_computer",
-                    "platforms": ["landsat-8, landsat-9"],
+                    "platforms": ["landsat-7"],
                     }
             }
             ]
     }
 
-    
     # Start download
     grid_copy = run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrite, specs)
 
@@ -298,5 +297,3 @@ if __name__ == "__main__":
         print("Not all grid tiles downloaded.")
     else:
         print("All grid tiles downloaded.")
-
-
