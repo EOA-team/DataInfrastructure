@@ -1,21 +1,35 @@
-# Swiss Earth Observation Data Infrastructure (Swiss-EODI)
+# Swiss Agricultural Landscape Intelligence (SALI) platform
+The EOA data infrastructure. 
 
+This repository documents how the multi-source Earth observation dataset was produced and where it lives. All data is stored on the shared NAS at `\\eo-nas1\data`.
 ## :ledger: Index
 
-- [Grid creation](#grid-creation) 
-- [Sentinel-2](#Sentinel-2)
-- [MeteoSwiss](#MeteoSwiss)
-- [SwissImage](#SwissImage)
-- [swissalti3D](#swissalti3d)
-- [Landsat](#landsat)
-- [DLR Soilsuite](#dlr)
-- [PlanetLabs](#planet)
-- [Soil properties - ccsols](#ccsols)
-- [Snow depth](#snowdepth)
-- [Data status](#Data-status)
+1. [Environment setup](#environment-setup)
+2. [Grid creation](#grid-creation)
+3. [Sentinel-2](#sentinel-2)
+4. [MeteoSwiss](#meteoswiss)
+5. [SwissImage](#swissimage)
+6. [swissalti3D (DEM)](#swissalti3d)
+7. [Landsat](#landsat)
+8. [DLR Soilsuite](#dlr)
+9. [PlanetLabs](#planet)
+10. [Soil properties — ccsols](#ccsols)
+11. [Snow depth](#snowdepth)
+13. [Data status](#data-status)
+14. [Storage structure](#storage-structure)
 
+
+## 1. Environment setup <a name="environment-setup"></a>
+
+Install with:
+```bash
+pip install -r requirements.txt
+```
+
+The Sentinel-2 and Landsat pipelines depend on the [minicuber](https://github.com/EOA-team/minicuber) package (commit pinned in the [Data status](#data-status) table). 
+---
 <a name="grid-creation"></a>
-## 1. Grid creation
+## 2. Grid creation
 
 The data is saved on the EPSG:32632 grid. The pixels align to those of the Sentinel-2 satellite data in the UTM zone 32. The extent of the grid is defined by the bounding box of the MeteoSuisse data, which extends slightly beyond the administrative borders of Switzerland. 
 
@@ -53,229 +67,333 @@ The final grid is saved at
     <em>Sentinel-2 aligned grid cropped to MeteoSuisse file</em>
 </p>
 
-<a name="Sentinel-2"></a>
-## 2. Sentinel-2 
+---
+
+## 3. Sentinel-2 <a name="sentinel-2"></a>
+
+**Temporal coverage:** 2016-2025  
+**Spatial resolution:** 10 m  
+**CRS:** EPSG:32632  
+**Tile size:** 128 × 128 pixels (1280 m × 1280 m)
 
 The Sentinel-2 data is downloaded using the grid created above. Each grid tile is 1280m x 1280m, containing 128 x 128 pixels with a resolution of 10m.\
 For each grid tile, the data is queried using the [minicuber](https://github.com/EOA-team/minicuber/tree/main) code which takes care of reprojecting all data to a common, 10m resolution pixel size and aligned to the coordinates of the grid (EPSG:32632). Details on other processing steps are included in the minicuber documentation.
 
 ### How to run
-```
+
+```bash
 python S2/download_pipeline_parallel.py
 ```
-Hard coded in the script/variables that could be modified:
-- the path to the output folder (where data is stored)
-- the number of datacubes (`num_cells`) that are downloaded together. This is done to reduce queries to Microsoft PC. A larger cube of side `num_cells`+1 will be downloaded and then split back to the original sized data cubes. (Example: `num_cells`=2 means a larger block of 3x3 grid tiles will be queried at once. `num_cells` is automatically reduced for tiles at the border of the grid/when the requested number is not possible.)
-- data is downloaded year by year
-- the parallelisation occurs across years 
 
-The returned data cube includes the following bands and variables:
+Key parameters (hard-coded at the top of the script):
+- `output_folder` — where zarr files are written
+- `num_cells` — number of adjacent tiles merged into one query (reduces Microsoft Planetary Computer round-trips). A value of 2 means 3×3 tiles are fetched at once and then split. Automatically reduced at grid borders.
+- Downloads run year by year; parallelisation is across years.
+
+### Bands and variables
+
 ```
-- "s2_AOT", "s2_B01", "s2_B02", "s2_B03", "s2_B04", "s2_B05", "s2_B06", "s2_B07", "s2_B08", "s2_B8A", "s2_B09", "s2_B11", "s2_B12", "s2_WVP", "s2_SCL", "s2_mask" (Deep learning mask for cloud detection, see `minicuber`package), "product_uri", "mean_sensor_zenith", "mean_sensor_azimuth", "mean_solar_zenith", "mean_solar_azimuth"
+s2_AOT, s2_B01, s2_B02, s2_B03, s2_B04, s2_B05, s2_B06, s2_B07,
+s2_B08, s2_B8A, s2_B09, s2_B11, s2_B12, s2_WVP, s2_SCL,
+s2_mask (DL cloud mask, see minicuber docs),
+product_uri, mean_sensor_zenith, mean_sensor_azimuth,
+mean_solar_zenith, mean_solar_azimuth
 ```
 
 ### Data location and format
-You may find the data in `~/mnt/eo-nas1/data/satellite/sentinel2/raw/CH`
-The data is saved year by year in a `zarr` store (https://zarr.readthedocs.io/en/stable/index.html) with the following name system:
+
 ```
-S2_minx_maxy_startyeastartmonthstartday_endyearendmonthendday.zarr
+~/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/
 ```
-where (minx, maxy) will correspond to the upper left coordinate of the grid tile. There are two chunks per zarr file, where the data has been split in half along the longitude dimension.
 
-> [!NOTE]
-> Code:
-> - Currently the code is parallelised across a single year (and can be accelerated by using a larger `num_cells`). Since download now is likely to occur for a single, the code could be improved so that parallelisation occurs across space (grid tiles).
-> - Due to multiple grid tiles being downloaded at once (i.e. using `num_cells`>1), artificial missing data was sometimes introduced when timestamps didn't patch across all grid tiles. There are therefore some timestamps full of missing data, that need to be dropped. This could be implemented in the code.
->
-> Product:
-> - "product_uri" variable keeps track of which original Sentinel-2 product the datacube originates from. Atmospheric correction was applied to at this level. More [here](https://sentiwiki.copernicus.eu/web/s2-products).
-> - Due to multiple grid tiles being downloaded at once (i.e. using `num_cells`>1), artificial missing data was sometimes introduced when timestamps didn't patch across all grid tiles. There are therefore some timestamps full of missing data, that need to be dropped.
+Files: `S2_<minx>_<maxy>_<startYYYYMMDD>_<endYYYYMMDD>.zarr`  
+`(minx, maxy)` = upper-left corner in EPSG:32632. Each zarr is split into two chunks along the longitude axis.
 
+> **Note — known data quality issues:**
+> - When `num_cells > 1`, timestamps that don't span all tiles in the block are filled with NaN. These all-NaN timestamps should be dropped before use.
+> - `product_uri` records the originating Sentinel-2 L2A product. Atmospheric correction was applied upstream — see [Copernicus S2 products](https://sentiwiki.copernicus.eu/web/s2-products).
+> - Potential improvement: parallelise across grid tiles rather than years for future single-year updates.
 
+---
 
-<a name="MeteoSwiss"></a>
-## 3. MeteoSwiss
+## 4. MeteoSwiss <a name="meteoswiss"></a>
 
-The original data are netCDF files stored at
+**Temporal coverage:** 1961–2025 (varies by variable)  
+**Original spatial resolution:** 1 km  
+**Processed resolution:** 10 m (nearest-neighbour upsampling — see warning below)  
+**CRS:** EPSG:32632
+
+### Raw data location
+
 ```
 O:/Data-Raw/27_Natural_Resources-RE/99_Meteo_Public/MeteoSwiss_netCDF/__griddedData/lv95updated/
 ```
-### How to run:
-To process the raw data into zarr datacubes: 
-```
+
+### How to run
+
+```bash
 python Meteo/meteo_to_cube_parallel.py
 ```
-The daily variables were processed by reprojecting the data to EPSG:32632 and regridding the 1km data to 10m resolution (nearest-neighbor interpolation) aligned to Sentinel-2 pixels.
+
+Reprojects the native LV95 (EPSG:2056) netCDF files to EPSG:32632 and regrid to the S2-aligned 10 m grid.
+
+### Variables
+
+| Variable | Description | Unit |
+|----------|-------------|------|
+| `Rhires` | Daily precipitation | mm |
+| `Srel` | Daily relative sunshine duration | % |
+| `Tabs` | Daily mean air temperature | °C |
+| `Tmin` | Daily minimum air temperature | °C |
+| `Tmax` | Daily maximum air temperature | °C |
+
+For full product documentation see the [MeteoSwiss product page](https://www.meteoswiss.admin.ch/dam/jcr:215c313a-dc13-4b67-bca0-dbd966597f9a/ProdDoc_Cover-dfie.pdf).
+
 ### Data location and format
-You may find the data in `~/mnt/eo-nas1/data/meteo/`\
-The files are named `<datavar>/MeteoSwiss_<datavar>D_<minx>_<maxy>_<year>0101_<year>1231.zarr`
 
-The data variables are Rhires (daily precipitation [mm]), Srel (daily relative sunshine duraiton [%]), Tabs (daily mean air temprature [°C]), Tmin (daily min air temperature [°C]), Tmax (daily max temperature [°C]). For more information about the raw data please consult: https://www.meteoswiss.admin.ch/dam/jcr:215c313a-dc13-4b67-bca0-dbd966597f9a/ProdDoc_Cover-dfie.pdf.
-
-> [!WARNING]
-> As nearest interpolation was used, the data is at 10m resolution but resembles the 1km original data. To actually get 10m data, the data should be reporcessed with a bilinear interpolation.
-
-
-<a name="SwissImage"></a>
-## 4. SwissImage (Swisstopo)
-### Downloading raw data
-
-To download the dataset provided by Swisstopo (TIF files) run
 ```
+~/mnt/eo-nas1/data/meteo/<datavar>/MeteoSwiss_<datavar>D_<minx>_<maxy>_<year>0101_<year>1231.zarr
+```
+
+> **Warning:** Nearest-neighbour interpolation was used for upsampling from 1 km to 10 m. The data structurally resembles 1 km resolution. For true 10 m meteorological data, reprocess with bilinear interpolation.
+
+---
+
+## 5. SwissImage (Swisstopo) <a name="swissimage"></a>
+
+**Spatial resolution:** 10 cm or 2 m  
+**CRS (raw):** EPSG:2056 → reprojected to EPSG:32632  
+**Product:** [swissimage-dop10](https://www.swisstopo.admin.ch/en/orthoimage-swissimage-10)
+
+### Download raw TIF files
+
+```bash
 python SwissImage/si_download.py --urls_path path/to/urls.csv --downloads_path path/to/output/folder
 ```
 
-The URLS for download are provided in `ch.swisstopo.swissimage-dop10-DOp5jXFT.csv` (0.1m resolution) and `ch.swisstopo.swissimage-dop10-vWuyN4vG.csv` (2m resolution).\
+URL lists:
+- `SwissImage/ch.swisstopo.swissimage-dop10-DOp5jXFT.csv` — 10 cm resolution
+- `SwissImage/ch.swisstopo.swissimage-dop10-vWuyN4vG.csv` — 2 m resolution
 
-The original TIF files store RGB values, for a 1km x 1km area. The data is in EPSG:2056 and the filenames follow the structure\
-`swissimage-dop10_YEAR_MINX_MINY_RESOLUTION_2056.tif`\.
-MINX and MINY correspond to the coordinates of the bottom left corner of the file, in kms (EPSG:2056). The resolution is provided at 10cm (0.1m) but also 2m,
-with cubic resampling done by Swisstopo. They are stored in `~/mnt/eo-nas1/data/swisstopo/SwissImage/raw/10cm` and `~/mnt/eo-nas1/data/swisstopo/SwissImage/raw/2m` respectively.
+Raw TIF filename structure: `swissimage-dop10_<YEAR>_<MINX>_<MINY>_<RESOLUTION>_2056.tif`  
+(MINX, MINY in km, EPSG:2056; one file = 1 km × 1 km, RGB.)
 
-For more information on the products please visit [here](https://www.swisstopo.admin.ch/en/orthoimage-swissimage-10)
+Raw files stored at:
+- `~/mnt/eo-nas1/data/swisstopo/SwissImage/raw/10cm`
+- `~/mnt/eo-nas1/data/swisstopo/SwissImage/raw/2m`
 
-### Fomratting to custom grid
+### Reproject and align to S2 grid
 
-The data was then reprojected to EPSG:32632 and resampled to be aligned to the Sentinel-2 grid (keeping a 10cm or 2m resolution).
+```bash
+python SwissImage/si_to_cube_parallel.py
+```
+
+Reprojects to EPSG:32632 and resamples to align to the custom Sentinel-2 grid (preserving 10 cm or 2 m resolution).
 
 ### Data location and format
-You may find the data in `~/mnt/eo-nas1/data/swisstopo/SwissImage/cubes/10cm` or `~/mnt/eo-nas1/data/swisstopo/SwissImage/cubes/2m`.\
 
-<a name="swissalti3D"></a>
-## 5. swissalti3D (Swisstopo)
-
-A Digital Elevation Model (DEM) of Switzerland at 2m resolution produced by swisstopo was added to the dataset. The product was reprojected from EPSG:2056 to EPSG:32632 and resampled using nearest inteprolation to align to the custom grid (i.e. align to Sentinel-2 pixels).
-### How to run:
-To process the raw data into zarr datacubes: 
 ```
+~/mnt/eo-nas1/data/swisstopo/SwissImage/cubes/10cm/
+~/mnt/eo-nas1/data/swisstopo/SwissImage/cubes/2m/
+```
+
+---
+
+## 6. swissalti3D (Swisstopo DEM) <a name="swissalti3d"></a>
+
+**Original resolution:** 2 m  
+**CRS (raw):** EPSG:2056 → reprojected to EPSG:32632  
+**Product:** [swissalti3D](https://www.swisstopo.admin.ch/en/height-model-swissalti3d)
+
+### How to run
+
+```bash
 python DEM/dem_to_cube_inverse.py
 ```
 
+Reprojects from EPSG:2056 to EPSG:32632 using nearest-neighbour interpolation, aligned to the custom grid.
+
 ### Data location and format
-You may find the data in `~/mnt/eo-nas1/data/swisstopo/DEM`\
-The files are named `sa3D_MINX_MAXY.zarr` where MINX and MINY correspond to the coordinates of the top left corner of the file, in meters (EPSG:32632).
 
-For more information on swissalti3D please visit [here](https://www.swisstopo.admin.ch/en/height-model-swissalti3d)
+```
+~/mnt/eo-nas1/data/swisstopo/DEM/sa3D_<minx>_<maxy>.zarr
+```
 
-> [!WARNING]
-> The DEM extends a bit beyond the borders of Switzerland. The nan value was set to 65535 but during reprojection this affect the value of neighboring pixels. Grid tiles at the edge of Switzerland have artificially high values due to 65535 not being considered as missing data correctly. However, these (most likely) all fall outside of the border. The code would need to be edited to correctly consider missing data during reprojection to fix this issue.
+`(minx, maxy)` = top-left corner in EPSG:32632.
+
+> **Warning:** The DEM source uses 65535 as a NoData value. This was not always correctly handled during reprojection, so grid tiles at the Swiss border may have artificially elevated values. These tiles most likely all fall outside the Swiss boundary. Fix: pass the correct NoData flag during reprojection.
+
+---
 
 
-<a name="landsat"></a>
-## 6. Landsat 
+## 7. Landsat <a name="landsat"></a>
 
-Landsat data is downloaded on a different grid than Sentinel-2 due to different resolution and alignment. S2 pixels occur every 10m while Landsat is every 30m, meaning that S2 cubes aligned to Landsat could be created by restructuring the S2 data.
+**Temporal coverage:** 1982–2012 (L4-5), 2013–present (L8-9)  
+**Spatial resolution:** 30 m  
+**CRS:** EPSG:32632  
+**Tile size:** 128 × 128 pixels (3840 m × 3840 m)
+
+Landsat uses a **separate grid** from S2 (different pixel spacing and origin). S2 and Landsat can be reconciled by restructuring S2 data to 30 m.
 
 ### Grid creation
-We use as reference to start the grid creation the upper left corner of a Landsat tile (path 195, row 27 - one of the main tiles covering Switzerland and already in EPSG:32632). This coordinate was extracted from metadata. 
 
-A grid extending from this coordinate and covering the extent of the weather data is produced. The tiles have the size 3840m x 3840m, corresponding to 128 x 128 pixels, and the coordinates are in EPSG:32632. We then cropped to keep only grid tiles covering Switzerland.
+The grid originates from the upper-left corner of Landsat path 195 / row 27 (already in EPSG:32632). Tiles are 3840 m × 3840 m.
 
+```bash
+python landsat/landsat_grid.py   # create rectangle grid
+python crop_grid.py              # crop to Switzerland
 ```
-python landsat_grid.py # create rectangle grid starting from coord and extneding over bounds of weather file
-python crop_grid.py # keep only geometries/tiles that cover Switzerland
-```
 
-The shapefile containing the grid tiles for Landsat is stored at
+Final grid:
 ```
 ~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/Project layers/grid_landsat_CH.shp
 ```
 
-### How to run:
-To process the raw data into zarr datacubes: 
-```
-python landsat/download_pipeline_parallel.py
-```
+### How to run
 
-Hard coded in the script/variables that could be modified:
-- the path to the output folder (where data is stored)
-- In `run_download`line 220 and in the main script line 258, the year needs to be updated (latest year to download)
+Choose the script matching the satellite generation:
 
-> [!NOTE]
-> See Sentinel-2 section for potential issues/improvements on the code and product
+| Script | Satellites | Years |
+|--------|-----------|-------|
+| `landsat/download_pipeline_parallel_45.py` | Landsat 4 & 5 (TM) | 1982–2012 |
+| `landsat/download_pipeline_parallel_7.py` | Landsat 7 (ETM+) | 1999–2022 |
+| `landsat/download_pipeline_parallel.py` | Landsat 8 & 9 (OLI/TIRS) | 2013–present |
+
+Key parameter to update in scripts: the target year range (hard-coded near the top of each file).
+
+### Bands and variables
+
+**Landsat 4–5 (TM):**
+`TM_B1` (blue), `TM_B2` (green), `TM_B3` (red), `TM_B4` (NIR), `TM_B5` (SWIR1), `TM_B6` (LWIR/surface temp), `TM_B7` (SWIR2), `SR_ATMOS_OPACITY`
+
+**Landsat 8–9 (OLI/TIRS):**
+`OLI_B1` (coastal aerosol), `OLI_B2` (blue), `OLI_B3` (green), `OLI_B4` (red), `OLI_B5` (NIR), `OLI_B6` (SWIR1), `OLI_B7` (SWIR2), `TIRS_B10` (LWIR11/surface temp)
+
+**Quality / QA bands (all generations):** `ST_QA`, `QA_RADSAT`, `QA_PIXEL`, `QA_AEROSOL`, `SR_CLOUD_QA`
+
+**Surface temperature ancillary:** `ST_ATRAN`, `ST_DRAD`, `ST_TRAD`, `ST_URAD`, `ST_EMIS`, `ST_EMSD`, `ST_CDIST`
+
+**Metadata:** such as scene id, original projetion, orbit path and row...
+
+Each variable has metadata with description, scale/offset to convert to reflectance, and fill value. When raw data is in EPSG:32631 it is reprojected to EPSG:32632.
+
+See [USGS band designations](https://www.usgs.gov/faqs/what-are-band-designations-landsat-satellites) for details.
 
 ### Data location and format
-You may find the data in `~/mnt/eo-nas1/data/satellite/landsat/raw/CH/45` and `~/mnt/eo-nas1/data/satellite/landsat/raw/CH/89` for Landsat 4-5 and Landsat 8-9 respectively. Landsat 4-5 covers 1982-2012, Landsat 8-9 covers 2013-present.
 
-The data is saved year by year in a `zarr` store (https://zarr.readthedocs.io/en/stable/index.html) with the following name system:
 ```
-LS_minx_maxy_startyeastartmonthstartday_endyearendmonthendday.zarr
-```
-where (minx, maxy) will correspond to the upper left coordinate of the grid tile. There are two chunks per zarr file, where the data has been split in half along the longitude dimension.
-
-When the raw data is provided in EPSG:32631, it has been reprojected to EPSG:32632. Each data vraible has its own metadata with a description, scale and offset values to convert the data to reflectance and the fill value for missing data. 
-
-The available variables are:
-- Landsat 4-5: TM_B1 (blue), TM_B2 (green), TM_B3 (red), TM_B4 (nir), TM_B5 (swir1), TM_B6 (surface temp, lwir), TM_B7 (swir2), SR_ATMOS_OPACITY (atmospheric opacity)
-- Landsat 8-9: OLI_B1 (coastal aerosol), OLI_B2 (blue), OLI_B3 (green), OLI_B4 (red), OLI_B5 (nir), OLI_B6 (swir1), OLI_B7 (swir2), TIRS_B10 (surface temp, lwir11)
-
-For more information on the bands refer to: https://www.usgs.gov/faqs/what-are-band-designations-landsat-satellites
-
-In addition to these bands there is also:
-- "Quality Assessment" bitmasks: ST_QA, QA_RADSAT, QA_PIXEL, QA_AEROSOL, SR_CLOUD_QA 
-- Surface temperature: ST_ATRAN (atmospheric transmissivity), ST_DRAD (downwell radiance), ST_TRAD (thermal radiance), ST_URAD (upwell radiance), ST_EMIS (emissivity), ST_EMSD (emissitivity stdev), ST_CDIST (cloud distance)
-- Metadata such as scene id, original projetion, orbit path and row...
-
-## 8. DLR soilsuite <a name="dlr"></a>
-
-The bare soil composite produced by DLR wsa downlaoded and also processed to data cubes. It is a 5 year composite (2018-2022) produced from Sentinel-2 (for more info: https://geoservice.dlr.de/web/datasets/soilsuite_eur_5y).
-
-The raw TIF files were downloaded with 
-```
-python download_src.py
-```
-and then the data was processed (reprojected to EPSG:32632, chunked, saved to zarr files) with 
-```
-python SRC_to_cube.py
+~/mnt/eo-nas1/data/satellite/landsat/raw/CH/45/   # Landsat 4-5
+~/mnt/eo-nas1/data/satellite/landsat/raw/CH/89/   # Landsat 8-9
 ```
 
-The data is saved at `~/mnt/eo-nas1/data/satellite/sentinel2/DLR_soilsuite`, where each data file is named `SRC_<left>_<top>.zarr` indicating the top left corner of the grid used to download the Sentinel-2 data.
+Files: `LS_<minx>_<maxy>_<startYYYYMMDD>_<endYYYYMMDD>.zarr`
 
+> **Note:** Same NaN-timestamp issue as S2 (see section 3) may occur. Drop all-NaN timestamps before use.
+
+---
+
+## 8. DLR Soilsuite <a name="dlr"></a>
+
+**Temporal coverage:** 2018–2022 composite (5-year)  
+**Source:** [DLR EO Center soilsuite](https://geoservice.dlr.de/web/datasets/soilsuite_eur_5y) — bare soil composite from Sentinel-2  
+**CRS:** EPSG:32632 (reprojected from source)
+
+### How to run
+
+```bash
+python DLR_soilsuite/download_src.py    # download raw TIFs
+python DLR_soilsuite/SRC_to_cube.py     # reproject to EPSG:32632 and save as zarr
+```
+
+### Data location and format
+
+```
+~/mnt/eo-nas1/data/satellite/sentinel2/DLR_soilsuite/SRC_<left>_<top>.zarr
+```
+
+`(left, top)` = top-left corner aligned to the S2 grid.
+
+---
 
 ## 9. PlanetLabs <a name="planet"></a>
 
-Planet Labs data is stored on `~/mnt/eo-nas1/data/satellite/PlanetLabs/raw/<site_name>`.
+**Product:** PlanetScope 8-band (PSB.SD), TIF clipped to AOI  
+**Cloud cover filter:** < 60% scene cloud coverage  
+**CRS:** native PlanetScope projection (not reprojected)
 
-Different AOIs were downloaded for various date ranges, available in `PlanetLabs/geoms` (geojson files)
+AOI geometries (GeoJSON) are stored in `PlanetLabs/geoms/`. To download a new AOI, edit the AOI and date range in:
 
-The data is the 8-band product (PSB.SD) downloaded as TIF files clipped for the AOI for each date where the scene cloud coverage was <60%. The code to download an AOI is in `PlanetLabs/PlanetScopeDownload.py`, where the AOI and date range need to specified.
+```bash
+python PlanetLabs/PlanetScopeDownload.py
+```
 
+Requires a Planet API key (set in `PlanetLabs/.env` — **do not commit this file**).
 
-## 10. Soil properties - ccsols <a name="ccsols"></a>
+---
 
-The Swiss Competence Centre for SOil (Kopetenzzentrum Boden KOBO) has produces maps of soil properties at different depths across Switzerland. These raster layers are stored at `~/mnt/eo-nas1/data/soil/ccsols/Daten_2024-01`, and are originally at 30m resolution in EPSG:2056.
+## 10. Soil properties — ccsols <a name="ccsols"></a>
 
-The data was reprojected to EPSG:32632 and resampled to align to the Sentinel-2 grid (10m resolution) using nearest interpolation. The processed data is stored as datacubes in zarr format at `~/mnt/eo-nas1/data/soil/ccsols/datacubes` with filenames following the structure `ccsols_<minx>_<maxy>.zarr`.
+**Source:** Swiss Competence Centre for Soils (KOBO) — [ccsols](https://www.kobocat.ch)  
+**Original resolution:** 30 m, EPSG:2056  
+**Processed resolution:** 10 m, EPSG:32632 (nearest-neighbour interpolation)
+
+Raw raster layers: `~/mnt/eo-nas1/data/soil/ccsols/Daten_2024-01`
 
 ### How to run
-```
+
+```bash
 python Soil/soil_to_cube.py
 ```
 
-Each datacube contains the following soil properties at different depths:
-- Cation exchange capacity [mmc/kg]: CECpot_depth_0_30, CECpot_depth_30_60, CECpot_depth_60_120
-- Clay content [%]: clay_depth_0_30, clay_depth_30_60, clay_depth_60_120
-- pH [-]: pH_depth_0_30, pH_depth_30_60, pH_depth_60_120
-- Sand content [%]: sand_depth_0_30, sand_depth_30_60, sand_depth_60_120
-- Silt content [%]: silt_depth_0_30, silt_depth_30_60, silt_depth_60_120
-- Soil organic carbon [%]: soc_depth_0_30, soc_depth_30_60, soc_depth_60_120
+### Variables (each at depths 0–30, 30–60, 60–120 cm)
 
+| Variable | Description | Unit |
+|----------|-------------|------|
+| `CECpot_depth_*` | Cation exchange capacity | mmolc/kg |
+| `clay_depth_*` | Clay content | % |
+| `pH_depth_*` | pH | – |
+| `sand_depth_*` | Sand content | % |
+| `silt_depth_*` | Silt content | % |
+| `soc_depth_*` | Soil organic carbon | % |
+
+### Data location and format
+
+```
+~/mnt/eo-nas1/data/soil/ccsols/datacubes/ccsols_<minx>_<maxy>.zarr
+```
+
+---
 
 ## 11. Snow depth <a name="snowdepth"></a>
 
-Daily snow depth from the 1970s to 2023 at 1km resolution is available at `~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/DataInfrastructure/Meteo/HSCLQMD_ch01h.swiss.lv95_WY_1962_2023.nc` (EPSG:2056)
+**Temporal coverage:** 1970s–2023 (raw), 2015–2023 (processed cubes)  
+**Original resolution:** 1 km, EPSG:2056  
+**Processed resolution:** 10 m, EPSG:32632 (nearest-neighbour)
 
-Data from 2015 onwards has been processed to cubes on the Sentienl-2 grid and upscaled to 10m resolution with nearest interpolation. The data cubes are stored at `~/mnt/eo-nas1/data/meteo/snowdepth` with filename `snowdepth_<minx>_<maxy>.zarr`.
+Raw data (daily snow depth):
+```
+~/mnt/eo-nas1/eoa-share/projects/012_EO_dataInfrastructure/DataInfrastructure/Meteo/HSCLQMD_ch01h.swiss.lv95_WY_1962_2023.nc
+```
 
 ### How to run
-```
+
+```bash
 python Meteo/snow.py
 ```
 
+### Data location and format
+
+```
+~/mnt/eo-nas1/data/meteo/snowdepth/snowdepth_<minx>_<maxy>.zarr
+```
+
+> **Note:** Nearest-neighbour upsampling used (same caveat as MeteoSwiss — see section 5).
+
+---
 
 
-<a name="Data-status"></a>
-## Data status
+
+## Data status <a name="Data-status"></a>
 
 The download history is tracked here:
 
@@ -299,47 +417,54 @@ The download history is tracked here:
 | 11.11.2025| Processed snowdepth data | | 
 | 07.04.2026| Downloaded S2 for 2025 | Package versions: sen2nbar==2023.8.1  minicuber ([commit version](https://github.com/EOA-team/minicuber/tree/686227f8fc0131053a448a3db59a6054e44c08da))| 
 
-### Overview of data storage structure
+---
+
+
+## Storage structure <a name="storage-structure"></a>
+
 ```
- 📁 \\eo-nas1\data
-  ├── satellite
-  │   ├── sentinel2
-  │   │    ├── raw
-  │   │    │   └── CH
-  │   │    └── DLR_soilsuite
-  │   ├── PlanetLabs
-  │   │    └── raw
-  │   │       └── AOI_name
-  │   └── landsat
-  │         └── raw
-  │            └── CH
-  │                ├── 45
-  │                └── 89
-  │   
-  ├── swisstopo
-  │   ├── SwissImage
-  │   │   ├── raw
-  │   │   │   ├── 10cm
-  │   │   │   └── 2m
-  │   │   └── cubes
-  │   │       ├── 10cm
-  │   │       └── 2m
-  │   └── dem
-  │
-  ├── meteo
-  │   ├── Rhires
-  │   ├── Srel
-  │   ├── Tabs
-  │   ├── Tmax
-  │   ├── Tmin
-  │   └── snowdepth
-  │
-  └── soil
-      └── ccsols
-          ├── Daten_2024-01
-          └── datacubes
+📁 \\eo-nas1\data
+├── satellite
+│   ├── sentinel2
+│   │   ├── raw
+│   │   │   └── CH                    # raw S2 zarr cubes
+│   │   ├── coreg
+│   │   │   └── CH                    # coregistered S2 zarr cubes
+│   │   └── DLR_soilsuite             # DLR bare-soil composite
+│   ├── PlanetLabs
+│   │   └── raw
+│   │       └── <AOI_name>
+│   └── landsat
+│       └── raw
+│           └── CH
+│               ├── 45                # Landsat 4-5
+│               └── 89                # Landsat 8-9
+│
+├── swisstopo
+│   ├── SwissImage
+│   │   ├── raw
+│   │   │   ├── 10cm
+│   │   │   └── 2m
+│   │   └── cubes
+│   │       ├── 10cm
+│   │       └── 2m
+│   └── DEM                           # swissalti3D zarr cubes
+│
+├── meteo
+│   ├── Rhires
+│   ├── Srel
+│   ├── Tabs
+│   ├── Tmax
+│   ├── Tmin
+│   └── snowdepth
+│
+└── soil
+    └── ccsols
+        ├── Daten_2024-01             # raw rasters
+        └── datacubes                 # processed zarr cubes
 ```
 
+---
 ### Tools
 
 Code examples and function to extract the data and process the zarr files with the `xarray` package can be found [here](https://github.com/EOA-team/SwissEODI_utils)
