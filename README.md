@@ -25,11 +25,10 @@ Install with:
 ```bash
 pip install -r requirements.txt
 ```
+The Sentinel-2 and Landsat pipelines depend on the [minicuber](https://github.com/EOA-team/minicuber) package (commit pinned in the [Data status](#data-status) table).
 
-The Sentinel-2 and Landsat pipelines depend on the [minicuber](https://github.com/EOA-team/minicuber) package (commit pinned in the [Data status](#data-status) table). 
 ---
-<a name="grid-creation"></a>
-## 2. Grid creation
+## 2. Grid creation <a name="grid-creation"></a>
 
 The data is saved on the EPSG:32632 grid. The pixels align to those of the Sentinel-2 satellite data in the UTM zone 32. The extent of the grid is defined by the bounding box of the MeteoSuisse data, which extends slightly beyond the administrative borders of Switzerland. 
 
