@@ -15,6 +15,7 @@ This repository documents how the multi-source Earth observation dataset was pro
 9. [PlanetLabs](#planet)
 10. [Soil properties — ccsols](#ccsols)
 11. [Snow depth](#snowdepth)
+12. [LAI](#lai)
 13. [Data status](#data-status)
 14. [Storage structure](#storage-structure)
 
@@ -391,6 +392,28 @@ python Meteo/snow.py
 ---
 
 
+## 12. LAI <a name="lai"></a>
+
+**Temporal coverage:** 2016-2025 (Sentinel-2)
+**Processed resolution:** 10 m, EPSG:32632 
+
+Predict LAI using ESA's SNAP Biophysical Processor on Sentinel-2 L2A data. The SNAP Biophysical Processor uses the PROSAIL radiative transfer model to estimate LAI from surface reflectance data (bands 3,4,5,6,7,8a,11,12). For full code and details on SNAP LAI please refer to the following [SNAP_LAI](https://github.com/EOA-team/SNAP_LAI/tree/main), [SALI_models](https://github.com/EOA-team/SALI_models).
+
+
+### How to run
+
+```bash
+python LAI/predict_snap_lai.py
+```
+
+### Data location and format
+
+```
+~/mnt/eo-nas1/data/satellite/sentinel2/SNAP_LAI/ 
+```
+Each zarr file has the format `S2_<minx>_<maxy>_<startYYYYMMDD>_<endYYYYMMDD>.zarr`, keeping the exact same name as the origal S2 data cube it was predicted from. The file contains a single band called `lai`, matching the pixel coordinates of the original S2 data.
+
+---
 
 ## Data status <a name="Data-status"></a>
 
