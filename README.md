@@ -16,8 +16,9 @@ This repository documents how the multi-source Earth observation dataset was pro
 10. [Soil properties — ccsols](#ccsols)
 11. [Snow depth](#snowdepth)
 12. [LAI](#lai)
-13. [Data status](#data-status)
-14. [Storage structure](#storage-structure)
+13. [Other data products](#other)
+14. [Data status](#data-status)
+15. [Storage structure](#storage-structure)
 
 
 ## 1. Environment setup <a name="environment-setup"></a>
@@ -412,6 +413,14 @@ python LAI/predict_snap_lai.py
 ~/mnt/eo-nas1/data/satellite/sentinel2/SNAP_LAI/ 
 ```
 Each zarr file has the format `S2_<minx>_<maxy>_<startYYYYMMDD>_<endYYYYMMDD>.zarr`, keeping the exact same name as the origal S2 data cube it was predicted from. The file contains a single band called `lai`, matching the pixel coordinates of the original S2 data.
+
+---
+
+## 13. Other data products <a name="other"></a>
+
+| Product | Location | Link | 
+| --------- | ------------ | ------------ |
+| Fractional Cover | `~/mnt/eo-nas1/data/satellite/sentinel2/FC` | [GitHub script](https://github.com/EOA-team/erosion_indicator/blob/main/FC_mapping/predict_FC_CH.py)|
 
 ---
 
