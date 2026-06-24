@@ -418,9 +418,9 @@ Each zarr file has the format `S2_<minx>_<maxy>_<startYYYYMMDD>_<endYYYYMMDD>.za
 
 ## 13. Other data products <a name="other"></a>
 
-| Product | Location | Link | 
-| --------- | ------------ | ------------ |
-| Fractional Cover | `~/mnt/eo-nas1/data/satellite/sentinel2/FC` | [GitHub script](https://github.com/EOA-team/erosion_indicator/blob/main/FC_mapping/predict_FC_CH.py)|
+| Product | Location | Link | Comment |
+| --------- | ------------ | ------------ | ------------ |
+| Fractional Cover | `~/mnt/eo-nas1/data/satellite/sentinel2/FC` | [GitHub script](https://github.com/EOA-team/erosion_indicator/blob/main/FC_mapping/predict_FC_CH.py)| Generated for 2021-2025. See [here](https://github.com/EOA-team/erosion_indicator) for how to generate predictions. |
 
 ---
 
