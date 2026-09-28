@@ -422,11 +422,11 @@ def parallel_process(grid_copy, data_path, res, output_prefix, overwrite, metada
 if __name__ == "__main__":
 
     # Define data path
-    data_path = os.path.expanduser('~/mnt/eo-nas1/data/swisstopo/SwissImage/raw/10cm/')
-    res = 0.1 # always in meters
+    data_path = os.path.expanduser('~/mnt/eo-nas1/data/swisstopo/SwissImage/raw/2m/')
+    res = 2 # always in meters
 
     # Define output path
-    output_prefix = os.path.expanduser('~/mnt/eo-nas1/data/swisstopo/SwissImage/cubes/10cm/')
+    output_prefix = os.path.expanduser('~/mnt/eo-nas1/data/swisstopo/SwissImage/cubes/2m/')
     overwrite = False # If True, will overwrite existing files of same name
 
     # Define path to grid
@@ -447,7 +447,7 @@ if __name__ == "__main__":
               "source": "Swisstopo SwissImage",
               "grid": f"EPSG:32632. Coordinates are upper left corners of pixels",
               "missing data fill value": 255,
-              "processing": "Reprojected from EPSG:2056. Aligned to Sentinel-2 coordinates, with 10cm resolution. Cubic resampling used at every step.",
+              "processing": "Reprojected from EPSG:2056. Aligned to Sentinel-2 coordinates, with 2m resolution. Cubic resampling used at every step.",
             }
 
     #grid_copy = run_processing(grid, grid_copy, output_prefix, data_path, res, metadata, overwrite)

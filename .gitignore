@@ -1,0 +1,12 @@
+# Secrets
+.env
+
+# Large data and outputs
+*.nc
+*.pkl
+*.tif
+*.gif
+
+# Python / Jupyter caches
+__pycache__/
+.ipynb_checkpoints/

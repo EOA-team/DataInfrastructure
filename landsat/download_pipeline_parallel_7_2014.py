@@ -197,9 +197,8 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
                 specs["xy_shape"] = (int(patch_size*(n_cells)/specs["resolution"]), int(patch_size*(n_cells)/specs["resolution"]))
                 
                 # Force all years to complete, in case of error
-                years_to_download = list(set([1999, 2000, 2001, 2002, 2003, 2004, 2005,
-                                              2006, 2007, 2008, 2009, 2010, 2011, 2012,
-                                              2013])
+                years_to_download = list(set([2014, 2015, 2016, 2017, 2018, 2019,
+                                              2020, 2021, 2022])
                                          - set(grid_copy.loc[i, 'years_done'] or []))
                 successful_years = []
 
@@ -215,12 +214,12 @@ def run_download(grid, grid_copy, num_cells, patch_size, output_prefix, overwrit
                         # Update grid_copy immediately after a year is successfully downloaded
                         grid_copy.loc[mega_patch.index, 'years_done'] = grid_copy.loc[mega_patch.index, 'years_done'].apply(
                             lambda x: successful_years if x is None else list(set(x + successful_years)))
-                        grid_copy.to_pickle(output_prefix + 'grid_landsat_7.pkl')
+                        grid_copy.to_pickle(output_prefix + 'grid_landsat_7_2014.pkl')
 
                     # Mark the selected cells
                     if len(successful_years) == 1:
                         grid_copy.loc[mega_patch.index, 'selected'] = True
-                        grid_copy.to_pickle(output_prefix + 'grid_landsat_7.pkl')
+                        grid_copy.to_pickle(output_prefix + 'grid_landsat_7_2014.pkl')
 
                 # Clean up variables after each iteration
                 del mega_patch, years_to_download, successful_years
@@ -255,7 +254,7 @@ if __name__ == "__main__":
         grid = grid.merge(grouped_df, how='left', right_on=['minx', 'maxy'], left_on=['left', 'top'])
         mask = grid['years_done'].isna()
         grid.loc[mask, 'years_done'] = grid.loc[mask, 'years_done'].apply(lambda x: [None])
-        TARGET_YEARS = {1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013}
+        TARGET_YEARS = {2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022}
         grid['selected'] = grid['years_done'].apply(
             lambda x: TARGET_YEARS.issubset(set(x)) if x is not None else False)
     else:

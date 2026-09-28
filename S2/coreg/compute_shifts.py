@@ -191,7 +191,7 @@ def coreg_single_step(i, ds_tgt, geo_ref_image, geotransform_tgt, projection_tgt
       return (np.nan, np.nan), False  # Return the original image and failure flag
 
 
-def coreg(ds, ref, batch_size=20):
+def coreg(ds, ref, batch_size):
   
   start = time.time()
   # Remove variables that shouldn't be coregistered
@@ -234,6 +234,23 @@ def coreg(ds, ref, batch_size=20):
          for i in range(ds_tgt.sizes['time']) if cloud_mask.values[i]]
   end = time.time()
   print('Preparing coreg', end-start)
+  """
+  final_results = []
+  with ProcessPoolExecutor(max_workers=batch_size) as executor:
+      start = time.time()
+      futures = [executor.submit(coreg_single_step, i, ds_tgt, geo_ref_image, geotransform_tgt, projection_tgt, footprint_tgt, geotransform_ref, projection_ref, footprint_ref) for i in range(ds_tgt.sizes['time']) if cloud_mask.values[i]]
+      
+      # Check each future as it completes
+      for future in as_completed(futures):
+          try:
+              result = future.result()  # This will raise an exception if the task failed
+              final_results.append(result)
+          except Exception as e:
+              print(f"Task failed with error: {e}")
+
+      end = time.time()
+      print(f"Processing all tasks with took {end - start} seconds")
+  """
 
   final_results = []
   for i in range(0, len(tasks), batch_size):
@@ -243,9 +260,9 @@ def coreg(ds, ref, batch_size=20):
     final_results.extend(results)
     end = time.time()
     #print(f'Batch of {batch_size} took', end-start)
-
+ 
   # Extract results from Dask output
-  shifts_done, coreg_mask_done = zip(*final_results)
+  shifts_done, coreg_mask_done = zip(*final_results)  
 
   # Return ds_tgt where cloud_mask and coreg_mask done
   ds = ds.where(cloud_mask, drop=True)
@@ -354,13 +371,14 @@ def process_tile(file_list, processed_names, target_folder, reference_folder, ti
     target_files = [f for f in target_files if not any(name in f for name in processed_names)]
 
     for i, f in enumerate(target_files):
-      print(f"----Processing file {i+1}/{len(target_files)}")
-      start = time.time()
-      result_df = process_single_file(f, target_folder, reference_folder, batch_size)
-      end = time.time()
-      print('Whole process for file took', end-start)
-      if result_df is not None:
-        save_to_pickle(result_df, tile_name)
+      if i > 242:
+        print(f"----Processing file {i+1}/{len(target_files)}")
+        start = time.time()
+        result_df = process_single_file(f, target_folder, reference_folder, batch_size)
+        end = time.time()
+        print('Whole process for file took', end-start)
+        if result_df is not None:
+          save_to_pickle(result_df, tile_name)
 
     return
 
@@ -393,7 +411,7 @@ def compute_shifts(target_folder, reference_folder, tiles):
           target_folder=target_folder,
           reference_folder=reference_folder,
           tile_name=tile,
-          batch_size=40 # number of timestamps to process in parallel for each file
+          batch_size=30 # number of timestamps to process in parallel for each file
       )
 
   return

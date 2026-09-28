@@ -20,7 +20,7 @@ if __name__ == "__main__":
           }
 
     # Step 1: Compute shifts, saving results
-    compute_shifts(target_folder=target_folder, reference_folder=reference_folder, tiles=tiles)
+    #compute_shifts(target_folder=target_folder, reference_folder=reference_folder, tiles=tiles)
 
     # Step 2: Apply avg shift in a tile per timestamp to all cubes within that tile
     apply_shifts(target_folder=target_folder, output_folder=output_folder)

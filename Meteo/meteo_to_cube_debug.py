@@ -16,7 +16,6 @@ from datetime import date
 from shapely import Polygon
 import glob
 from shapely.geometry import box
-from concurrent.futures import ThreadPoolExecutor
 
 
 def check_processed_cubes(data_file, datavar, datestart, output_prefix):
@@ -35,6 +34,7 @@ def check_processed_cubes(data_file, datavar, datestart, output_prefix):
     search_pattern = os.path.join(output_prefix, file_pattern)
     matching_files = glob.glob(search_pattern)
     num_cubes = len(matching_files)
+    print(num_cubes)
 
     if 'ch01r' in data_file:
       if num_cubes == 28820:
@@ -104,7 +104,7 @@ def regrid_product_cube(product_cube, lon_lat_grid):
 
   return product_cube
 
-def slice_and_save_old(ds, grid, datavar, datestart, output_prefix, compressor, overwrite):
+def slice_and_save(ds, grid, datavar, datestart, output_prefix, compressor, overwrite):
   """
   Regrid the weather data to the grid and save the datacubes to zarr
 
@@ -118,7 +118,7 @@ def slice_and_save_old(ds, grid, datavar, datestart, output_prefix, compressor, 
   """
 
   for i, row in grid.iterrows(): 
-      
+      print(f'Processing grid patch {i}/{len(grid)}')
       # If files are stored in data var subfolders, could implement an easier check of whether the cubes already processed
 
       patch = row.geometry
@@ -153,80 +153,17 @@ def slice_and_save_old(ds, grid, datavar, datestart, output_prefix, compressor, 
         # Save the patch to Zarr with compression
         if overwrite or not os.path.exists(output_path):
             regrid.to_zarr(output_path, consolidated=True, mode='w', encoding={var: {'compressor': compressor} for var in regrid.data_vars})
-            print(f'Processing grid patch {i}/{len(grid)}')
             print('Saved patch', output_path) # save_end-save_start
 
   return
 
-def process_patch(i, row, ds, datavar, datestart, output_prefix, compressor, overwrite):
-    """Process and save a single grid patch to Zarr."""
 
-    patch = row.geometry
-    minx, miny, maxx, maxy = patch.bounds
-    output_path = output_prefix + f'{datavar.split("D")[0]}/MeteoSwiss_{datavar}_{int(minx)}_{int(maxy)}_{int(datestart[:4])}0101_{int(datestart[:4])}1231.zarr'
-    
-    if not overwrite and os.path.exists(output_path):
-        print(f'File {output_path} already exists. Skipping...')
-        return
-
-    lon_lat_grid = [np.arange(minx, maxx, 10), np.arange(miny+10, maxy+10, 10)]
-    regrid = regrid_product_cube(ds, lon_lat_grid) 
-
-    if not np.isnan(regrid[datavar]).all():
-        regrid = regrid.drop_vars(["swiss_lv95_coordinates"], errors="ignore")
-        
-        # Update metadata
-        attrs = regrid.attrs
-        attrs['history'] += f". Reprojected and regrid datacube to EPSG 32632 by Sélène Ledain on {date.today()}"
-        regrid.attrs = attrs
-        
-        # Chunk
-        regrid = regrid.chunk({'time': -1, 'lat': -1, 'lon': len(regrid.lon)/2}) 
-       
-        # Save to Zarr with compression
-        os.makedirs(os.path.dirname(output_path), exist_ok=True)
-        regrid.to_zarr(output_path, consolidated=True, mode='w', encoding={var: {'compressor': compressor} for var in regrid.data_vars})
-        print(f'Saved patch {i}', output_path)
-
-def slice_and_save(ds, grid, datavar, datestart, output_prefix, compressor, overwrite, workers=8):
-    """
-    Regrid the weather data to the grid and save the datacubes to zarr using multithreading.
-
-    :param ds: xarray dataset
-    :param grid: geopandas dataframe
-    :param datavar: variable name
-    :param datestart: year of data
-    :param output_prefix: path to save the zarr files
-    :param compressor: zarr compressor
-    :param overwrite: boolean to overwrite existing files
-    :param workers: number of parallel threads
-    """
-
-    with ThreadPoolExecutor(max_workers=workers) as executor:  # Define the number of threads here
-        # Submit a separate task for each row in the grid
-        futures = [executor.submit(process_patch, i, row, ds, datavar, datestart, output_prefix, compressor, overwrite) for i, row in grid.iterrows()]
-       
-        # Wait for all threads to complete
-        for i, future in enumerate(futures):
-            try:
-                future.result()  # This will raise an exception if the thread failed
-                #print(f'Completed processing grid patch {i+1}/{len(grid)}')
-            except Exception as e:
-                print(f'Error processing patch {i+1}/{len(grid)}: {e}')
-    
-    return
 
 
 if __name__ == "__main__":
 
-  import argparse
-  parser = argparse.ArgumentParser()
-  parser.add_argument('--year', type=int, default=None, help='Only process files for this year (e.g. 2025)')
-  parser.add_argument('--workers', type=int, default=8, help='Number of parallel threads for patch writing (default: 8)')
-  args = parser.parse_args()
-
   print('STARTING METEO FILES PROCESSING')
-
+    
   #####################
   # DEFINE PATHS AND VARIABLES
 
@@ -234,37 +171,34 @@ if __name__ == "__main__":
   grid = gpd.read_file(grid_path)
 
   output_prefix = os.path.expanduser('~/mnt/eo-nas1/data/meteo/')
-  overwrite = True # If True, will overwrite existing files of same name
+  overwrite = False # If True, will overwrite existing files of same name
 
   data_path = os.path.expanduser('~/mnt/Data-Raw-RE/27_Natural_Resources-RE/99_Meteo_Public/MeteoSwiss_netCDF/__griddedData/lv95updated')
-  data_files = [f for f in os.listdir(data_path) if f.endswith('.nc') and not f.startswith('topo') and f.split('_')[0].upper().endswith('D')]
-
-  if args.year:
-    data_files = [f for f in data_files if f'_{args.year}' in f]
-    print(f'Filtering to year {args.year}: {len(data_files)} files found')
+  data_files = [f for f in os.listdir(data_path) if f.endswith('.nc') and not f.startswith('topo') and f.split('_')[0].endswith('D')]
 
   compressor = zarr.Blosc(cname='zstd', clevel=3, shuffle=2)
 
+ 
   #####################
   # PROCESS FILES
 
+  #processed_files = [f for f in os.listdir(output_prefix)]
+  
   for i, data_file in enumerate(data_files):
-    raw_var, _, datestart, _ = data_file.split("_")  # varRes_gridtype_date.nc (old) or ogd-....vard_... (new)
-    # new-format files: "ogd-surface-derived-grid-archive.tabsd" → extract "tabsd" → normalize to "TabsD"
-    if '.' in raw_var:
-        raw_var = raw_var.split('.')[-1]
-    datavar = raw_var[0].upper() + raw_var[1:-1] + raw_var[-1].upper()
+    datavar, _, datestart, _ = data_file.split("_") #varRes_gridtype_date.nc
 
     # Check if file should be processed
-    process = check_processed_cubes(data_file, datavar, datestart, output_prefix)
+    if 'ch01r' in data_file:
+      print(data_file)
+      process = check_processed_cubes(data_file, datavar, datestart, output_prefix) 
+      process = 0
+      if process:
+        print(f'-------Processing file {i}/{len(data_files)}: {data_file}-----------')
 
-    if process:
-      print(f'-------Processing file {i}/{len(data_files)}: {data_file}-----------')
-
-      ds = xr.open_dataset(os.path.join(data_path, data_file), decode_times=False)
-      # Fix time coordinate: get year and create monthly or daily or yearly timeseries
-      ds = fix_time_coord(ds, datestart)
-      # Reproject file to EPSG 32632
-      ds = reproj(ds, 2056, 32632)
-      # Regrid and save the data
-      slice_and_save(ds, grid, datavar, datestart, output_prefix, compressor, overwrite, args.workers)
+        ds = xr.open_dataset(os.path.join(data_path, data_file), decode_times=False) 
+        # Fix time coordinate: get year and create monthly or daily or yearly timeseries
+        ds = fix_time_coord(ds, datestart)
+        # Reproject file to EPSG 32632
+        ds = reproj(ds, 2056, 32632)
+        # Regrid and save the data
+        slice_and_save(ds, grid, datavar, datestart, output_prefix, compressor, overwrite)

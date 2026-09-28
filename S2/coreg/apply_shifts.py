@@ -5,10 +5,15 @@ import numpy as np
 import xarray as xr
 import glob
 from scipy.ndimage import affine_transform
+import matplotlib.pyplot as plt
 import zarr
 import datetime
 import warnings
 warnings.filterwarnings('ignore')
+import time
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
+from tqdm import tqdm
+from collections import defaultdict
 
 
 
@@ -236,8 +241,17 @@ def coreg_cube(f, df, target_folder):
 
     # Add back variables
     ds_coreg[to_drop] = ds[to_drop]
+    print(ds_coreg.equals(ds))
+
     
     return ds_coreg, minx, maxy, attrs
+
+
+def process_cube(cube_index, cube, df, target_folder, output_folder):
+    start = time.time()
+    ds, minx, maxy, attrs = coreg_cube(cube, df, target_folder)
+    split_and_save(ds, minx, maxy, output_folder, attrs)
+    return cube_index, time.time()-start
 
 
 def apply_shifts(target_folder, output_folder):
@@ -248,7 +262,7 @@ def apply_shifts(target_folder, output_folder):
     for f in shift_files:
         files.append(pd.read_pickle(f))
     df = pd.concat(files)
-    
+ 
     # Compute mean shift per timestamp, per tile
     df = df.dropna(subset='uri')
     df = df.drop(['name'], axis=1).groupby('uri').mean().reset_index()
@@ -257,10 +271,26 @@ def apply_shifts(target_folder, output_folder):
     processed_cubes = [f for f in os.listdir(output_folder)]
     cubes = [f for f in os.listdir(target_folder) if f not in processed_cubes and f.endswith('.zarr')]
     
-    for i, cube in enumerate(cubes): 
-        print(f'Coregistering cube {i+1}/{len(cubes)}')
-        ds, minx, maxy, attrs = coreg_cube(cube, df, target_folder)
-        split_and_save(ds, minx, maxy, output_folder, attrs)
+    
+    for i, cube in enumerate(cubes):
+      if i >440: 
+          print(f'Coregistering cube {i+1}/{len(cubes)}')
+          start = time.time()
+          ds, minx, maxy, attrs = coreg_cube(cube, df, target_folder)
+          end = time.time()
+          print(end-start, minx, maxy)
+          #split_and_save(ds, minx, maxy, output_folder, attrs)
+    """
+
+    # Use ThreadPoolExecutor for parallel processing
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        futures = [executor.submit(process_cube, idx, cube, df, target_folder, output_folder) for idx, cube in enumerate(cubes)]
+
+        for future in as_completed(futures):  # Process as soon as they are done
+          cube_index, duration = future.result()  # Unpack cube index and duration
+          print(f"Cube {cube_index + 1}/{len(cubes)} finished in {duration:.2f} sec")  
+
+    """
  
 
 

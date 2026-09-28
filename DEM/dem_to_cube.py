@@ -37,63 +37,6 @@ from datetime import date
 import zarr
 
 
-def reproject_raster(src,out_crs):
-    """
-    REPROJECT RASTER reproject a given rasterio object into a wanted CRS.
-
-    Parameters
-    ----------
-    src : rasterio.io.DatasetReader
-        rasterio dataset to reproject.
-        For a geoTiff, it can be obtained from:    
-        src = rasterio.open(file.tif,'r')
-            
-    out_crs : int
-        epgs code of the wanted output CRS
-
-    Returns
-    -------
-    dst : rasterio.io.DatasetReader
-        output rasterio dataset written in-memory (rasterio MemoryFile)
-        can be written to file with:
-        
-        out_meta = src.meta.copy()
-        with rasterio.open('out_file.tif','w', **out_meta) as out_file: 
-            out_file.write(dst.read().copy())
-            
-        out_file.close()
-
-    """
-    
-    src_crs = src.crs
-    transform, width, height = calculate_default_transform(src_crs, out_crs, src.width, src.height, *src.bounds)
-    kwargs = src.meta.copy()
-    
-    memfile = MemoryFile()
-    
-    kwargs.update({
-        #'driver':'Gtiff',
-        'crs': out_crs,
-        'transform': transform,
-        'width': width,
-        'height': height,
-        "BigTIFF" : "yes"})
-    
-    dst = memfile.open(**kwargs)
-
-          
-    for i in range(1, src.count + 1):
-        reproject(
-            source=rasterio.band(src, i),
-            destination=rasterio.band(dst, i),
-            src_transform=src.transform,
-            src_crs=src_crs,
-            dst_transform=transform,
-            dst_crs=out_crs,
-            resampling=Resampling.nearest)
-    
-    return dst
-
 
 def reproject_raster_to_xarray(src, out_crs):
     """
@@ -128,7 +71,7 @@ def reproject_raster_to_xarray(src, out_crs):
             src_crs=src_crs,
             dst_transform=transform,
             dst_crs=out_crs,
-            resampling=rasterio.enums.Resampling.nearest
+            resampling=rasterio.enums.Resampling.cubic
         )
 
     # Generate coordinates for the new grid
@@ -250,7 +193,6 @@ def download_SA3D_STAC(
         src = rasterio.open(row,'r')
         file_handler.append(src)
 
-    
     if len(file_handler):
         total_bounds = file_handler[0].bounds
         for src in file_handler[1:]:
@@ -271,10 +213,30 @@ def download_SA3D_STAC(
         nodata=65535, # float
         dtype='uint16', # dtype
         res=out_res,
-        resampling=Resampling.nearest,
+        resampling=Resampling.cubic,
         method='first', # strategy to combine overlapping rasters
         )
+        """
+        da = xr.DataArray(
+            merged_array,
+            dims=("band", "y", "x"),
+            coords={
+                "band": np.arange(1, 2, 1),
+                "y": np.arange(top, bot, -2),
+                "x": np.arange(lef, rig, 2),
+            },
+            attrs={
+                "crs": str(2056),
+                "transform": merged_transform,
+                "nodata": src.nodata,
+            },
+        )
+        ds = da.to_dataset('band').rename({1:'height'})
+        ds.rio.write_crs(2056).rio.to_raster('test2.tif')
 
+        return ds
+        """
+  
         # Close the input raster files
         #for fh in file_handler:
         #    fh.close()
@@ -302,7 +264,7 @@ def download_SA3D_STAC(
 
     else:
       return None
-
+    
         
 def regrid_product_cube(product_cube, lon_lat_grid):
   """
@@ -320,7 +282,7 @@ def regrid_product_cube(product_cube, lon_lat_grid):
       x, y = product_cube.x.values, product_cube.y.values
       lon_grid, lat_grid = lon_lat_grid
       
-      product_cube = product_cube.interp(x = lon_grid, y = lat_grid, method = "nearest")
+      product_cube = product_cube.interp(x = lon_grid, y = lat_grid, method = "cubic")
 
       product_cube = product_cube.rename({"x": "lon", "y": "lat"})
 
@@ -344,17 +306,28 @@ if __name__ == "__main__":
   # DOWNLOAD FILES
 
 
-  for i in range(len(grid)):
+  for i in range(16000,20000): #len(grid)):
     cube = grid.iloc[[i]]
     minx, maxx, miny, maxy = cube.left.values[0], cube.right.values[0], cube.bottom.values[0], cube.top.values[0]
     output_path = os.path.join(output_folder, f'sa3d_{int(minx)}_{int(maxy)}.zarr')
     
-    if not os.path.exists(output_path):
+    if 1: #not os.path.exists(output_path):
         
         ds = download_SA3D_STAC(bbox=cube, out_crs=32632, out_res=2)
-
+        
         if ds is not None:
+            
+            ds.rio.write_crs(32632).rio.to_raster('test_code_cubic.tif')
+            arr = ds.height.values
+            arr[arr==65535] = 0
+            plt.imshow(arr)
+            plt.savefig('reproj_cubic.png')
 
+            arr = np.diff(arr)
+            plt.imshow(arr)
+            plt.savefig('diff_cubic.png')
+            
+           
             # Regrid and crop
             minx, maxx, miny, maxy = cube.left.values[0], cube.right.values[0], cube.bottom.values[0], cube.top.values[0]
             lon_lat_grid = [np.arange(minx, maxx, 2), np.arange(miny+2, maxy+2, 2)] # make sure that last upper left corner is produced
@@ -369,8 +342,15 @@ if __name__ == "__main__":
             regrid = regrid.isel(lat=slice(None, None, -1)).chunk({'lat': -1, 'lon': len(regrid.lon)/2}) 
 
             output_path = os.path.join(output_folder, f'sa3d_{int(minx)}_{int(maxy)}.zarr')
-            regrid.to_zarr(output_path, consolidated=True, mode='w', encoding={var: {'compressor': compressor} for var in regrid.data_vars})
-            print(f'Saved patch {i}', output_path)
+            print(output_path)
+            #regrid.to_zarr(output_path, consolidated=True, mode='w', encoding={var: {'compressor': compressor} for var in regrid.data_vars})
+            #print(f'Saved patch {i}', output_path)
+
+            #regrid.rename({'lat':'y', 'lon':'x'}).rio.write_crs(32632).rio.to_raster('test_code_final.tif')
 
             #print(regrid.lon.values[0], regrid.lon.values[-1], regrid.lat.values[0], regrid.lat.values[-1])
             #print(minx, maxx, miny, maxy)
+
+
+            break
+    

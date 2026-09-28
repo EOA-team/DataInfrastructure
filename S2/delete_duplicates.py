@@ -25,8 +25,6 @@ filtered_groups = grouped[grouped['count'] > 1]
 result_df = df_zarr.merge(filtered_groups, on=['minx', 'maxy', 'yr'])
 result_df = result_df.drop(columns=['count'])
 
-print(result_df)
-
 # Find name of file to drop: the one with the shortest dates
 
 def extract_dates(file):
@@ -42,17 +40,16 @@ files_not_max_enddate = result_df[~result_df.index.isin(max_enddate_indices)]
 
 files_max_enddate = result_df[result_df.index.isin(max_enddate_indices)]
 times = []
-data_path = os.path.expanduser('~/mnt/eo-nas1/data/satellite/sentinel2/raw/CH/')
 
 for f in files_not_max_enddate.file:
-  timelen = len(xr.open_dataset(data_path + f, engine='zarr').compute().time)
+  timelen = len(xr.open_dataset(os.path.join(data_path,f), engine='zarr').compute().time)
   times += [timelen]
 
 files_not_max_enddate['times'] = times
 
 to_del = [os.path.join(data_path, f) for f in files_not_max_enddate.file]
-print(to_del)
-"""
+
+""" 
 # Iterate over the list and delete each file
 for file_path in to_del:
     try:
@@ -63,5 +60,6 @@ for file_path in to_del:
     except Exception as e:
         print(f"Error deleting {file_path}: {e}")
 """
+
 
 
